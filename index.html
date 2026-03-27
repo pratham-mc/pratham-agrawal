@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pratham Agrawal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;1,300&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --lime: #c8f135;
+    --coral: #ff5e5b;
+    --cyan: #3dfaff;
+    --purple: #9b5de5;
+    --text: #f0f0f0;
+    --muted: #666680;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  #cursor {
+    width: 16px; height: 16px;
+    background: var(--lime);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  #cursor.big { width: 48px; height: 48px; }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.3;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 3rem;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(10,10,15,0.9), transparent);
+    backdrop-filter: blur(4px);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    color: var(--lime);
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--lime); }
+
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 6rem 3rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(155,93,229,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 20% 70%, rgba(61,250,255,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 30% at 60% 80%, rgba(200,241,53,0.1) 0%, transparent 50%);
+    z-index: 0;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+    position: relative; z-index: 1;
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3.5rem, 10vw, 9rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    position: relative; z-index: 1;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.35s forwards;
+  }
+
+  .hero-name .line2 {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--lime);
+  }
+
+  .hero-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 3rem;
+    position: relative; z-index: 1;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.6s forwards;
+  }
+
+  .hero-tagline {
+    font-size: 0.85rem;
+    color: var(--muted);
+    max-width: 280px;
+    line-height: 1.7;
+  }
+  .hero-tagline span { color: var(--cyan); }
+
+  .hero-scroll {
+    display: flex; align-items: center; gap: 0.8rem;
+    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: var(--muted);
+    position: relative; overflow: hidden;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: var(--lime);
+    animation: slide 1.5s 1s infinite;
+  }
+
+  .about {
+    padding: 8rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-heading {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 2rem;
+  }
+
+  .about-heading .accent { color: var(--lime); }
+
+  .about-text {
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: #aaaacc;
+    margin-bottom: 1.2rem;
+  }
+
+  .about-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid #1e1e2e;
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--lime); }
+  .card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at top left, rgba(200,241,53,0.06), transparent 70%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .card:hover::before { opacity: 1; }
+
+  .card-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+  .card-sub { font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
+
+  .status-bar {
+    margin: 0 3rem;
+    padding: 1.5rem 2rem;
+    background: var(--surface);
+    border: 1px solid #1e1e2e;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 0.75rem;
+  }
+  .status-dot {
+    width: 8px; height: 8px;
+    background: var(--lime);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    flex-shrink: 0;
+  }
+  .status-text { color: var(--muted); }
+  .status-text span { color: var(--lime); }
+  .status-line { flex: 1; height: 1px; background: #1e1e2e; }
+  .status-tag {
+    background: rgba(200,241,53,0.1);
+    color: var(--lime);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  footer {
+    padding: 4rem 3rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 1px solid #1a1a28;
+    margin-top: 6rem;
+  }
+  .footer-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--muted);
+    letter-spacing: -0.04em;
+  }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--lime); }
+
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .shape-1 {
+    width: 300px; height: 300px;
+    background: rgba(155,93,229,0.15);
+    top: 10%; right: 5%;
+    animation: drift 8s ease-in-out infinite;
+  }
+  .shape-2 {
+    width: 200px; height: 200px;
+    background: rgba(61,250,255,0.1);
+    bottom: 20%; left: 10%;
+    animation: drift 10s ease-in-out infinite reverse;
+  }
+
+  .marquee-wrapper {
+    overflow: hidden;
+    border-top: 1px solid #1e1e2e;
+    border-bottom: 1px solid #1e1e2e;
+    padding: 1.2rem 0;
+    margin: 4rem 0;
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 18s linear infinite;
+    gap: 2rem;
+  }
+  .marquee-item {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    padding: 0 1rem;
+  }
+  .marquee-item span { color: var(--coral); margin-right: 1rem; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide {
+    to { left: 100%; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(20px, -20px); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .hero { padding: 5rem 1.5rem 3rem; }
+    .about { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.5rem; }
+    .status-bar { margin: 0 1.5rem; flex-wrap: wrap; }
+    footer { flex-direction: column; gap: 2rem; padding: 3rem 1.5rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div class="shape shape-1"></div>
+<div class="shape shape-2"></div>
+
+<nav>
+  <div class="nav-logo">PA.</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <p class="hero-eyebrow">// Developer & Builder</p>
+  <h1 class="hero-name">
+    Pratham<br>
+    <span class="line2">Agrawal</span>
+  </h1>
+  <div class="hero-bottom">
+    <p class="hero-tagline">
+      Crafting <span>digital experiences</span> with clean code and obsessive attention to detail.
+    </p>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll down
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrapper">
+  <div class="marquee-track">
+    <span class="marquee-item"><span>✦</span> Frontend Dev</span>
+    <span class="marquee-item"><span>✦</span> Backend Dev</span>
+    <span class="marquee-item"><span>✦</span> Problem Solver</span>
+    <span class="marquee-item"><span>✦</span> Open Source</span>
+    <span class="marquee-item"><span>✦</span> Frontend Dev</span>
+    <span class="marquee-item"><span>✦</span> Backend Dev</span>
+    <span class="marquee-item"><span>✦</span> Problem Solver</span>
+    <span class="marquee-item"><span>✦</span> Open Source</span>
+    <span class="marquee-item"><span>✦</span> Frontend Dev</span>
+    <span class="marquee-item"><span>✦</span> Backend Dev</span>
+    <span class="marquee-item"><span>✦</span> Problem Solver</span>
+    <span class="marquee-item"><span>✦</span> Open Source</span>
+  </div>
+</div>
+
+<div class="status-bar">
+  <div class="status-dot"></div>
+  <p class="status-text">Currently <span>open to opportunities</span> — let's build something great.</p>
+  <div class="status-line"></div>
+  <div class="status-tag">Available</div>
+</div>
+
+<section class="about" id="about">
+  <div>
+    <p class="section-label">// 01 — About me</p>
+    <h2 class="about-heading">I build things<br>for the <span class="accent">web.</span></h2>
+    <p class="about-text">
+      Hey! I'm Pratham — a developer who loves turning ideas into fast, clean, and thoughtfully designed software. Whether it's a slick frontend or a robust backend, I care about the craft.
+    </p>
+    <p class="about-text">
+      I'm driven by curiosity and believe the best code is both elegant and efficient. When I'm not shipping features, I'm exploring new tech or contributing to open source.
+    </p>
+  </div>
+  <div class="about-cards">
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Frontend</div>
+      <div class="card-sub">Pixel-perfect UIs that feel fast and alive.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <div class="card-title">Backend</div>
+      <div class="card-sub">Scalable APIs and solid system design.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Problem Solver</div>
+      <div class="card-sub">Breaking down complex challenges simply.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <div class="card-title">Shipper</div>
+      <div class="card-sub">From idea to production, fast.</div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-name">Pratham Agrawal.</div>
+  <div class="footer-links">
+    <a href="#">GitHub</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Email</a>
+  </div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, .card, button').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+</script>
+</body>
+</html>
