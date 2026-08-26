@@ -859,7 +859,7 @@ const vid = document.getElementById('vid-player');
 // ══════════════════════════════════════════
 async function init() {
   restorePrefs();
-  loadPlaylists();
+  await loadPlaylists();
   renderSidebarPlaylists();
   await loadConfig();
   if (S.dirs.length) await scan(S.dirs);
@@ -1297,12 +1297,15 @@ function renderPlaylistView() {
 // ══════════════════════════════════════════
 //  Playlist management
 // ══════════════════════════════════════════
-function loadPlaylists() {
-  try { S.playlists = JSON.parse(localStorage.getItem('mb_playlists') || '[]'); } catch(_) { S.playlists = []; }
+async function loadPlaylists() {
+  try {
+    const d = await api('/api/playlists');
+    S.playlists = d.playlists || [];
+  } catch(_) { S.playlists = []; }
 }
 
 function savePlaylists() {
-  localStorage.setItem('mb_playlists', JSON.stringify(S.playlists));
+  api('/api/playlists', 'POST', { playlists: S.playlists }).catch(() => {});
 }
 
 function renderSidebarPlaylists() {

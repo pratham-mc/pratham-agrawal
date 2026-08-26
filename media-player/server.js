@@ -7,7 +7,8 @@ import { parseFile } from 'music-metadata';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
-const CONFIG_FILE = path.join(__dirname, 'config.json');
+const CONFIG_FILE    = path.join(__dirname, 'config.json');
+const PLAYLISTS_FILE = path.join(__dirname, 'playlists.json');
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -69,6 +70,23 @@ app.get('/api/config', (req, res) => {
 
 app.post('/api/config', (req, res) => {
   fs.writeFileSync(CONFIG_FILE, JSON.stringify({ directories: req.body.directories || [] }, null, 2));
+  res.json({ ok: true });
+});
+
+app.get('/api/playlists', (req, res) => {
+  try {
+    if (fs.existsSync(PLAYLISTS_FILE)) {
+      res.json(JSON.parse(fs.readFileSync(PLAYLISTS_FILE, 'utf8')));
+    } else {
+      res.json({ playlists: [] });
+    }
+  } catch (_) {
+    res.json({ playlists: [] });
+  }
+});
+
+app.post('/api/playlists', (req, res) => {
+  fs.writeFileSync(PLAYLISTS_FILE, JSON.stringify({ playlists: req.body.playlists || [] }, null, 2));
   res.json({ ok: true });
 });
 
