@@ -80,6 +80,34 @@ body {
 .nav-item.active { color: var(--text); background: rgba(255,255,255,0.1); }
 .nav-item .ni { font-size: 1.15rem; width: 22px; text-align: center; }
 .sidebar-sep { height: 1px; background: #1e1e1e; margin: 0.6rem 1.2rem; }
+.sidebar-section {
+  padding: 0.6rem 1.25rem 0.25rem;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted);
+}
+.pl-sidebar-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.55rem 0.85rem 0.55rem 1.35rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--sub);
+  font-size: 0.82rem; font-weight: 600;
+  transition: color var(--ease), background var(--ease);
+  gap: 0.4rem;
+}
+.pl-sidebar-item:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.pl-sidebar-item.active { color: var(--text); background: rgba(255,255,255,0.1); }
+.pl-sidebar-item .pl-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.pl-sidebar-item .pl-del {
+  opacity: 0; background: none; border: none;
+  color: var(--muted); cursor: pointer;
+  font-size: 0.75rem; padding: 0.15rem 0.3rem;
+  border-radius: 4px; flex-shrink: 0;
+  transition: opacity var(--ease), color var(--ease);
+}
+.pl-sidebar-item:hover .pl-del { opacity: 1; }
+.pl-sidebar-item .pl-del:hover { color: #ff5555; }
 
 /* ── Main ── */
 .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
@@ -270,6 +298,21 @@ body {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .tr-dur { font-size: 0.8rem; color: var(--sub); text-align: right; }
+.tr-dur-cell {
+  display: flex; align-items: center; justify-content: flex-end; gap: 0.5rem;
+}
+
+/* context (⋯) button on track rows */
+.ctx-btn {
+  background: none; border: none;
+  color: var(--muted); cursor: pointer;
+  font-size: 1rem; padding: 0.15rem 0.35rem;
+  border-radius: 4px; opacity: 0;
+  transition: opacity var(--ease), color var(--ease);
+  flex-shrink: 0;
+}
+.track-row:hover .ctx-btn { opacity: 1; }
+.ctx-btn:hover { color: var(--text); background: rgba(255,255,255,0.08); }
 
 /* equalizer bars */
 .eq { display: flex; align-items: flex-end; gap: 2px; height: 18px; }
@@ -604,6 +647,90 @@ body {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   padding-right: 0.5rem;
 }
+
+/* ── Context menu ── */
+.ctx-overlay { position: fixed; inset: 0; z-index: 499; display: none; }
+.ctx-menu {
+  position: fixed;
+  background: var(--surface2);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+  z-index: 500; min-width: 190px;
+  padding: 0.35rem 0;
+  display: none;
+}
+.ctx-section {
+  padding: 0.3rem 1rem 0.15rem;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted);
+}
+.ctx-item {
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem; cursor: pointer;
+  color: var(--sub);
+  transition: background var(--ease), color var(--ease);
+  white-space: nowrap;
+}
+.ctx-item:hover { background: rgba(255,255,255,0.07); color: var(--text); }
+.ctx-divider { height: 1px; background: #333; margin: 0.3rem 0; }
+
+/* ── Playlist view ── */
+.pl-header {
+  display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem;
+}
+.pl-cover {
+  width: 80px; height: 80px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; flex-shrink: 0;
+}
+.pl-info-block { flex: 1; overflow: hidden; }
+.pl-name-title {
+  font-size: 1.6rem; font-weight: 800; cursor: pointer;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: color var(--ease);
+}
+.pl-name-title:hover { color: var(--accent); }
+.pl-count { font-size: 0.8rem; color: var(--sub); margin-top: 0.2rem; }
+
+/* playlist track row — last col holds reorder+remove buttons */
+.pl-track-row {
+  display: grid;
+  grid-template-columns: 2.5rem 2.5rem 1fr 4.5rem auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.pl-track-row:hover { background: rgba(255,255,255,0.07); }
+.pl-track-row.playing { background: rgba(29,185,84,0.08); }
+.pl-track-row.playing .tr-name { color: var(--accent); }
+.tr-actions {
+  display: flex; align-items: center; gap: 2px;
+  opacity: 0; transition: opacity var(--ease);
+}
+.pl-track-row:hover .tr-actions { opacity: 1; }
+.reorder-btn {
+  background: none; border: none;
+  color: var(--muted); cursor: pointer;
+  font-size: 0.9rem; padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  transition: color var(--ease), background var(--ease);
+  line-height: 1;
+}
+.reorder-btn:hover:not(:disabled) { color: var(--text); background: rgba(255,255,255,0.08); }
+.reorder-btn:disabled { opacity: 0.2; cursor: default; }
+.remove-btn {
+  background: none; border: none;
+  color: var(--muted); cursor: pointer;
+  font-size: 0.85rem; padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  transition: color var(--ease), background var(--ease);
+  line-height: 1;
+}
+.remove-btn:hover { color: #ff5555; background: rgba(255,85,85,0.1); }
 </style>
 </head>
 <body>
@@ -630,6 +757,15 @@ body {
         <span class="ni">⚙</span> Settings
       </div>
     </div>
+
+    <div class="sidebar-sep" style="margin-top:.75rem"></div>
+    <div class="sidebar-section">Your Playlists</div>
+    <div class="nav" style="padding-bottom:0">
+      <div class="nav-item" onclick="createPlaylist()" style="color:var(--sub)">
+        <span class="ni" style="font-size:1.3rem;line-height:1;color:var(--accent)">+</span> New Playlist
+      </div>
+    </div>
+    <div id="sidebar-playlists" style="padding:0 0.5rem"></div>
   </nav>
 
   <!-- Main -->
@@ -689,6 +825,10 @@ body {
   </div>
 </div>
 
+<!-- Context menu -->
+<div class="ctx-overlay" id="ctx-overlay" onclick="closeCtx()"></div>
+<div class="ctx-menu" id="ctx-menu"></div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
@@ -700,6 +840,8 @@ body {
 // ══════════════════════════════════════════
 const S = {
   files: [], audio: [], video: [],
+  playlists: [],
+  activePlaylistId: null,
   current: null,
   queue: [], qi: -1,
   playing: false, shuffle: false, repeat: 'none',
@@ -717,6 +859,8 @@ const vid = document.getElementById('vid-player');
 // ══════════════════════════════════════════
 async function init() {
   restorePrefs();
+  loadPlaylists();
+  renderSidebarPlaylists();
   await loadConfig();
   if (S.dirs.length) await scan(S.dirs);
   else render();
@@ -791,7 +935,6 @@ async function fetchMeta(f) {
   try {
     const d = await api(`/api/metadata/${f.id}`);
     S.meta[f.id] = d;
-    // Update player UI if this is the current track
     if (S.current?.id === f.id) syncPlayerUI(S.current);
   } catch(_) {
     S.meta[f.id] = {};
@@ -804,7 +947,17 @@ async function fetchMeta(f) {
 // ══════════════════════════════════════════
 function navigate(v) {
   S.view = v;
+  S.activePlaylistId = null;
   document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === v));
+  renderSidebarPlaylists();
+  render();
+}
+
+function navigatePlaylist(id) {
+  S.activePlaylistId = id;
+  S.view = 'playlist';
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  renderSidebarPlaylists();
   render();
 }
 
@@ -824,6 +977,7 @@ function render() {
   if (S.view === 'music')    el.innerHTML = renderMusic();
   if (S.view === 'videos')   el.innerHTML = renderVideos();
   if (S.view === 'settings') el.innerHTML = renderSettings();
+  if (S.view === 'playlist') el.innerHTML = renderPlaylistView();
 }
 
 // ── Home ──────────────────────────────────
@@ -965,7 +1119,10 @@ function trackList(files) {
             <div class="tr-artist">${esc(artist)}</div>
           </div>
           <div class="tr-album">${esc(album)}</div>
-          <div class="tr-dur">${dur}</div>
+          <div class="tr-dur-cell">
+            <span class="tr-dur">${dur}</span>
+            <button class="ctx-btn" onclick="event.stopPropagation();showCtx(event,'${f.id}')" title="Options">⋯</button>
+          </div>
         </div>`;
     }).join('')}
     </div>`;
@@ -1073,6 +1230,217 @@ function removeDir(i) {
   S.dirs.splice(i, 1);
   saveConfig();
   render();
+}
+
+// ── Playlist view ──────────────────────────
+function renderPlaylistView() {
+  const pl = S.playlists.find(p => p.id === S.activePlaylistId);
+  if (!pl) return `<div class="empty"><div class="ei">♫</div><h3>Playlist not found</h3></div>`;
+
+  const tracks = pl.tracks.map(id => S.files.find(f => f.id === id)).filter(Boolean);
+
+  return `
+    <div class="pl-header">
+      <div class="pl-cover" style="background:${grad(pl.id)}">♫</div>
+      <div class="pl-info-block">
+        <div class="pl-name-title" onclick="renamePlaylist('${pl.id}')" title="Click to rename">${esc(pl.name)}</div>
+        <div class="pl-count">${tracks.length} song${tracks.length !== 1 ? 's' : ''}</div>
+      </div>
+      ${tracks.length ? `<button class="btn" onclick="playPlaylist('${pl.id}')">▶ Play All</button>` : ''}
+    </div>
+
+    ${!tracks.length ? `
+      <div class="empty" style="padding:3rem 2rem">
+        <div class="ei">🎵</div>
+        <h3>This playlist is empty</h3>
+        <p>Go to Music, hover a song, and click ⋯ to add it here.</p>
+        <button class="btn" onclick="navigate('music')">Browse Music</button>
+      </div>` : `
+      <div class="track-header" style="grid-template-columns:2.5rem 2.5rem 1fr 4.5rem auto">
+        <div>#</div><div></div><div>Title</div><div>⏱</div><div></div>
+      </div>
+      <div>
+      ${tracks.map((f, i) => {
+        const m = S.meta[f.id] || {};
+        const title  = m.title  || noExt(f.name);
+        const artist = m.artist || 'Unknown Artist';
+        const dur    = m.duration ? fmtTime(m.duration) : '–';
+        const isCur  = S.current?.id === f.id;
+        return `
+          <div class="pl-track-row${isCur?' playing':''}" onclick="playPlaylistTrack('${pl.id}',${i})">
+            <div class="tr-num">
+              <span class="num">${i+1}</span>
+              <div class="eq"><span></span><span></span><span></span></div>
+            </div>
+            <div class="tr-art" style="background:${grad(f.id)}">
+              ${m.hasArtwork ? `<img src="/api/artwork/${f.id}" onerror="this.remove()">` : '♪'}
+            </div>
+            <div class="tr-meta">
+              <div class="tr-name">${esc(title)}</div>
+              <div class="tr-artist">${esc(artist)}</div>
+            </div>
+            <div class="tr-dur">${dur}</div>
+            <div class="tr-actions" onclick="event.stopPropagation()">
+              <button class="reorder-btn" onclick="moveInPlaylist('${pl.id}',${i},-1)"
+                      ${i===0?'disabled':''} title="Move up">↑</button>
+              <button class="reorder-btn" onclick="moveInPlaylist('${pl.id}',${i},1)"
+                      ${i===tracks.length-1?'disabled':''} title="Move down">↓</button>
+              <button class="remove-btn" onclick="removeFromPlaylist('${pl.id}','${f.id}')"
+                      title="Remove from playlist">✕</button>
+            </div>
+          </div>`;
+      }).join('')}
+      </div>
+    `}`;
+}
+
+// ══════════════════════════════════════════
+//  Playlist management
+// ══════════════════════════════════════════
+function loadPlaylists() {
+  try { S.playlists = JSON.parse(localStorage.getItem('mb_playlists') || '[]'); } catch(_) { S.playlists = []; }
+}
+
+function savePlaylists() {
+  localStorage.setItem('mb_playlists', JSON.stringify(S.playlists));
+}
+
+function renderSidebarPlaylists() {
+  const el = document.getElementById('sidebar-playlists');
+  if (!el) return;
+  el.innerHTML = S.playlists.map(pl => `
+    <div class="pl-sidebar-item ${S.activePlaylistId===pl.id&&S.view==='playlist'?'active':''}"
+         onclick="navigatePlaylist('${pl.id}')">
+      <span class="pl-name">♫ ${esc(pl.name)}</span>
+      <button class="pl-del" onclick="deletePlaylist('${pl.id}',event)" title="Delete playlist">✕</button>
+    </div>`).join('');
+}
+
+function createPlaylist(prefillFileId) {
+  const name = prompt('Playlist name:');
+  if (!name?.trim()) return;
+  const pl = { id: Date.now().toString(), name: name.trim(), tracks: [] };
+  if (prefillFileId) pl.tracks.push(prefillFileId);
+  S.playlists.push(pl);
+  savePlaylists();
+  renderSidebarPlaylists();
+  if (prefillFileId) toast(`Added to "${pl.name}"`);
+  else navigatePlaylist(pl.id);
+}
+
+function deletePlaylist(id, e) {
+  e.stopPropagation();
+  const pl = S.playlists.find(p => p.id === id);
+  if (!pl) return;
+  if (!confirm(`Delete playlist "${pl.name}"?`)) return;
+  S.playlists = S.playlists.filter(p => p.id !== id);
+  savePlaylists();
+  if (S.activePlaylistId === id) { S.activePlaylistId = null; navigate('music'); }
+  else renderSidebarPlaylists();
+}
+
+function renamePlaylist(id) {
+  const pl = S.playlists.find(p => p.id === id);
+  if (!pl) return;
+  const name = prompt('Rename playlist:', pl.name);
+  if (!name?.trim() || name.trim() === pl.name) return;
+  pl.name = name.trim();
+  savePlaylists();
+  renderSidebarPlaylists();
+  render();
+}
+
+function addToPlaylist(plId, fileId) {
+  const pl = S.playlists.find(p => p.id === plId);
+  if (!pl) return;
+  if (pl.tracks.includes(fileId)) { toast('Already in this playlist'); return; }
+  pl.tracks.push(fileId);
+  savePlaylists();
+  if (S.activePlaylistId === plId) render();
+  toast(`Added to "${pl.name}"`);
+}
+
+function removeFromPlaylist(plId, fileId) {
+  const pl = S.playlists.find(p => p.id === plId);
+  if (!pl) return;
+  pl.tracks = pl.tracks.filter(id => id !== fileId);
+  savePlaylists();
+  render();
+}
+
+function moveInPlaylist(plId, idx, dir) {
+  const pl = S.playlists.find(p => p.id === plId);
+  if (!pl) return;
+  const ni = idx + dir;
+  if (ni < 0 || ni >= pl.tracks.length) return;
+  [pl.tracks[idx], pl.tracks[ni]] = [pl.tracks[ni], pl.tracks[idx]];
+  savePlaylists();
+  render();
+}
+
+function playPlaylist(plId) {
+  const pl = S.playlists.find(p => p.id === plId);
+  if (!pl || !pl.tracks.length) return;
+  const tracks = pl.tracks.map(id => S.files.find(f => f.id === id)).filter(Boolean);
+  if (!tracks.length) return;
+  S.queue = tracks;
+  S.qi = 0;
+  const f = tracks[0];
+  S.current = f;
+  aud.src = `/stream/${f.id}`;
+  aud.play();
+  S.playing = true;
+  syncPlayerUI(f);
+  render();
+  if (!S.meta[f.id]) fetchMeta(f);
+}
+
+function playPlaylistTrack(plId, idx) {
+  const pl = S.playlists.find(p => p.id === plId);
+  if (!pl) return;
+  const tracks = pl.tracks.map(id => S.files.find(f => f.id === id)).filter(Boolean);
+  const f = tracks[idx];
+  if (!f) return;
+  S.queue = tracks;
+  S.qi = idx;
+  S.current = f;
+  aud.src = `/stream/${f.id}`;
+  aud.play();
+  S.playing = true;
+  syncPlayerUI(f);
+  render();
+  if (!S.meta[f.id]) fetchMeta(f);
+}
+
+// ══════════════════════════════════════════
+//  Context menu
+// ══════════════════════════════════════════
+function showCtx(e, fileId) {
+  const menu = document.getElementById('ctx-menu');
+  const overlay = document.getElementById('ctx-overlay');
+
+  const plItems = S.playlists.length
+    ? S.playlists.map(pl => `<div class="ctx-item" onclick="closeCtx();addToPlaylist('${pl.id}','${fileId}')">♫ ${esc(pl.name)}</div>`).join('')
+    : `<div class="ctx-item" style="color:var(--muted);cursor:default;font-size:.8rem">No playlists yet</div>`;
+
+  menu.innerHTML = `
+    <div class="ctx-section">Add to playlist</div>
+    ${plItems}
+    <div class="ctx-divider"></div>
+    <div class="ctx-item" onclick="closeCtx();createPlaylist('${fileId}')">+ New playlist…</div>
+  `;
+
+  const x = Math.min(e.clientX, window.innerWidth - 210);
+  const y = Math.min(e.clientY, window.innerHeight - menu.scrollHeight - 20);
+  menu.style.left = x + 'px';
+  menu.style.top  = y + 'px';
+  menu.style.display = 'block';
+  overlay.style.display = 'block';
+}
+
+function closeCtx() {
+  document.getElementById('ctx-menu').style.display = 'none';
+  document.getElementById('ctx-overlay').style.display = 'none';
 }
 
 // ══════════════════════════════════════════
@@ -1234,7 +1602,7 @@ document.addEventListener('keydown', e => {
   if (e.code === 'KeyS')      toggleShuffle();
   if (e.code === 'KeyR')      toggleRepeat();
   if (e.code === 'KeyM')      toggleMute();
-  if (e.code === 'Escape')    closeVideo();
+  if (e.code === 'Escape')    { closeVideo(); closeCtx(); }
   if (e.code === 'ArrowRight' && e.altKey)  nextTrack();
   if (e.code === 'ArrowLeft'  && e.altKey)  prevTrack();
   if (e.code === 'ArrowRight' && !e.altKey && aud.duration) aud.currentTime = Math.min(aud.duration, aud.currentTime+10);
