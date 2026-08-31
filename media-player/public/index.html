@@ -1950,11 +1950,11 @@ function grad(s) {
     bg:     gl.getUniformLocation(prog, 'u_bg'),
   };
 
-  // Mediabox palette: indigo, violet, green, black
-  const COLORS = ['#4338CA', '#7C3AED', '#22C55E', '#000000'];
+  // Bright palette so colors are visible against the dark bg
+  const COLORS = ['#818CF8', '#A78BFA', '#34D399', '#6366F1'];
   const BG     = '#0F0F23';
-  const SPEED  = 1.8;
-  const GRAIN  = 0.25;
+  const SPEED  = 1.5;
+  const GRAIN  = 0.3;
 
   function hex3(h) {
     h = h.replace('#','');
@@ -1967,6 +1967,7 @@ function grad(s) {
     canvas.height = container.clientHeight * dpr;
     gl.viewport(0, 0, canvas.width, canvas.height);
   }
+  resize(); // set canvas size before first frame
   const ro = new ResizeObserver(resize);
   ro.observe(container);
 
@@ -1975,6 +1976,7 @@ function grad(s) {
 
   let raf;
   function render(t) {
+    if (!canvas.width || !canvas.height) resize();
     gl.uniform2f(locs.res, canvas.width, canvas.height);
     gl.uniform1f(locs.time, t * 0.001 * SPEED);
     gl.uniform1f(locs.grain, GRAIN);
@@ -1983,11 +1985,11 @@ function grad(s) {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     raf = requestAnimationFrame(render);
   }
-  raf = requestAnimationFrame(render);
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    cancelAnimationFrame(raf);
     render(0);
+  } else {
+    raf = requestAnimationFrame(render);
   }
 })();
 
