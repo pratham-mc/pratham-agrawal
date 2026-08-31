@@ -163,16 +163,30 @@ app.get('/stream/:id', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`
+// Export for Electron (starts on a random free port when port=0)
+export function startServer(port = PORT) {
+  return new Promise((resolve, reject) => {
+    const srv = app.listen(port, '127.0.0.1', () => {
+      const { port: actualPort } = srv.address();
+      resolve(actualPort);
+    });
+    srv.on('error', reject);
+  });
+}
+
+// Auto-start when run directly via `node server.js`
+if (!process.versions.electron) {
+  startServer(PORT).then(p => {
+    console.log(`
 ╔══════════════════════════════════════════╗
 ║         🎵  Mediabox is running!         ║
 ╠══════════════════════════════════════════╣
 ║  Open in browser:                        ║
-║  → http://localhost:${PORT}                  ║
+║  → http://localhost:${p}${' '.repeat(Math.max(0, 5 - String(p).length))}               ║
 ║                                          ║
 ║  First time? Go to Settings and add     ║
 ║  your Music / Videos folders.            ║
 ╚══════════════════════════════════════════╝
 `);
-});
+  });
+}

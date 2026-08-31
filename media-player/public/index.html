@@ -1417,6 +1417,7 @@ function renderSettings() {
       <div class="dir-row">
         <input class="dir-input" id="dir-in" type="text" placeholder="C:\\Users\\Admin\\Music"
                onkeydown="if(event.key==='Enter')addDir()">
+        ${window.electron ? `<button class="btn btn-secondary" onclick="browseFolder()" title="Browse for folder">Browse…</button>` : ''}
         <button class="btn" onclick="addDir()">Add</button>
       </div>
 
@@ -1462,6 +1463,15 @@ function addDir() {
   S.dirs.push(v);
   saveConfig();
   render();
+}
+
+async function browseFolder() {
+  if (!window.electron) return;
+  const paths = await window.electron.openFolder();
+  for (const p of paths) {
+    if (!S.dirs.includes(p)) S.dirs.push(p);
+  }
+  if (paths.length) { saveConfig(); render(); rescan(); }
 }
 
 function removeDir(i) {
@@ -1847,6 +1857,17 @@ document.addEventListener('keydown', e => {
   if (e.code === 'ArrowRight' && !e.altKey && aud.duration) aud.currentTime = Math.min(aud.duration, aud.currentTime+10);
   if (e.code === 'ArrowLeft'  && !e.altKey && aud.duration) aud.currentTime = Math.max(0, aud.currentTime-10);
 });
+
+// ══════════════════════════════════════════
+//  Electron global media key bridge
+// ══════════════════════════════════════════
+if (window.electron?.onMediaKey) {
+  window.electron.onMediaKey(key => {
+    if (key === 'playpause') togglePlay();
+    else if (key === 'next') nextTrack();
+    else if (key === 'prev') prevTrack();
+  });
+}
 
 // ══════════════════════════════════════════
 //  Utilities
