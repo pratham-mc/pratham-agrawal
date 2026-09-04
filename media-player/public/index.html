@@ -216,6 +216,7 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #5a5a7a; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
 
 /* ── Section headings ── */
 .sec-hd {
@@ -857,6 +858,7 @@ kbd {
   color: var(--text);
 }
 </style>
+<link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
 </head>
 <body>
 
@@ -1995,6 +1997,21 @@ function grad(s) {
 
 // ══════════════════════════════════════════
 init();
+</script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>
+  // Attach Lenis smooth scroll to the main content area
+  const contentEl = document.querySelector('.content');
+  if (contentEl) {
+    const lenis = new Lenis({
+      wrapper: contentEl,
+      content: contentEl.firstElementChild || contentEl,
+      lerp: 0.1,
+      smoothWheel: true,
+      allowNestedScroll: true,
+      autoRaf: true,
+    });
+  }
 </script>
 </body>
 </html>
