@@ -26,7 +26,7 @@
   --border:   rgba(255,255,255,0.08);
   --border2:  rgba(255,255,255,0.14);
   --glass-blur: blur(16px);
-  --sidebar:  300px;
+  --sidebar:  240px;
   --player-h: 96px;
   --radius:   10px;
   --ease:     0.2s ease;
@@ -63,7 +63,6 @@ body {
 .layout { display: flex; flex: 1; overflow: hidden; position: relative; z-index: 1; }
 
 /* ── Sidebar ── */
-/* ── Orb Panel ── */
 .sidebar {
   width: var(--sidebar);
   background: rgba(8,8,18,0.85);
@@ -71,166 +70,114 @@ body {
   border-right: 1px solid rgba(255,255,255,0.04);
   display: flex;
   flex-direction: column;
-  align-items: center;
   flex-shrink: 0;
   overflow: hidden;
   position: relative;
   user-select: none;
+  padding: 1.5rem 0.9rem;
 }
 .orb-brand {
   font-family: var(--font-heading);
-  font-size: 0.78rem;
-  letter-spacing: 0.3em;
-  color: rgba(255,255,255,0.25);
-  text-transform: uppercase;
-  padding: 1.1rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  background: linear-gradient(135deg, #c4b5fd 0%, #818CF8 50%, #34D399 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 0 0.45rem 1.75rem;
 }
-/* 3D scene */
-.orb-scene {
-  width: 270px; height: 270px;
-  perspective: 520px;
-  perspective-origin: 50% 50%;
-  cursor: grab;
-  position: relative;
-  flex-shrink: 0;
-  margin: 0.25rem 0;
-}
-.orb-scene:active { cursor: grabbing; }
-.orb-system {
-  width: 100%; height: 100%;
-  position: relative;
-}
-/* Glowing orb core */
-.orb-core {
-  position: absolute;
-  width: 66px; height: 66px;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 33% 30%, #c4b5fd 0%, #818CF8 28%, #4338CA 58%, #1e1b4b 100%);
-  box-shadow:
-    0 0 14px rgba(129,140,248,0.9),
-    0 0 40px rgba(99,102,241,0.55),
-    0 0 90px rgba(99,102,241,0.22),
-    inset 0 0 18px rgba(255,255,255,0.12);
-  cursor: pointer;
-  z-index: 20;
-  transition: box-shadow 0.3s, transform 0.15s;
-  animation: orbPulse 3.5s ease-in-out infinite;
-}
-.orb-core::before {
-  content: '';
-  position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(circle at 30% 24%, rgba(255,255,255,0.38) 0%, transparent 48%);
-}
-.orb-core::after {
-  content: '';
-  position: absolute;
-  inset: -18px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(129,140,248,0.18) 0%, transparent 70%);
-  animation: coreHalo 3.5s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes orbPulse {
-  0%,100% { box-shadow: 0 0 14px rgba(129,140,248,0.9),0 0 40px rgba(99,102,241,0.55),0 0 90px rgba(99,102,241,0.22); }
-  50%      { box-shadow: 0 0 22px rgba(167,139,250,1),  0 0 60px rgba(139,92,246,0.65), 0 0 130px rgba(139,92,246,0.3); }
-}
-@keyframes coreHalo {
-  0%,100% { transform: scale(1); opacity: 0.6; }
-  50%      { transform: scale(1.18); opacity: 1; }
-}
-.orb-core.playing {
-  background: radial-gradient(circle at 33% 30%, #6ee7b7 0%, #34D399 28%, #059669 58%, #064e3b 100%);
-  box-shadow: 0 0 18px rgba(52,211,153,0.9),0 0 50px rgba(52,211,153,0.5),0 0 100px rgba(52,211,153,0.2);
-  animation: orbPulseGreen 3.5s ease-in-out infinite;
-}
-@keyframes orbPulseGreen {
-  0%,100% { box-shadow: 0 0 18px rgba(52,211,153,0.9),0 0 50px rgba(52,211,153,0.5),0 0 100px rgba(52,211,153,0.2); }
-  50%      { box-shadow: 0 0 28px rgba(110,231,183,1), 0 0 70px rgba(52,211,153,0.65),0 0 140px rgba(52,211,153,0.3); }
-}
-/* Orbit ring visuals */
-.orb-ring {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(129,140,248,0.15);
-  top: 50%; left: 50%;
-  pointer-events: none;
-  box-shadow: 0 0 6px rgba(129,140,248,0.06);
-}
-/* Track nodes */
-.track-node {
-  position: absolute;
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  top: 50%; left: 50%;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.58rem; font-weight: 700;
-  color: rgba(255,255,255,0.9);
-  border: 1.5px solid rgba(255,255,255,0.12);
-  overflow: visible;
-  transition: border-color 0.2s;
-}
-.track-node.node-playing { border-color: #34D399; box-shadow: 0 0 10px rgba(52,211,153,0.5); }
-.track-node-tooltip {
-  position: absolute;
-  bottom: calc(100% + 6px); left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.88);
-  backdrop-filter: blur(8px);
-  color: white; font-size: 0.6rem;
-  white-space: nowrap; max-width: 140px;
-  overflow: hidden; text-overflow: ellipsis;
-  padding: 0.2rem 0.45rem;
-  border-radius: 5px; pointer-events: none;
-  opacity: 0; transition: opacity 0.15s;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-.track-node:hover .track-node-tooltip { opacity: 1; }
-/* Orb icon nav */
-.orb-nav {
-  display: flex; gap: 0.45rem;
-  padding: 0.4rem 0 0.5rem;
-}
-.orb-nav-btn {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.06);
+.side-nav { display: flex; flex-direction: column; gap: 0.35rem; }
+.side-nav-btn {
+  display: flex; align-items: center; gap: 0.8rem;
+  width: 100%;
+  padding: 0.68rem 0.85rem;
+  border-radius: var(--radius);
+  background: none; border: 1px solid transparent;
   color: var(--sub); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; font-weight: 500;
+  font-family: inherit; text-align: left;
   transition: all var(--ease);
 }
-.orb-nav-btn:hover { background: rgba(255,255,255,0.09); color: var(--text); }
-.orb-nav-btn.active { background: rgba(67,56,202,0.28); border-color: rgba(129,140,248,0.4); color: var(--text); }
-.orb-nav-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-/* Playlist section inside orb panel */
-.orb-sep { height: 1px; background: var(--border); margin: 0 0.8rem 0.3rem; width: calc(100% - 1.6rem); }
-.orb-section-label {
-  padding: 0.3rem 1rem 0.15rem; width: 100%;
-  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--muted);
+.side-nav-btn:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+.side-nav-btn.active {
+  background: rgba(67,56,202,0.22);
+  border-color: rgba(129,140,248,0.35);
+  color: var(--text);
 }
-.orb-playlists { width: 100%; flex: 1; overflow-y: auto; padding: 0 0.5rem 1rem; scrollbar-width: none; }
-.orb-playlists::-webkit-scrollbar { display: none; }
-.pl-sidebar-item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0.45rem 0.75rem;
-  border-radius: var(--radius);
-  cursor: pointer; color: var(--sub);
-  font-size: 0.78rem; font-weight: 500;
-  transition: color var(--ease), background var(--ease); gap: 0.4rem;
+.side-nav-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+/* ── Big Hero Orb ── */
+.hero-orb-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 1.5rem 0 2.75rem;
+  perspective: 900px;
+  user-select: none;
 }
-.pl-sidebar-item:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-.pl-sidebar-item.active { color: var(--text); background: rgba(67,56,202,0.2); }
-.pl-sidebar-item .pl-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
-.pl-sidebar-item .pl-del {
-  opacity: 0; background: none; border: none;
-  color: var(--muted); cursor: pointer; font-size: 0.72rem;
-  padding: 0.1rem 0.3rem; border-radius: 4px; flex-shrink: 0;
-  transition: opacity var(--ease), color var(--ease);
+.hero-orb-float {
+  animation: heroFloat 6s ease-in-out infinite;
+  transform-style: preserve-3d;
 }
-.pl-sidebar-item:hover .pl-del { opacity: 1; }
-.pl-sidebar-item .pl-del:hover { color: #ef4444; }
+.hero-orb {
+  width: 208px; height: 208px;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  background: radial-gradient(circle at 32% 27%, #ddd6fe 0%, #a5b4fc 22%, #818CF8 42%, #6366F1 62%, #4338CA 82%, #1e1b4b 100%);
+  box-shadow:
+    0 0 45px rgba(129,140,248,0.55),
+    0 0 95px rgba(99,102,241,0.35),
+    0 0 170px rgba(99,102,241,0.18),
+    inset 0 0 55px rgba(255,255,255,0.12);
+  transition: transform 0.16s ease-out, box-shadow 0.4s;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.hero-orb::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 30% 22%, rgba(255,255,255,0.5) 0%, transparent 42%);
+  pointer-events: none;
+}
+.hero-orb::after {
+  content: '';
+  position: absolute; inset: -32px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(129,140,248,0.22) 0%, transparent 68%);
+  animation: heroHalo 6s ease-in-out infinite;
+  pointer-events: none;
+}
+.hero-orb:hover {
+  box-shadow:
+    0 0 65px rgba(167,139,250,0.9),
+    0 0 140px rgba(139,92,246,0.5),
+    0 0 230px rgba(139,92,246,0.28),
+    inset 0 0 60px rgba(255,255,255,0.16);
+}
+.hero-orb.playing {
+  background: radial-gradient(circle at 32% 27%, #a7f3d0 0%, #6ee7b7 22%, #34D399 42%, #10b981 62%, #059669 82%, #064e3b 100%);
+  box-shadow:
+    0 0 50px rgba(52,211,153,0.6),
+    0 0 105px rgba(52,211,153,0.38),
+    0 0 180px rgba(52,211,153,0.2),
+    inset 0 0 55px rgba(255,255,255,0.12);
+}
+@keyframes heroFloat {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-14px); }
+}
+@keyframes heroHalo {
+  0%,100% { transform: scale(1); opacity: 0.5; }
+  50%     { transform: scale(1.14); opacity: 0.9; }
+}
+.hero-orb-hint {
+  margin-top: 1.9rem;
+  font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted);
+  max-width: 60%; text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hero-orb.playing + .hero-orb-hint,
+.hero-orb-wrap:has(.hero-orb.playing) .hero-orb-hint { color: var(--accent); }
 
 /* ── Main ── */
 .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
@@ -957,49 +904,21 @@ kbd {
 </div>
 
 <div class="layout">
-  <!-- Orb Sidebar -->
+  <!-- Sidebar -->
   <nav class="sidebar">
-    <div class="orb-brand">Mediabox</div>
+    <div class="orb-brand">Pratham's<br>Playlist</div>
 
-    <!-- 3D Orb Scene -->
-    <div class="orb-scene" id="orb-scene">
-      <div class="orb-system" id="orb-system">
-        <!-- Orbit ring visuals (purely decorative, positioned by JS) -->
-        <div class="orb-ring" id="orb-ring-0"></div>
-        <div class="orb-ring" id="orb-ring-1"></div>
-        <div class="orb-ring" id="orb-ring-2"></div>
-        <!-- Central orb -->
-        <div class="orb-core" id="orb-core" onclick="togglePlay()"></div>
-        <!-- Orbit nodes injected by JS -->
-        <div id="orbit-nodes"></div>
-      </div>
-    </div>
-
-    <!-- Icon nav buttons -->
-    <div class="orb-nav">
-      <button class="orb-nav-btn active" data-view="home" onclick="navigate('home')" title="Home" tabindex="0">
+    <div class="side-nav">
+      <button class="side-nav-btn active" data-view="home" onclick="navigate('home')" tabindex="0">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Library
       </button>
-      <button class="orb-nav-btn" data-view="music" onclick="navigate('music')" title="Music" tabindex="0">
-        <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-      </button>
-      <button class="orb-nav-btn" data-view="videos" onclick="navigate('videos')" title="Videos" tabindex="0">
-        <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-      </button>
-      <button class="orb-nav-btn" data-view="settings" onclick="navigate('settings')" title="Settings" tabindex="0">
+      <button class="side-nav-btn" data-view="settings" onclick="navigate('settings')" tabindex="0">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+        Settings
       </button>
     </div>
-
-    <!-- Playlists -->
-    <div class="orb-sep"></div>
-    <div class="orb-section-label">Playlists</div>
-    <div class="orb-nav" style="padding:0.15rem 0 0.3rem">
-      <button class="orb-nav-btn" onclick="createPlaylist()" title="New Playlist" tabindex="0">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-      </button>
-    </div>
-    <div class="orb-playlists" id="sidebar-playlists"></div>
+    <div id="sidebar-playlists" hidden></div>
   </nav>
 
   <!-- Main -->
@@ -1167,7 +1086,6 @@ async function scan(dirs) {
     S.audio = S.files.filter(f => f.type === 'audio');
     S.video = S.files.filter(f => f.type === 'video');
     render();
-    if (typeof window.rebuildOrbNodes === 'function') window.rebuildOrbNodes();
     toast(`Found ${S.audio.length} songs · ${S.video.length} videos`);
     batchMeta(S.audio);
   } catch(_) {
@@ -1213,16 +1131,14 @@ async function fetchMeta(f) {
 function navigate(v) {
   S.view = v;
   S.activePlaylistId = null;
-  document.querySelectorAll('.orb-nav-btn[data-view]').forEach(n => n.classList.toggle('active', n.dataset.view === v));
-  renderSidebarPlaylists();
+  document.querySelectorAll('.side-nav-btn[data-view]').forEach(n => n.classList.toggle('active', n.dataset.view === v));
   render();
 }
 
 function navigatePlaylist(id) {
   S.activePlaylistId = id;
   S.view = 'playlist';
-  document.querySelectorAll('.orb-nav-btn[data-view]').forEach(n => n.classList.remove('active'));
-  renderSidebarPlaylists();
+  document.querySelectorAll('.side-nav-btn[data-view]').forEach(n => n.classList.remove('active'));
   render();
 }
 
@@ -1245,9 +1161,26 @@ function render() {
   if (S.view === 'playlist') el.innerHTML = renderPlaylistView();
 }
 
-// ── Home ──────────────────────────────────
+// ── Home (merged Library: orb + music + videos) ──
+function heroOrb() {
+  const label = S.current
+    ? esc((S.meta[S.current.id] || {}).title || noExt(S.current.name))
+    : "Pratham's Library";
+  return `
+    <div class="hero-orb-wrap">
+      <div class="hero-orb-float">
+        <div class="hero-orb${S.playing ? ' playing' : ''}" id="hero-orb"
+             onclick="togglePlay()" onmousemove="heroOrbMove(event)" onmouseleave="heroOrbLeave()"
+             title="Play / Pause"></div>
+      </div>
+      <div class="hero-orb-hint">${label}</div>
+    </div>`;
+}
+
 function renderHome() {
-  if (!S.files.length) return `
+  const orb = heroOrb();
+
+  if (!S.files.length) return orb + `
     <div class="empty">
       <div class="ei">${SVG.music}</div>
       <h3>Your library is empty</h3>
@@ -1255,48 +1188,41 @@ function renderHome() {
       <button class="btn" onclick="navigate('settings')">Add Folders</button>
     </div>`;
 
-  const hr = new Date().getHours();
-  const tod = hr < 12 ? 'Morning' : hr < 18 ? 'Afternoon' : 'Evening';
-  const qa = S.audio.slice(0, 6);
-  const qv = S.video.slice(0, 4);
+  const songs = filtered(S.audio);
+  const vids  = filtered(S.video);
 
-  return `
-    <div style="font-family:var(--font-heading);font-size:1.5rem;margin-bottom:1.6rem;letter-spacing:.01em">
-      Good ${tod} 👋
-    </div>
-
-    ${qa.length ? `
-    <div class="quickplay-grid" style="margin-bottom:2rem">
-      ${qa.map(f => {
-        const m = S.meta[f.id] || {};
-        const title = m.title || noExt(f.name);
-        return `<div class="qp-card" onclick="playFile('${f.id}')" tabindex="0">
-          <div class="qp-art" style="background:${grad(f.id)}">
-            ${m.hasArtwork ? `<img src="/api/artwork/${f.id}" onerror="this.remove()">` : SVG.music}
-          </div>
-          <div class="qp-name">${esc(title)}</div>
-        </div>`;
-      }).join('')}
-    </div>` : ''}
-
-    ${qa.length ? `
+  const songSec = songs.length ? `
     <div class="sec-hd">
-      <div class="sec-title sm">Music</div>
-      <div class="sec-all" onclick="navigate('music')">See all</div>
+      <div class="sec-title">Songs</div>
+      <div style="font-size:.78rem;color:var(--sub)">${songs.length} songs</div>
     </div>
-    <div class="music-grid" style="margin-bottom:2.5rem">
-      ${qa.map(f => musicCard(f)).join('')}
-    </div>` : ''}
+    ${trackList(songs)}` : '';
 
-    ${qv.length ? `
-    <div class="sec-hd">
-      <div class="sec-title sm">Videos</div>
-      <div class="sec-all" onclick="navigate('videos')">See all</div>
+  const vidSec = vids.length ? `
+    <div class="sec-hd" style="margin-top:2.5rem">
+      <div class="sec-title">Videos</div>
+      <div style="font-size:.78rem;color:var(--sub)">${vids.length} videos</div>
     </div>
-    <div class="video-grid">
-      ${qv.map(f => videoCard(f)).join('')}
-    </div>` : ''}
-  `;
+    <div class="video-grid">${vids.map(f => videoCard(f)).join('')}</div>` : '';
+
+  const nothing = (!songs.length && !vids.length)
+    ? '<div class="empty"><p>No results found.</p></div>' : '';
+
+  return orb + songSec + vidSec + nothing;
+}
+
+// Big orb parallax hover tilt
+function heroOrbMove(e) {
+  const el = document.getElementById('hero-orb');
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  const px = (e.clientX - r.left) / r.width - 0.5;
+  const py = (e.clientY - r.top) / r.height - 0.5;
+  el.style.transform = `scale(1.07) rotateY(${(px * 26).toFixed(2)}deg) rotateX(${(-py * 26).toFixed(2)}deg)`;
+}
+function heroOrbLeave() {
+  const el = document.getElementById('hero-orb');
+  if (el) el.style.transform = '';
 }
 
 // ── Music ─────────────────────────────────
@@ -1531,7 +1457,7 @@ function renderPlaylistView() {
         <div class="ei">${SVG.music}</div>
         <h3>This playlist is empty</h3>
         <p>Go to Music, hover a song, and click ⋯ to add it here.</p>
-        <button class="btn" onclick="navigate('music')">Browse Music</button>
+        <button class="btn" onclick="navigate('home')">Browse Library</button>
       </div>` : `
       <div class="track-header" style="grid-template-columns:2.5rem 2.5rem 1fr 4.5rem auto">
         <div>#</div><div></div><div>Title</div><div>⏱</div><div></div>
@@ -1617,7 +1543,7 @@ function deletePlaylist(id, e) {
   if (!pl || !confirm(`Delete playlist "${pl.name}"?`)) return;
   S.playlists = S.playlists.filter(p => p.id !== id);
   savePlaylists();
-  if (S.activePlaylistId === id) { S.activePlaylistId = null; navigate('music'); }
+  if (S.activePlaylistId === id) { S.activePlaylistId = null; navigate('home'); }
   else renderSidebarPlaylists();
 }
 
@@ -1827,9 +1753,10 @@ function syncPP() {
   document.getElementById('pp-icon').outerHTML = S.playing
     ? `<svg id="pp-icon" viewBox="0 0 24 24" fill="#0F0F23" stroke="none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`
     : `<svg id="pp-icon" viewBox="0 0 24 24" fill="#0F0F23" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
-  window._orbPlaying = !!S.playing;
-  const coreEl = document.getElementById('orb-core');
-  if (coreEl) coreEl.classList.toggle('playing', !!S.playing);
+  const orbEl = document.getElementById('hero-orb');
+  if (orbEl) orbEl.classList.toggle('playing', !!S.playing);
+  const hint = document.querySelector('.hero-orb-hint');
+  if (hint && S.current) hint.textContent = (S.meta[S.current.id] || {}).title || noExt(S.current.name);
 }
 
 function syncShuf() {
@@ -2093,178 +2020,6 @@ function grad(s) {
     raf = requestAnimationFrame(render);
   }
 })();
-
-// ══════════════════════════════════════════
-//  3D Orb Animation Engine
-// ══════════════════════════════════════════
-(function orbEngine() {
-  const ORBIT_RADII  = [62, 90, 112];
-  const RING_SIZES   = [124, 180, 224];
-  const NODE_COLORS  = [
-    ['#818CF8','#4338CA'], ['#A78BFA','#6D28D9'], ['#34D399','#059669'],
-    ['#F472B6','#BE185D'], ['#FB923C','#C2410C'], ['#60A5FA','#1D4ED8'],
-    ['#FBBF24','#B45309'], ['#E879F9','#A21CAF'],
-  ];
-  const MAX_NODES    = 18;
-  const ORBIT_SPEEDS = [0.38, -0.26, 0.19]; // deg/frame
-  let nodes          = [];
-  let angles         = [];
-  let rotX = -20, rotY = 0;   // global scene tilt
-  let dragActive = false, dragLast = { x: 0, y: 0 };
-  let frameId;
-
-  /* ── size orbit rings ── */
-  function sizeRings() {
-    RING_SIZES.forEach((sz, i) => {
-      const r = document.getElementById('orb-ring-' + i);
-      if (!r) return;
-      r.style.width  = sz + 'px';
-      r.style.height = sz + 'px';
-      r.style.marginLeft = (-sz / 2) + 'px';
-      r.style.marginTop  = (-sz / 2) + 'px';
-    });
-  }
-
-  /* ── project 3-D point → 2-D in scene coords ── */
-  function project(x3, y3, z3, cx, cy) {
-    const cosX = Math.cos(rotX * Math.PI / 180), sinX = Math.sin(rotX * Math.PI / 180);
-    const cosY = Math.cos(rotY * Math.PI / 180), sinY = Math.sin(rotY * Math.PI / 180);
-    // rotate around Y then X
-    const x1 = x3 * cosY - z3 * sinY;
-    const z1 = x3 * sinY + z3 * cosY;
-    const y1 = y3 * cosX - z1 * sinX;
-    const z2 = y3 * sinX + z1 * cosX;
-    const fov = 300;
-    const scale = fov / (fov + z2 + 80);
-    return { x: cx + x1 * scale, y: cy + y1 * scale, z: z2, scale };
-  }
-
-  /* ── rebuild node list when library changes ── */
-  window.rebuildOrbNodes = function() {
-    const audio = (typeof S !== 'undefined') ? (S.audio || []) : [];
-    const picks  = audio.slice(0, MAX_NODES);
-    nodes = picks.map((f, i) => ({
-      id: f.id, name: f.name.replace(/\.[^.]+$/, ''),
-      orbitIdx: i % ORBIT_RADII.length,
-      color: NODE_COLORS[i % NODE_COLORS.length],
-    }));
-    angles = nodes.map((_, i) => (360 / Math.max(1, nodes.length)) * i);
-    renderNodes();
-  };
-
-  /* ── DOM render: create / recycle node els ── */
-  function renderNodes() {
-    const container = document.getElementById('orbit-nodes');
-    if (!container) return;
-    container.innerHTML = '';
-    nodes.forEach((n, i) => {
-      const el = document.createElement('div');
-      el.className = 'track-node';
-      el.id = 'tnode-' + n.id;
-      el.style.background = `radial-gradient(circle at 35% 30%, ${n.color[0]}, ${n.color[1]})`;
-      el.style.boxShadow  = `0 0 8px ${n.color[0]}66`;
-      el.innerHTML = `<div class="track-node-tooltip">${n.name}</div>`;
-      el.addEventListener('click', (e) => { e.stopPropagation(); playFile(n.id); });
-      container.appendChild(el);
-    });
-  }
-
-  /* ── animation tick ── */
-  function tick() {
-    const container = document.getElementById('orbit-nodes');
-    if (!container || nodes.length === 0) { frameId = requestAnimationFrame(tick); return; }
-
-    const scene = document.getElementById('orb-scene');
-    const cx = scene ? scene.offsetWidth  / 2 : 135;
-    const cy = scene ? scene.offsetHeight / 2 : 135;
-
-    // advance orbit angles
-    nodes.forEach((n, i) => {
-      angles[i] = (angles[i] + ORBIT_SPEEDS[n.orbitIdx]) % 360;
-    });
-
-    // project all nodes
-    const projected = nodes.map((n, i) => {
-      const r  = ORBIT_RADII[n.orbitIdx];
-      const a  = angles[i] * Math.PI / 180;
-      const x3 = r * Math.cos(a);
-      const y3 = r * Math.sin(a) * 0.36; // flatten the y axis for tilt effect
-      const z3 = r * Math.sin(a);
-      return { ...project(x3, y3, z3, cx, cy), nodeIdx: i };
-    });
-
-    // sort back-to-front
-    projected.sort((a, b) => a.z - b.z);
-
-    projected.forEach(({ x, y, z, scale, nodeIdx }) => {
-      const n  = nodes[nodeIdx];
-      const el = document.getElementById('tnode-' + n.id);
-      if (!el) return;
-      const sz = Math.round(36 * scale);
-      const op = Math.max(0.3, Math.min(1, 0.55 + (z + 120) / 240));
-      el.style.cssText = `
-        position:absolute; border-radius:50%; cursor:pointer;
-        overflow:visible; display:flex; align-items:center; justify-content:center;
-        width:${sz}px; height:${sz}px;
-        left:${x - sz/2}px; top:${y - sz/2}px;
-        opacity:${op.toFixed(3)};
-        z-index:${Math.round((z + 200) * 10)};
-        background:radial-gradient(circle at 35% 30%, ${n.color[0]}, ${n.color[1]});
-        box-shadow:0 0 ${Math.round(8 * scale)}px ${n.color[0]}88;
-        border:${Math.max(1, Math.round(1.5 * scale))}px solid rgba(255,255,255,${(op * 0.18).toFixed(2)});
-        transition:none;
-        font-size:${Math.round(9 * scale)}px; font-weight:700; color:rgba(255,255,255,0.9);
-      `;
-      // show currently playing node
-      const isPlaying = (typeof S !== 'undefined') && S.current && S.current.id === n.id;
-      el.classList.toggle('node-playing', isPlaying);
-    });
-
-    frameId = requestAnimationFrame(tick);
-  }
-
-  /* ── drag to rotate ── */
-  function setupDrag() {
-    const scene = document.getElementById('orb-scene');
-    if (!scene) return;
-    scene.addEventListener('mousedown', e => {
-      dragActive = true; dragLast = { x: e.clientX, y: e.clientY };
-    });
-    window.addEventListener('mousemove', e => {
-      if (!dragActive) return;
-      const dx = e.clientX - dragLast.x;
-      const dy = e.clientY - dragLast.y;
-      rotY += dx * 0.45;
-      rotX += dy * 0.45;
-      rotX  = Math.max(-60, Math.min(60, rotX));
-      dragLast = { x: e.clientX, y: e.clientY };
-    });
-    window.addEventListener('mouseup', () => { dragActive = false; });
-    // touch support
-    scene.addEventListener('touchstart', e => {
-      const t = e.touches[0];
-      dragActive = true; dragLast = { x: t.clientX, y: t.clientY };
-    }, { passive: true });
-    window.addEventListener('touchmove', e => {
-      if (!dragActive) return;
-      const t = e.touches[0];
-      const dx = t.clientX - dragLast.x;
-      const dy = t.clientY - dragLast.y;
-      rotY += dx * 0.45;
-      rotX += dy * 0.45;
-      rotX  = Math.max(-60, Math.min(60, rotX));
-      dragLast = { x: t.clientX, y: t.clientY };
-    }, { passive: true });
-    window.addEventListener('touchend', () => { dragActive = false; });
-  }
-
-  sizeRings();
-  setupDrag();
-  tick();
-})();
-
-// Track orb playing state
-window._orbPlaying = false;
 
 // ══════════════════════════════════════════
 init();
