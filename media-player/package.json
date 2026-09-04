@@ -1,0 +1,48 @@
+{
+  "name": "mediabox",
+  "version": "1.0.0",
+  "description": "Spotify-style local media player for your PC",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "electron .",
+    "build": "electron-builder build --win --x64",
+    "build:dir": "electron-builder build --win --x64 --dir"
+  },
+  "dependencies": {
+    "animejs": "^4.5.0",
+    "express": "^4.18.2",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.26",
+    "motion": "^13.1.1",
+    "music-metadata": "^10.0.0"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.mediabox.app",
+    "productName": "Mediabox",
+    "files": [
+      "main.js",
+      "preload.cjs",
+      "server.js",
+      "public/**/*",
+      "node_modules/**/*",
+      "!node_modules/electron/**",
+      "!node_modules/electron-builder/**"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "public/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
