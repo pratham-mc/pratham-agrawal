@@ -142,8 +142,24 @@ body {
   user-select: none;
 }
 .hero-orb-float {
+  position: relative;
   animation: heroFloat 6s ease-in-out infinite;
   transform-style: preserve-3d;
+  will-change: transform;
+}
+/* audio-reactive glow ring behind the orb */
+.orb-pulse {
+  position: absolute; inset: -24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(129,140,248,0.45) 0%, rgba(99,102,241,0.18) 42%, transparent 66%);
+  transform: scale(calc(1 + var(--beat, 0) * 0.6));
+  opacity: calc(0.08 + var(--beat, 0) * 0.85);
+  pointer-events: none;
+  z-index: 0;
+  transition: transform 0.07s linear, opacity 0.07s linear;
+}
+.hero-orb-float.playing-green .orb-pulse {
+  background: radial-gradient(circle, rgba(52,211,153,0.5) 0%, rgba(16,185,129,0.2) 42%, transparent 66%);
 }
 .hero-orb {
   width: 264px; height: 264px;
@@ -189,8 +205,8 @@ body {
     inset 0 0 55px rgba(255,255,255,0.12);
 }
 @keyframes heroFloat {
-  0%,100% { transform: translateY(0); }
-  50%     { transform: translateY(-14px); }
+  0%,100% { translate: 0 0; }
+  50%     { translate: 0 -14px; }
 }
 @keyframes heroHalo {
   0%,100% { transform: scale(1); opacity: 0.5; }
@@ -1198,7 +1214,8 @@ function heroOrb() {
     : "Pratham's Library";
   return `
     <div class="hero-orb-wrap">
-      <div class="hero-orb-float">
+      <div class="hero-orb-float${S.playing ? ' playing-green' : ''}" id="hero-orb-float">
+        <div class="orb-pulse"></div>
         <div class="hero-orb${S.playing ? ' playing' : ''}" id="hero-orb"
              onclick="togglePlay()" onmousemove="heroOrbMove(event)" onmouseleave="heroOrbLeave()"
              title="Play / Pause"></div>
@@ -1755,12 +1772,75 @@ function wireAudio() {
   aud.addEventListener('loadedmetadata', () => {
     document.getElementById('tot-t').textContent = fmtTime(aud.duration);
   });
-  aud.addEventListener('play',  () => { S.playing=true;  syncPP(); });
+  aud.addEventListener('play',  () => { S.playing=true;  syncPP(); startOrbViz(); });
   aud.addEventListener('pause', () => { S.playing=false; syncPP(); });
   aud.addEventListener('ended', () => {
     if (S.repeat==='one') { aud.currentTime=0; aud.play(); } else nextTrack();
   });
   aud.addEventListener('error', () => { toast('Error playing file'); nextTrack(); });
+}
+
+// ── Audio-reactive orb (Web Audio analyser) ──
+let _actx, _analyser, _srcNode, _freqData, _vizRAF, _vizLevel = 0;
+
+function ensureAudioGraph() {
+  if (_actx) return true;
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    _actx = new AC();
+    _srcNode = _actx.createMediaElementSource(aud);
+    _analyser = _actx.createAnalyser();
+    _analyser.fftSize = 256;
+    _analyser.smoothingTimeConstant = 0.78;
+    _srcNode.connect(_analyser);
+    _analyser.connect(_actx.destination);   // keep audio audible
+    _freqData = new Uint8Array(_analyser.frequencyBinCount);
+    return true;
+  } catch (e) {
+    _actx = null;               // fall back: audio still plays normally
+    return false;
+  }
+}
+
+function startOrbViz() {
+  if (!ensureAudioGraph()) return;
+  if (_actx.state === 'suspended') _actx.resume();
+  if (!_vizRAF) vizTick();
+}
+
+function vizTick() {
+  _vizRAF = requestAnimationFrame(vizTick);
+  const floatEl = document.getElementById('hero-orb-float');
+
+  let target = 0;
+  if (_analyser && S.playing) {
+    _analyser.getByteFrequencyData(_freqData);
+    // weight the low/low-mid bins (kick + bass) so the orb pulses to the beat
+    const bins = Math.min(28, _freqData.length);
+    let sum = 0, wsum = 0;
+    for (let i = 0; i < bins; i++) {
+      const w = 1 - i / bins;      // more weight to lower frequencies
+      sum += _freqData[i] * w; wsum += w;
+    }
+    target = (sum / wsum) / 255;   // 0..1
+    target = Math.min(1, target * 1.35);
+  }
+
+  // smooth toward target (and decay to 0 when paused)
+  _vizLevel += (target - _vizLevel) * (target > _vizLevel ? 0.5 : 0.12);
+  if (_vizLevel < 0.001) _vizLevel = 0;
+
+  if (floatEl) {
+    floatEl.style.setProperty('--beat', _vizLevel.toFixed(3));
+    floatEl.style.transform = 'scale(' + (1 + _vizLevel * 0.11).toFixed(3) + ')';
+  }
+
+  // stop the loop once things go quiet and playback is stopped
+  if (!S.playing && _vizLevel === 0) {
+    cancelAnimationFrame(_vizRAF); _vizRAF = null;
+    if (floatEl) floatEl.style.transform = '';
+  }
 }
 
 // ── Sync UI ───────────────────────────────
@@ -1785,6 +1865,8 @@ function syncPP() {
     : `<svg id="pp-icon" viewBox="0 0 24 24" fill="#0F0F23" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
   const orbEl = document.getElementById('hero-orb');
   if (orbEl) orbEl.classList.toggle('playing', !!S.playing);
+  const floatEl = document.getElementById('hero-orb-float');
+  if (floatEl) floatEl.classList.toggle('playing-green', !!S.playing);
   const hint = document.querySelector('.hero-orb-hint');
   if (hint && S.current) hint.textContent = (S.meta[S.current.id] || {}).title || noExt(S.current.name);
 }
