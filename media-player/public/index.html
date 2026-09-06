@@ -222,6 +222,40 @@ body {
 .hero-orb.playing + .hero-orb-hint,
 .hero-orb-wrap:has(.hero-orb.playing) .hero-orb-hint { color: var(--accent); }
 
+/* ── Orb mode toggle (Glow / Covers) ── */
+.orb-toggle{
+  display:inline-flex; gap:2px; padding:3px;
+  background:rgba(255,255,255,0.05); border:1px solid var(--border);
+  border-radius:999px; margin-bottom:0.6rem;
+}
+.orb-mode-btn{
+  border:none; cursor:pointer; font:inherit;
+  font-size:0.74rem; font-weight:600; letter-spacing:0.02em;
+  padding:0.34rem 0.95rem; border-radius:999px;
+  background:transparent; color:var(--sub);
+  transition:background var(--ease), color var(--ease);
+}
+.orb-mode-btn:hover{ color:var(--text); }
+.orb-mode-btn.active{ background:linear-gradient(135deg,#6366F1,#818CF8); color:#fff; }
+
+/* ── Album sphere stage ── */
+.sphere-stage{ position:relative; width:340px; height:340px; max-width:82vw; }
+#sphere-mount{ position:absolute; inset:0; }
+#infinite-grid-menu-canvas{ width:100%; height:100%; display:block; cursor:grab; outline:none; }
+#infinite-grid-menu-canvas:active{ cursor:grabbing; }
+.sphere-play{
+  position:absolute; left:50%; bottom:-4px; transform:translateX(-50%);
+  width:52px; height:52px; border-radius:50%; z-index:5;
+  border:4px solid var(--bg, #0F0F23); cursor:pointer;
+  background:linear-gradient(135deg,#818CF8,#A78BFA); color:#0F0F23;
+  display:grid; place-items:center;
+  box-shadow:0 8px 22px rgba(129,140,248,0.5);
+  transition:transform 0.15s, box-shadow 0.3s, background 0.3s;
+}
+.sphere-play:hover{ transform:translateX(-50%) scale(1.08); }
+.sphere-play.playing{ background:linear-gradient(135deg,#6ee7b7,#34D399); box-shadow:0 8px 24px rgba(52,211,153,0.55); }
+.sphere-play svg{ width:22px; height:22px; fill:#0F0F23; stroke:none; }
+
 /* ── Main ── */
 .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
 .topbar {
@@ -1052,6 +1086,7 @@ kbd {
 
 <audio id="audio"></audio>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/3.4.3/gl-matrix-min.js"></script>
 <script>
 // ══════════════════════════════════════════
 //  State
@@ -1067,6 +1102,7 @@ const S = {
   view: 'home', q: '',
   meta: {}, dirs: [],
   musicTab: 'list',
+  orbMode: 'glow',          // 'glow' | 'sphere'
 };
 
 const aud = document.getElementById('audio');
@@ -1102,6 +1138,7 @@ function restorePrefs() {
     S.volume = p.vol ?? 1;
     S.shuffle = p.shuffle ?? false;
     S.repeat  = p.repeat ?? 'none';
+    S.orbMode = p.orbMode === 'sphere' ? 'sphere' : 'glow';
   } catch(_) {}
   aud.volume = S.volume;
   syncVolUI();
@@ -1110,7 +1147,7 @@ function restorePrefs() {
 }
 
 function savePrefs() {
-  localStorage.setItem('mb_prefs', JSON.stringify({ vol: S.volume, shuffle: S.shuffle, repeat: S.repeat }));
+  localStorage.setItem('mb_prefs', JSON.stringify({ vol: S.volume, shuffle: S.shuffle, repeat: S.repeat, orbMode: S.orbMode }));
 }
 
 async function loadConfig() {
@@ -1205,15 +1242,50 @@ function render() {
   if (S.view === 'videos')   el.innerHTML = renderVideos();
   if (S.view === 'settings') el.innerHTML = renderSettings();
   if (S.view === 'playlist') el.innerHTML = renderPlaylistView();
+  afterRender();
 }
 
 // ── Home (merged Library: orb + music + videos) ──
+function orbToggle() {
+  return `
+    <div class="orb-toggle" role="tablist">
+      <button class="orb-mode-btn${S.orbMode==='glow'?' active':''}" onclick="setOrbMode('glow')" role="tab">Glow</button>
+      <button class="orb-mode-btn${S.orbMode==='sphere'?' active':''}" onclick="setOrbMode('sphere')" role="tab">Covers</button>
+    </div>`;
+}
+
 function heroOrb() {
+  if (S.orbMode === 'sphere') {
+    const label = _sphereActive ? esc(_sphereActive.title)
+                : S.current ? esc((S.meta[S.current.id]||{}).title || noExt(S.current.name))
+                : 'Drag the sphere';
+    if (!window.__sphereOK) {
+      return `<div class="hero-orb-wrap">${orbToggle()}
+        <div class="hero-orb-hint" style="margin-top:2.5rem">3D engine failed to load — check your connection, then reload</div></div>`;
+    }
+    if (!S.audio.length) {
+      return `<div class="hero-orb-wrap">${orbToggle()}
+        <div class="hero-orb-hint" style="margin-top:2.5rem">Scan some music to fill the sphere</div></div>`;
+    }
+    return `
+      <div class="hero-orb-wrap">
+        ${orbToggle()}
+        <div class="sphere-stage">
+          <div id="sphere-mount"></div>
+          <button class="sphere-play${S.playing?' playing':''}" id="sphere-play" onclick="spherePlay()" aria-label="Play front cover">
+            ${S.playing ? SVG.pause : SVG.play}
+          </button>
+        </div>
+        <div class="hero-orb-hint" id="sphere-hint">${label}</div>
+      </div>`;
+  }
+
   const label = S.current
     ? esc((S.meta[S.current.id] || {}).title || noExt(S.current.name))
     : "Pratham's Library";
   return `
     <div class="hero-orb-wrap">
+      ${orbToggle()}
       <div class="hero-orb-float${S.playing ? ' playing-green' : ''}" id="hero-orb-float">
         <div class="orb-pulse"></div>
         <div class="hero-orb${S.playing ? ' playing' : ''}" id="hero-orb"
@@ -1222,6 +1294,14 @@ function heroOrb() {
       </div>
       <div class="hero-orb-hint">${label}</div>
     </div>`;
+}
+
+function setOrbMode(m) {
+  if (S.orbMode === m) return;
+  S.orbMode = m;
+  savePrefs();
+  if (m === 'glow') disposeSphere();
+  render();
 }
 
 function renderHome() {
@@ -1867,8 +1947,17 @@ function syncPP() {
   if (orbEl) orbEl.classList.toggle('playing', !!S.playing);
   const floatEl = document.getElementById('hero-orb-float');
   if (floatEl) floatEl.classList.toggle('playing-green', !!S.playing);
-  const hint = document.querySelector('.hero-orb-hint');
-  if (hint && S.current) hint.textContent = (S.meta[S.current.id] || {}).title || noExt(S.current.name);
+  // sphere-mode play button
+  const spBtn = document.getElementById('sphere-play');
+  if (spBtn) {
+    spBtn.classList.toggle('playing', !!S.playing);
+    spBtn.innerHTML = S.playing ? SVG.pause : SVG.play;
+  }
+  // generic hint only in glow mode (sphere hint tracks the front cover)
+  if (S.orbMode !== 'sphere') {
+    const hint = document.querySelector('.hero-orb-hint');
+    if (hint && S.current) hint.textContent = (S.meta[S.current.id] || {}).title || noExt(S.current.name);
+  }
 }
 
 function syncShuf() {
@@ -2132,6 +2221,285 @@ function grad(s) {
     raf = requestAnimationFrame(render);
   }
 })();
+
+// ══════════════════════════════════════════
+//  InfiniteMenu album sphere (ported from React Bits, vanilla)
+// ══════════════════════════════════════════
+(function(){
+const GM = window.glMatrix;
+if (!GM) { window.__sphereOK = false; return; }
+window.__sphereOK = true;
+const { mat4, quat, vec2, vec3 } = GM;
+
+const discVert = `#version 300 es
+uniform mat4 uWorldMatrix; uniform mat4 uViewMatrix; uniform mat4 uProjectionMatrix;
+uniform vec3 uCameraPosition; uniform vec4 uRotationAxisVelocity;
+in vec3 aModelPosition; in vec3 aModelNormal; in vec2 aModelUvs; in mat4 aInstanceMatrix;
+out vec2 vUvs; out float vAlpha; flat out int vInstanceId;
+void main(){
+  vec4 worldPosition = uWorldMatrix * aInstanceMatrix * vec4(aModelPosition,1.);
+  vec3 centerPos = (uWorldMatrix * aInstanceMatrix * vec4(0.,0.,0.,1.)).xyz;
+  float radius = length(centerPos.xyz);
+  if(gl_VertexID>0){
+    vec3 rotationAxis=uRotationAxisVelocity.xyz;
+    float rotationVelocity=min(.15,uRotationAxisVelocity.w*15.);
+    vec3 stretchDir=normalize(cross(centerPos,rotationAxis));
+    vec3 relativeVertexPos=normalize(worldPosition.xyz-centerPos);
+    float strength=dot(stretchDir,relativeVertexPos);
+    float invAbsStrength=min(0.,abs(strength)-1.);
+    strength=rotationVelocity*sign(strength)*abs(invAbsStrength*invAbsStrength*invAbsStrength+1.);
+    worldPosition.xyz+=stretchDir*strength;
+  }
+  worldPosition.xyz=radius*normalize(worldPosition.xyz);
+  gl_Position=uProjectionMatrix*uViewMatrix*worldPosition;
+  vAlpha=smoothstep(0.5,1.,normalize(worldPosition.xyz).z)*.9+.1;
+  vUvs=aModelUvs; vInstanceId=gl_InstanceID;
+}`;
+const discFrag = `#version 300 es
+precision highp float;
+uniform sampler2D uTex; uniform int uItemCount; uniform int uAtlasSize;
+out vec4 outColor; in vec2 vUvs; in float vAlpha; flat in int vInstanceId;
+void main(){
+  int itemIndex=vInstanceId%uItemCount; int cellsPerRow=uAtlasSize;
+  int cellX=itemIndex%cellsPerRow; int cellY=itemIndex/cellsPerRow;
+  vec2 cellSize=vec2(1.0)/vec2(float(cellsPerRow));
+  vec2 cellOffset=vec2(float(cellX),float(cellY))*cellSize;
+  ivec2 texSize=textureSize(uTex,0);
+  float imageAspect=float(texSize.x)/float(texSize.y); float containerAspect=1.0;
+  float scale=max(imageAspect/containerAspect,containerAspect/imageAspect);
+  vec2 st=vec2(vUvs.x,1.0-vUvs.y); st=(st-0.5)*scale+0.5; st=clamp(st,0.0,1.0);
+  st=st*cellSize+cellOffset; outColor=texture(uTex,st); outColor.a*=vAlpha;
+}`;
+
+class Face{constructor(a,b,c){this.a=a;this.b=b;this.c=c;}}
+class Vtx{constructor(x,y,z){this.position=vec3.fromValues(x,y,z);this.normal=vec3.create();this.uv=vec2.create();}}
+class Geometry{
+  constructor(){this.vertices=[];this.faces=[];}
+  addVertex(...a){for(let i=0;i<a.length;i+=3)this.vertices.push(new Vtx(a[i],a[i+1],a[i+2]));return this;}
+  addFace(...a){for(let i=0;i<a.length;i+=3)this.faces.push(new Face(a[i],a[i+1],a[i+2]));return this;}
+  get lastVertex(){return this.vertices[this.vertices.length-1];}
+  subdivide(divisions=1){const c={};let f=this.faces;for(let d=0;d<divisions;++d){const nf=new Array(f.length*4);f.forEach((fc,n)=>{const mAB=this.getMidPoint(fc.a,fc.b,c),mBC=this.getMidPoint(fc.b,fc.c,c),mCA=this.getMidPoint(fc.c,fc.a,c),i=n*4;nf[i]=new Face(fc.a,mAB,mCA);nf[i+1]=new Face(fc.b,mBC,mAB);nf[i+2]=new Face(fc.c,mCA,mBC);nf[i+3]=new Face(mAB,mBC,mCA);});f=nf;}this.faces=f;return this;}
+  spherize(r=1){this.vertices.forEach(v=>{vec3.normalize(v.normal,v.position);vec3.scale(v.position,v.normal,r);});return this;}
+  get data(){return{vertices:this.vertexData,indices:this.indexData,normals:this.normalData,uvs:this.uvData};}
+  get vertexData(){return new Float32Array(this.vertices.flatMap(v=>Array.from(v.position)));}
+  get normalData(){return new Float32Array(this.vertices.flatMap(v=>Array.from(v.normal)));}
+  get uvData(){return new Float32Array(this.vertices.flatMap(v=>Array.from(v.uv)));}
+  get indexData(){return new Uint16Array(this.faces.flatMap(f=>[f.a,f.b,f.c]));}
+  getMidPoint(a1,b1,cache){const k=a1<b1?`k_${b1}_${a1}`:`k_${a1}_${b1}`;if(Object.prototype.hasOwnProperty.call(cache,k))return cache[k];const a=this.vertices[a1].position,b=this.vertices[b1].position,n=this.vertices.length;cache[k]=n;this.addVertex((a[0]+b[0])*.5,(a[1]+b[1])*.5,(a[2]+b[2])*.5);return n;}
+}
+class IcoGeo extends Geometry{constructor(){super();const t=Math.sqrt(5)*.5+.5;this.addVertex(-1,t,0,1,t,0,-1,-t,0,1,-t,0,0,-1,t,0,1,t,0,-1,-t,0,1,-t,t,0,-1,t,0,1,-t,0,-1,-t,0,1).addFace(0,11,5,0,5,1,0,1,7,0,7,10,0,10,11,1,5,9,5,11,4,11,10,2,10,7,6,7,1,8,3,9,4,3,4,2,3,2,6,3,6,8,3,8,9,4,9,5,2,4,11,6,2,10,8,6,7,9,8,1);}}
+class DiscGeo extends Geometry{constructor(steps=4,radius=1){super();steps=Math.max(4,steps);const al=(2*Math.PI)/steps;this.addVertex(0,0,0);this.lastVertex.uv[0]=.5;this.lastVertex.uv[1]=.5;for(let i=0;i<steps;++i){const x=Math.cos(al*i),y=Math.sin(al*i);this.addVertex(radius*x,radius*y,0);this.lastVertex.uv[0]=x*.5+.5;this.lastVertex.uv[1]=y*.5+.5;if(i>0)this.addFace(0,i,i+1);}this.addFace(0,steps,1);}}
+
+function mkShader(gl,t,s){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);if(gl.getShaderParameter(sh,gl.COMPILE_STATUS))return sh;console.error(gl.getShaderInfoLog(sh));gl.deleteShader(sh);return null;}
+function mkProgram(gl,src,attribs){const p=gl.createProgram();[gl.VERTEX_SHADER,gl.FRAGMENT_SHADER].forEach((t,n)=>{const s=mkShader(gl,t,src[n]);if(s)gl.attachShader(p,s);});if(attribs)for(const a in attribs)gl.bindAttribLocation(p,attribs[a],a);gl.linkProgram(p);if(gl.getProgramParameter(p,gl.LINK_STATUS))return p;console.error(gl.getProgramInfoLog(p));gl.deleteProgram(p);return null;}
+function mkVAO(gl,pairs,indices){const va=gl.createVertexArray();gl.bindVertexArray(va);for(const[b,loc,ne]of pairs){if(loc===-1)continue;gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,ne,gl.FLOAT,false,0,0);}if(indices){const ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(indices),gl.STATIC_DRAW);}gl.bindVertexArray(null);return va;}
+function fitCanvas(c){const dpr=Math.min(2,window.devicePixelRatio);const w=Math.round(c.clientWidth*dpr),h=Math.round(c.clientHeight*dpr);const need=c.width!==w||c.height!==h;if(need){c.width=w;c.height=h;}return need;}
+function mkBuffer(gl,d,u){const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,d,u);gl.bindBuffer(gl.ARRAY_BUFFER,null);return b;}
+function mkTex(gl,mi,ma,ws,wt){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,ws);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,wt);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,mi);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,ma);return t;}
+
+class Arcball{
+  constructor(canvas,cb){
+    this.canvas=canvas;this.updateCallback=cb||(()=>null);
+    this.isPointerDown=false;this.orientation=quat.create();this.pointerRotation=quat.create();
+    this.rotationVelocity=0;this.rotationAxis=vec3.fromValues(1,0,0);
+    this.snapDirection=vec3.fromValues(0,0,-1);this.snapTargetDirection=null;
+    this.EPSILON=0.1;this.IDENTITY_QUAT=quat.create();
+    this.pointerPos=vec2.create();this.previousPointerPos=vec2.create();
+    this._rotationVelocity=0;this._combinedQuat=quat.create();
+    canvas.addEventListener('pointerdown',e=>{vec2.set(this.pointerPos,e.clientX,e.clientY);vec2.copy(this.previousPointerPos,this.pointerPos);this.isPointerDown=true;});
+    canvas.addEventListener('pointerup',()=>{this.isPointerDown=false;});
+    canvas.addEventListener('pointerleave',()=>{this.isPointerDown=false;});
+    canvas.addEventListener('pointermove',e=>{if(this.isPointerDown)vec2.set(this.pointerPos,e.clientX,e.clientY);});
+    canvas.style.touchAction='none';
+  }
+  update(dt,tfd=16){
+    const ts=dt/tfd+1e-5;let angleFactor=ts;let snapRotation=quat.create();
+    if(this.isPointerDown){
+      const INT=0.3*ts,AMP=5/ts;
+      const mid=vec2.sub(vec2.create(),this.pointerPos,this.previousPointerPos);vec2.scale(mid,mid,INT);
+      if(vec2.sqrLen(mid)>this.EPSILON){
+        vec2.add(mid,this.previousPointerPos,mid);
+        const p=this._project(mid),q=this._project(this.previousPointerPos);
+        const a=vec3.normalize(vec3.create(),p),b=vec3.normalize(vec3.create(),q);
+        vec2.copy(this.previousPointerPos,mid);angleFactor*=AMP;
+        this._quatFromVectors(a,b,this.pointerRotation,angleFactor);
+      }else quat.slerp(this.pointerRotation,this.pointerRotation,this.IDENTITY_QUAT,INT);
+    }else{
+      const INT=0.1*ts;quat.slerp(this.pointerRotation,this.pointerRotation,this.IDENTITY_QUAT,INT);
+      if(this.snapTargetDirection){
+        const a=this.snapTargetDirection,b=this.snapDirection;
+        const sq=vec3.squaredDistance(a,b),df=Math.max(0.1,1-sq*10);
+        angleFactor*=0.2*df;this._quatFromVectors(a,b,snapRotation,angleFactor);
+      }
+    }
+    const cq=quat.multiply(quat.create(),snapRotation,this.pointerRotation);
+    this.orientation=quat.multiply(quat.create(),cq,this.orientation);quat.normalize(this.orientation,this.orientation);
+    quat.slerp(this._combinedQuat,this._combinedQuat,cq,0.8*ts);quat.normalize(this._combinedQuat,this._combinedQuat);
+    const rad=Math.acos(this._combinedQuat[3])*2,s=Math.sin(rad/2);let rv=0;
+    if(s>1e-6){rv=rad/(2*Math.PI);this.rotationAxis[0]=this._combinedQuat[0]/s;this.rotationAxis[1]=this._combinedQuat[1]/s;this.rotationAxis[2]=this._combinedQuat[2]/s;}
+    this._rotationVelocity+=(rv-this._rotationVelocity)*0.5*ts;this.rotationVelocity=this._rotationVelocity/ts;
+    this.updateCallback(dt);
+  }
+  _quatFromVectors(a,b,out,af=1){const ax=vec3.cross(vec3.create(),a,b);vec3.normalize(ax,ax);const d=Math.max(-1,Math.min(1,vec3.dot(a,b)));quat.setAxisAngle(out,ax,Math.acos(d)*af);}
+  _project(pos){const r=2,w=this.canvas.clientWidth,h=this.canvas.clientHeight,s=Math.max(w,h)-1;const x=(2*pos[0]-w-1)/s,y=(2*pos[1]-h-1)/s;let z=0;const xy=x*x+y*y,rSq=r*r;if(xy<=rSq/2)z=Math.sqrt(rSq-xy);else z=rSq/Math.sqrt(xy);return vec3.fromValues(-x,y,z);}
+}
+
+class InfiniteGridMenu{
+  constructor(canvas,items,onActive,onMove,onInit){
+    this.TARGET_FRAME_DURATION=1000/60;this.SPHERE_RADIUS=2;
+    this._t=0;this._frames=0;this._disposed=false;this._raf=null;
+    this.canvas=canvas;this.items=items||[];this.onActive=onActive||(()=>{});this.onMove=onMove||(()=>{});
+    this.smoothRotationVelocity=0;this.scaleFactor=1;this.movementActive=false;
+    this.camera={matrix:mat4.create(),near:0.1,far:40,fov:Math.PI/4,aspect:1,position:vec3.fromValues(0,0,3),up:vec3.fromValues(0,1,0),matrices:{view:mat4.create(),projection:mat4.create()}};
+    this._init(onInit);
+  }
+  resize(){const gl=this.gl;if(!gl)return;if(fitCanvas(gl.canvas))gl.viewport(0,0,gl.drawingBufferWidth,gl.drawingBufferHeight);this._proj(gl);}
+  run(time=0){if(this._disposed)return;const dt=Math.min(32,time-this._t);this._t=time;this._frames+=dt/this.TARGET_FRAME_DURATION;this._animate(dt);this._render();this._raf=requestAnimationFrame(t=>this.run(t));}
+  dispose(){this._disposed=true;if(this._raf)cancelAnimationFrame(this._raf);const e=this.gl&&this.gl.getExtension('WEBGL_lose_context');if(e)e.loseContext();}
+  _init(onInit){
+    const gl=this.gl=this.canvas.getContext('webgl2',{antialias:true,alpha:true});
+    if(!gl)throw new Error('No WebGL2');
+    this.prog=mkProgram(gl,[discVert,discFrag],{aModelPosition:0,aModelNormal:1,aModelUvs:2,aInstanceMatrix:3});
+    this.loc={aModelPosition:gl.getAttribLocation(this.prog,'aModelPosition'),aModelUvs:gl.getAttribLocation(this.prog,'aModelUvs'),aInstanceMatrix:gl.getAttribLocation(this.prog,'aInstanceMatrix'),uWorldMatrix:gl.getUniformLocation(this.prog,'uWorldMatrix'),uViewMatrix:gl.getUniformLocation(this.prog,'uViewMatrix'),uProjectionMatrix:gl.getUniformLocation(this.prog,'uProjectionMatrix'),uCameraPosition:gl.getUniformLocation(this.prog,'uCameraPosition'),uRotationAxisVelocity:gl.getUniformLocation(this.prog,'uRotationAxisVelocity'),uTex:gl.getUniformLocation(this.prog,'uTex'),uItemCount:gl.getUniformLocation(this.prog,'uItemCount'),uAtlasSize:gl.getUniformLocation(this.prog,'uAtlasSize')};
+    this.discGeo=new DiscGeo(56,1);this.discBuffers=this.discGeo.data;
+    this.discVAO=mkVAO(gl,[[mkBuffer(gl,this.discBuffers.vertices,gl.STATIC_DRAW),this.loc.aModelPosition,3],[mkBuffer(gl,this.discBuffers.uvs,gl.STATIC_DRAW),this.loc.aModelUvs,2]],this.discBuffers.indices);
+    const subs=this.items.length>42?2:1;                 // more discs for bigger libraries
+    this.icoGeo=new IcoGeo();this.icoGeo.subdivide(subs).spherize(this.SPHERE_RADIUS);
+    this.instancePositions=this.icoGeo.vertices.map(v=>v.position);
+    this.DISC_INSTANCE_COUNT=this.icoGeo.vertices.length;
+    this._initInstances(this.DISC_INSTANCE_COUNT);
+    this.worldMatrix=mat4.create();this._initTexture();
+    this.control=new Arcball(this.canvas,dt=>this._onControl(dt));
+    this._cam();this._proj(gl);this.resize();
+    if(onInit)onInit(this);
+  }
+  _initTexture(){
+    const gl=this.gl;this.tex=mkTex(gl,gl.LINEAR,gl.LINEAR,gl.CLAMP_TO_EDGE,gl.CLAMP_TO_EDGE);
+    const itemCount=Math.max(1,this.items.length);this.atlasSize=Math.ceil(Math.sqrt(itemCount));
+    const maxTex=Math.min(4096,gl.getParameter(gl.MAX_TEXTURE_SIZE)||2048);
+    let cellSize=512;if(this.atlasSize*cellSize>maxTex)cellSize=Math.max(64,Math.floor(maxTex/this.atlasSize));
+    const cv=document.createElement('canvas'),ctx=cv.getContext('2d');cv.width=cv.height=this.atlasSize*cellSize;
+    const fill=(i)=>{const it=this.items[i]||{};const x=(i%this.atlasSize)*cellSize,y=Math.floor(i/this.atlasSize)*cellSize;const g=ctx.createLinearGradient(x,y,x+cellSize,y+cellSize);const h=it.hue||0;g.addColorStop(0,`hsl(${h} 68% 55%)`);g.addColorStop(1,`hsl(${(h+70)%360} 55% 25%)`);ctx.fillStyle=g;ctx.fillRect(x,y,cellSize,cellSize);};
+    Promise.all(this.items.map(it=>new Promise(res=>{if(!it.image){res(null);return;}const img=new Image();img.crossOrigin='anonymous';img.onload=()=>res(img);img.onerror=()=>res(null);img.src=it.image;})))
+      .then(imgs=>{imgs.forEach((img,i)=>{if(img){const x=(i%this.atlasSize)*cellSize,y=Math.floor(i/this.atlasSize)*cellSize;ctx.drawImage(img,x,y,cellSize,cellSize);}else fill(i);});gl.bindTexture(gl.TEXTURE_2D,this.tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,cv);gl.generateMipmap(gl.TEXTURE_2D);});
+  }
+  _initInstances(count){
+    const gl=this.gl;this.discInstances={matricesArray:new Float32Array(count*16),matrices:[],buffer:gl.createBuffer()};
+    for(let i=0;i<count;++i){const a=new Float32Array(this.discInstances.matricesArray.buffer,i*16*4,16);a.set(mat4.create());this.discInstances.matrices.push(a);}
+    gl.bindVertexArray(this.discVAO);gl.bindBuffer(gl.ARRAY_BUFFER,this.discInstances.buffer);gl.bufferData(gl.ARRAY_BUFFER,this.discInstances.matricesArray.byteLength,gl.DYNAMIC_DRAW);
+    for(let j=0;j<4;++j){const loc=this.loc.aInstanceMatrix+j;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,4,gl.FLOAT,false,64,j*16);gl.vertexAttribDivisor(loc,1);}
+    gl.bindBuffer(gl.ARRAY_BUFFER,null);gl.bindVertexArray(null);
+  }
+  _animate(dt){
+    const gl=this.gl;this.control.update(dt,this.TARGET_FRAME_DURATION);
+    const positions=this.instancePositions.map(p=>vec3.transformQuat(vec3.create(),p,this.control.orientation));
+    const scale=0.25,SI=0.6;
+    positions.forEach((p,n)=>{const s=(Math.abs(p[2])/this.SPHERE_RADIUS)*SI+(1-SI);const fs=s*scale;const m=mat4.create();mat4.multiply(m,m,mat4.fromTranslation(mat4.create(),vec3.negate(vec3.create(),p)));mat4.multiply(m,m,mat4.targetTo(mat4.create(),[0,0,0],p,[0,1,0]));mat4.multiply(m,m,mat4.fromScaling(mat4.create(),[fs,fs,fs]));mat4.multiply(m,m,mat4.fromTranslation(mat4.create(),[0,0,-this.SPHERE_RADIUS]));mat4.copy(this.discInstances.matrices[n],m);});
+    gl.bindBuffer(gl.ARRAY_BUFFER,this.discInstances.buffer);gl.bufferSubData(gl.ARRAY_BUFFER,0,this.discInstances.matricesArray);gl.bindBuffer(gl.ARRAY_BUFFER,null);
+    this.smoothRotationVelocity=this.control.rotationVelocity;
+  }
+  _render(){
+    const gl=this.gl;gl.useProgram(this.prog);gl.enable(gl.CULL_FACE);gl.enable(gl.DEPTH_TEST);
+    gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+    gl.uniformMatrix4fv(this.loc.uWorldMatrix,false,this.worldMatrix);
+    gl.uniformMatrix4fv(this.loc.uViewMatrix,false,this.camera.matrices.view);
+    gl.uniformMatrix4fv(this.loc.uProjectionMatrix,false,this.camera.matrices.projection);
+    gl.uniform3f(this.loc.uCameraPosition,this.camera.position[0],this.camera.position[1],this.camera.position[2]);
+    gl.uniform4f(this.loc.uRotationAxisVelocity,this.control.rotationAxis[0],this.control.rotationAxis[1],this.control.rotationAxis[2],this.smoothRotationVelocity*1.1);
+    gl.uniform1i(this.loc.uItemCount,this.items.length);gl.uniform1i(this.loc.uAtlasSize,this.atlasSize);
+    gl.uniform1i(this.loc.uTex,0);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,this.tex);
+    gl.bindVertexArray(this.discVAO);gl.drawElementsInstanced(gl.TRIANGLES,this.discBuffers.indices.length,gl.UNSIGNED_SHORT,0,this.DISC_INSTANCE_COUNT);
+  }
+  _cam(){mat4.targetTo(this.camera.matrix,this.camera.position,[0,0,0],this.camera.up);mat4.invert(this.camera.matrices.view,this.camera.matrix);}
+  _proj(gl){this.camera.aspect=gl.canvas.clientWidth/gl.canvas.clientHeight;const height=this.SPHERE_RADIUS*0.35,dist=this.camera.position[2];this.camera.fov=this.camera.aspect>1?2*Math.atan(height/dist):2*Math.atan(height/this.camera.aspect/dist);mat4.perspective(this.camera.matrices.projection,this.camera.fov,this.camera.aspect,this.camera.near,this.camera.far);}
+  _onControl(dt){
+    const ts=dt/this.TARGET_FRAME_DURATION+1e-4;let damping=5/ts,camZ=3*this.scaleFactor;
+    const moving=this.control.isPointerDown||Math.abs(this.smoothRotationVelocity)>0.01;
+    if(moving!==this.movementActive){this.movementActive=moving;this.onMove(moving);}
+    if(!this.control.isPointerDown){const nvi=this._nearest();const idx=nvi%Math.max(1,this.items.length);this.onActive(idx);const snap=vec3.normalize(vec3.create(),this._worldPos(nvi));this.control.snapTargetDirection=snap;}
+    else{camZ+=this.control.rotationVelocity*80+2.5;damping=7/ts;}
+    this.camera.position[2]+=(camZ-this.camera.position[2])/damping;this._cam();
+  }
+  _nearest(){const n=this.control.snapDirection;const inv=quat.conjugate(quat.create(),this.control.orientation);const nt=vec3.transformQuat(vec3.create(),n,inv);let maxD=-1,idx=0;for(let i=0;i<this.instancePositions.length;++i){const d=vec3.dot(nt,this.instancePositions[i]);if(d>maxD){maxD=d;idx=i;}}return idx;}
+  _worldPos(i){return vec3.transformQuat(vec3.create(),this.instancePositions[i],this.control.orientation);}
+}
+window.__InfiniteGridMenu = InfiniteGridMenu;
+})();
+
+// ── album-sphere integration ──
+let _infMenu=null, _sphereCanvas=null, _sphereSig='', _sphereItems=[], _sphereActive=null;
+const _coverCache={};
+
+function sphereCoverURL(id, title, hue){
+  if(_coverCache[id]) return _coverCache[id];
+  const c=document.createElement('canvas'); c.width=c.height=512; const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,512,512);
+  g.addColorStop(0,`hsl(${hue} 70% 58%)`); g.addColorStop(0.6,`hsl(${(hue+42)%360} 62% 38%)`); g.addColorStop(1,`hsl(${(hue+80)%360} 55% 22%)`);
+  x.fillStyle=g; x.fillRect(0,0,512,512);
+  x.fillStyle='rgba(255,255,255,0.9)'; x.font='700 70px Inter, system-ui, sans-serif'; x.textBaseline='middle'; x.fillText('♪',40,80);
+  x.font='700 44px Inter, system-ui, sans-serif';
+  const words=(title||'').split(' '); let line='',y=300; const lines=[];
+  for(const w of words){ if((line+w).length>10){lines.push(line);line=w+' ';} else line+=w+' '; } lines.push(line);
+  lines.slice(0,4).forEach((ln,i)=>x.fillText(ln.trim(),40,y+i*54));
+  return _coverCache[id]=c.toDataURL();
+}
+function hueFromId(id){ let h=0; const s=String(id); for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))%360; return h; }
+
+function buildSphereItems(){
+  return S.audio.map(f=>{
+    const m=S.meta[f.id]||{};
+    const title=m.title||noExt(f.name);
+    const hue=hueFromId(f.id);
+    const image = (m.hasArtwork===true) ? `/api/artwork/${f.id}`
+                : (m.hasArtwork===false) ? sphereCoverURL(f.id,title,hue)
+                : `/api/artwork/${f.id}`;      // unknown → try artwork, fallback fills on error
+    return { id:f.id, title, description:(m.artist||''), image, hue };
+  });
+}
+
+function afterRender(){
+  const showSphere = (S.view==='home' && S.orbMode==='sphere' && S.audio.length && window.__sphereOK);
+  if(showSphere) ensureSphere();
+  else if(S.view!=='home') disposeSphere();
+}
+
+function ensureSphere(){
+  const mount=document.getElementById('sphere-mount');
+  if(!mount) return;
+  const sig=S.audio.map(f=>f.id).join(',');
+  if(!_infMenu || sig!==_sphereSig){
+    disposeSphere();
+    _sphereSig=sig;
+    _sphereItems=buildSphereItems();
+    _sphereCanvas=document.createElement('canvas');
+    _sphereCanvas.id='infinite-grid-menu-canvas';
+    mount.appendChild(_sphereCanvas);
+    try{ _infMenu=new window.__InfiniteGridMenu(_sphereCanvas,_sphereItems,_sphereOnActive,_sphereOnMove,sk=>sk.run()); }
+    catch(e){ console.error('sphere init failed',e); _infMenu=null; }
+  } else {
+    if(_sphereCanvas.parentElement!==mount) mount.appendChild(_sphereCanvas);
+    _infMenu.resize();
+  }
+}
+function disposeSphere(){
+  if(_infMenu){ try{_infMenu.dispose();}catch(_){} _infMenu=null; }
+  if(_sphereCanvas && _sphereCanvas.parentElement) _sphereCanvas.remove();
+  _sphereCanvas=null; _sphereSig='';
+}
+function _sphereOnActive(i){
+  _sphereActive=_sphereItems[i%_sphereItems.length]||null;
+  const h=document.getElementById('sphere-hint');
+  if(h && _sphereActive) h.textContent=_sphereActive.title;
+}
+function _sphereOnMove(moving){
+  const h=document.getElementById('sphere-hint');
+  if(h) h.style.opacity = moving ? '0.45' : '1';
+}
+function spherePlay(){
+  if(!_sphereActive) return;
+  if(S.current && S.current.id===_sphereActive.id) togglePlay();
+  else playFile(_sphereActive.id);
+}
 
 // ══════════════════════════════════════════
 init();
