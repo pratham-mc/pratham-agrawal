@@ -1951,8 +1951,13 @@ function syncPlayerUI(f) {
   document.getElementById('pl-artist').textContent = m.artist || '–';
   const artEl = document.getElementById('pl-art');
   if (m.hasArtwork) {
-    artEl.innerHTML = `<img src="/api/artwork/${f.id}" onerror="this.parentElement.innerHTML='${SVG.music}';this.parentElement.style.background='${grad(f.id)}'">`;
     artEl.style.background = '';
+    artEl.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = `/api/artwork/${f.id}`;
+    img.alt = '';
+    img.onerror = () => { artEl.innerHTML = SVG.music; artEl.style.background = grad(f.id); };
+    artEl.appendChild(img);
   } else {
     artEl.innerHTML = SVG.music;
     artEl.style.background = grad(f.id);
