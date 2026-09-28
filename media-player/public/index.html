@@ -1854,13 +1854,32 @@ function wireAudio() {
   aud.addEventListener('loadedmetadata', () => {
     document.getElementById('tot-t').textContent = fmtTime(aud.duration);
   });
-  aud.addEventListener('play',  () => { S.playing=true;  syncPP(); startOrbViz(); });
-  aud.addEventListener('pause', () => { S.playing=false; syncPP(); });
+  aud.addEventListener('play',  () => { S.playing=true;  syncPP(); startOrbViz(); acquireWakeLock(); });
+  aud.addEventListener('pause', () => { S.playing=false; syncPP(); releaseWakeLock(); });
   aud.addEventListener('ended', () => {
     if (S.repeat==='one') { aud.currentTime=0; aud.play(); } else nextTrack();
   });
   aud.addEventListener('error', () => { toast('Error playing file'); nextTrack(); });
 }
+
+// ── Keep the system awake while music plays (Screen Wake Lock API) ──
+let _wakeLock = null;
+async function acquireWakeLock() {
+  if (!('wakeLock' in navigator) || _wakeLock) return;
+  try {
+    _wakeLock = await navigator.wakeLock.request('screen');
+    _wakeLock.addEventListener('release', () => { _wakeLock = null; });
+  } catch (_) { _wakeLock = null; }   // e.g. tab not visible / not allowed
+}
+async function releaseWakeLock() {
+  try { if (_wakeLock) await _wakeLock.release(); } catch (_) {}
+  _wakeLock = null;
+}
+// The OS auto-releases the lock when the tab is hidden — re-acquire when it
+// comes back to the foreground while music is still playing.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && S.playing) acquireWakeLock();
+});
 
 // ── Audio-reactive orb (Web Audio analyser) ──
 let _actx, _analyser, _srcNode, _freqData, _vizRAF, _vizLevel = 0;
