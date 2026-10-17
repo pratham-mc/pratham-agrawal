@@ -1085,6 +1085,175 @@ kbd {
 .mood-intense    { color: #F87171; background: rgba(248,113,113,.13); }
 .mood-melancholy { color: #A5B4FC; background: rgba(129,140,248,.15); }
 .mood-chill      { color: #5EEAD4; background: rgba(45,212,191,.13); }
+/* MoodSense tabs */
+.ms-tabs { display: flex; gap: 4px; padding: 4px; width: fit-content; max-width: 100%; overflow-x: auto; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 999px; }
+.ms-tab { border: none; background: transparent; color: var(--sub); font: inherit; font-size: .84rem; font-weight: 600; padding: .5rem 1.15rem; border-radius: 999px; cursor: pointer; white-space: nowrap; transition: color var(--ease), background var(--ease); }
+.ms-tab:hover { color: var(--text); }
+.ms-tab.active { background: linear-gradient(135deg, #6366F1, #8B5CF6); color: #fff; }
+.ms-tab:focus-visible, .ms-seg button:focus-visible, .ms-feel:focus-visible, .ms-home-link:focus-visible, .ms-row-btn:focus-visible { outline: 2px solid #818CF8; outline-offset: 2px; }
+.ms-btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
+.ms-btn.big { padding: .8rem 1.4rem; font-size: .95rem; justify-content: center; }
+.ms-btn.calm { background: linear-gradient(135deg, #0d9488, #14b8a6); border-color: transparent; color: #fff; }
+a.ms-btn { text-decoration: none; }
+.ms-grid.even { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1000px) { .ms-grid.even { grid-template-columns: 1fr; } }
+.ms-col { display: flex; flex-direction: column; gap: 1.1rem; min-width: 0; }
+.ms-gap { height: .9rem; }
+.ms-msg.ai.crisis { border-color: rgba(251,191,36,.45); background: rgba(251,191,36,.08); }
+.ms-msg.ai.crisis b { color: #FDE68A; }
+
+/* Calm Coach: check-in */
+.ms-q { display: block; font-size: .9rem; font-weight: 600; margin: .2rem 0 .55rem; }
+.ms-q small { font-weight: 400; color: var(--sub); font-size: .72rem; margin-left: .3rem; }
+.ms-suds { display: flex; align-items: center; gap: 1rem; }
+.ms-suds input[type=range] { flex: 1; min-width: 0; accent-color: #8B5CF6; height: 28px; cursor: pointer; }
+.ms-suds output { font-family: var(--font-heading); font-size: 2.1rem; min-width: 2.4ch; text-align: center; font-variant-numeric: tabular-nums; }
+.ms-suds-scale { display: flex; justify-content: space-between; font-size: .68rem; color: var(--sub); margin-top: .1rem; padding-right: 3.4rem; }
+.ms-suds-word { font-size: .82rem; color: #c4b5fd; margin: .4rem 0 1rem; min-height: 1.2em; }
+.ms-text { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; padding: .62rem .85rem; color: var(--text); font: inherit; font-size: .85rem; outline: none; }
+.ms-text:focus { border-color: #818CF8; box-shadow: 0 0 0 3px rgba(129,140,248,.2); }
+.ms-opts { display: flex; flex-wrap: wrap; gap: 1rem 1.4rem; margin: .2rem 0 1rem; }
+.ms-opt-l { font-size: .72rem; color: var(--sub); margin-bottom: .35rem; letter-spacing: .04em; }
+.ms-seg { display: inline-flex; flex-wrap: wrap; gap: 3px; padding: 3px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; }
+.ms-seg button { border: none; background: transparent; color: var(--sub); font: inherit; font-size: .78rem; font-weight: 600; padding: .45rem .85rem; min-height: 32px; border-radius: 9px; cursor: pointer; }
+.ms-seg button:hover { color: var(--text); }
+.ms-seg button.on { background: rgba(139,92,246,.3); color: #fff; }
+.ms-checks { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1.2rem; font-size: .84rem; }
+.ms-checks label { display: flex; align-items: center; gap: .6rem; cursor: pointer; width: fit-content; }
+.ms-checks input { width: 18px; height: 18px; accent-color: #8B5CF6; flex-shrink: 0; }
+.ms-plan-l { font-size: .72rem; color: var(--sub); letter-spacing: .04em; margin: .1rem 0 .45rem; }
+.ms-plan-songs { display: flex; flex-direction: column; gap: 3px; margin-bottom: 1rem; }
+.ms-plan-row { display: grid; grid-template-columns: 1.2rem minmax(0, 1fr) auto; gap: .5rem; align-items: center; font-size: .8rem; padding: .38rem .5rem; border-radius: 8px; background: rgba(255,255,255,0.035); }
+.ms-plan-row .n { color: var(--sub); font-size: .7rem; font-variant-numeric: tabular-nums; }
+.ms-plan-row .t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ms-plan-row .m { color: var(--sub); font-size: .68rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ms-fav { font-style: normal; color: #5EEAD4; font-size: .7rem; }
+.ms-plan-p { font-size: .8rem; color: var(--sub); line-height: 1.6; }
+.ms-plan-p b { color: var(--text); }
+.ms-why { list-style: none; display: flex; flex-direction: column; gap: .6rem; font-size: .8rem; color: var(--sub); line-height: 1.55; }
+.ms-why b { color: var(--text); font-weight: 600; }
+.ms-note { font-size: .74rem; color: var(--sub); margin-top: .8rem; line-height: 1.5; }
+.ms-note b { color: var(--text); }
+.ms-support { display: flex; flex-direction: column; gap: .25rem; border: 1px solid rgba(251,191,36,.38); background: rgba(251,191,36,.07); border-radius: 12px; padding: .8rem .95rem; font-size: .82rem; line-height: 1.55; margin-bottom: 1rem; text-align: left; }
+.ms-support[hidden] { display: none; }
+.ms-support b { color: #FDE68A; }
+.ms-support-acts { display: flex; gap: .45rem; flex-wrap: wrap; margin-top: .4rem; }
+
+/* Calm Coach: session */
+.ms-session { align-items: center; text-align: center; padding: 1.8rem 1rem 1.3rem; gap: 1.1rem; }
+.ms-stage { position: relative; width: min(340px, 76vw); aspect-ratio: 1; display: grid; place-items: center; }
+.ms-stage-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgba(255,255,255,0.16); }
+.ms-orb {
+  --h: 262; position: absolute; inset: 0; border-radius: 50%; transform: scale(.55); will-change: transform;
+  background: radial-gradient(circle at 35% 30%, hsl(var(--h) 92% 84%), hsl(var(--h) 72% 58%) 46%, hsl(calc(var(--h) + 18) 65% 30%) 100%);
+  box-shadow: 0 0 60px hsl(var(--h) 80% 55% / .55), 0 0 150px hsl(var(--h) 80% 55% / .25);
+}
+.ms-stage-txt { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; pointer-events: none; text-shadow: 0 1px 12px rgba(0,0,0,.5); }
+.ms-cue { font-family: var(--font-heading); font-size: 1.75rem; color: #fff; letter-spacing: .02em; }
+.ms-cnt { font-size: 1.05rem; color: rgba(255,255,255,.88); font-variant-numeric: tabular-nums; min-height: 1.5em; }
+.ms-ground { min-height: 3.1em; max-width: 540px; font-size: .98rem; line-height: 1.55; opacity: 0; transition: opacity .9s ease; }
+.ms-ground.show { opacity: 1; }
+.ms-sess-bar { width: min(580px, 100%); }
+.ms-sess-meta { display: flex; justify-content: space-between; gap: .4rem 1rem; flex-wrap: wrap; font-size: .76rem; color: var(--sub); margin-top: .5rem; font-variant-numeric: tabular-nums; }
+.ms-sess-actions { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; }
+
+/* Calm Coach: check-out and result */
+.ms-result { align-items: center; text-align: center; padding: 1.9rem 1rem 1.5rem; gap: .55rem; }
+.ms-done-ic { font-size: 2.4rem; }
+.ms-h2 { font-family: var(--font-heading); font-size: 1.45rem; font-weight: 400; }
+.ms-res-msg { max-width: 540px; color: var(--sub); font-size: .9rem; line-height: 1.6; }
+.ms-after-box { width: min(480px, 100%); text-align: left; margin-top: .6rem; }
+.ms-big { font-family: var(--font-heading); font-size: 3.4rem; line-height: 1.1; display: flex; align-items: center; gap: 1rem; font-variant-numeric: tabular-nums; }
+.ms-big .arr { color: #5eead4; font-size: 2.2rem; }
+.ms-big-l { color: var(--sub); font-size: .86rem; }
+.ms-scale { position: relative; width: min(440px, 90%); height: 26px; margin-top: .6rem; }
+.ms-scale .trk { position: absolute; left: 0; right: 0; top: 12px; height: 2px; background: rgba(255,255,255,0.12); border-radius: 2px; }
+.ms-scale .seg { position: absolute; top: 12px; height: 2px; background: rgba(255,255,255,0.45); }
+.ms-scale i { position: absolute; top: 6px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; border: 2px solid #11111f; }
+.ms-scale .b0 { background: #0d9488; } .ms-scale .b1 { background: #5eead4; }
+.ms-scale-l { width: min(440px, 90%); display: flex; justify-content: space-between; align-items: center; font-size: .7rem; color: var(--sub); margin-bottom: .5rem; }
+.ms-lgs { display: inline-flex; gap: 1rem; font-size: .74rem; color: var(--sub); }
+.ms-lg i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: .38rem; vertical-align: -1px; }
+
+/* Mood Journal */
+.ms-feels { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .45rem; }
+@media (max-width: 700px) { .ms-feels { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.ms-feel { display: flex; flex-direction: column; align-items: center; gap: .25rem; padding: .65rem .2rem; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--sub); font: inherit; font-size: .74rem; cursor: pointer; transition: background var(--ease), color var(--ease); }
+.ms-feel .e { font-size: 1.65rem; line-height: 1; }
+.ms-feel:hover { background: rgba(255,255,255,0.07); color: var(--text); }
+.ms-feel.on { border-color: #8B5CF6; background: rgba(139,92,246,.2); color: #fff; }
+.ms-jrow { display: flex; gap: .5rem; margin-top: .75rem; }
+.ms-jrow .ms-text { flex: 1; min-width: 0; }
+.ms-jmsg { margin-top: .75rem; display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; font-size: .84rem; color: var(--sub); }
+.ms-jmsg .ms-btn { padding: .4rem .85rem; font-size: .76rem; }
+.ms-card .ms-support { margin: .75rem 0 0; }
+.ms-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.1rem; }
+@media (max-width: 900px) { .ms-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ms-tile { padding: .95rem 1.05rem; }
+.ms-tile .k { font-size: .72rem; color: var(--sub); letter-spacing: .04em; }
+.ms-tile .v { font-family: var(--font-heading); font-size: 1.95rem; margin-top: .2rem; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ms-tile .v small { font-size: .8rem; color: var(--sub); font-family: var(--font-body); margin-left: 2px; }
+.ms-tile-w { font-size: 1.15rem; }
+.ms-tile .d { font-size: .74rem; color: var(--sub); margin-top: .1rem; }
+.ms-ins { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+.ms-ins li { display: flex; gap: .65rem; align-items: flex-start; font-size: .84rem; line-height: 1.5; padding: .65rem .8rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+.ms-ins li.warm { border-color: rgba(251,191,36,.35); background: rgba(251,191,36,.06); }
+.ms-ins .ic { font-size: 1.05rem; line-height: 1.35; }
+.ms-ins .ms-btn { margin-top: .5rem; padding: .36rem .8rem; font-size: .74rem; }
+.ms-chart { position: relative; min-height: 40px; }
+.ms-chart svg { display: block; overflow: visible; font-family: var(--font-body); }
+.ms-chart .g { stroke: rgba(255,255,255,0.08); stroke-width: 1; }
+.ms-chart .yl, .ms-chart .xl { fill: var(--sub); font-size: 10px; }
+.ms-chart .yl { text-anchor: end; }
+.ms-chart .xl { text-anchor: middle; }
+.ms-chart .ln { fill: none; stroke: #7480f2; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.ms-chart .mk { fill: #7480f2; stroke: #11111f; stroke-width: 2; pointer-events: none; }
+.ms-chart .xh { stroke: rgba(255,255,255,0.35); stroke-width: 1; pointer-events: none; }
+.ms-chart .dl { fill: var(--text); font-size: 11px; font-weight: 600; }
+.ms-chart .hit { fill: transparent; cursor: pointer; outline: none; }
+.ms-chart .hit:focus-visible { stroke: #818CF8; stroke-width: 2; }
+.ms-chart .db { stroke: rgba(255,255,255,0.3); stroke-width: 2; stroke-linecap: round; }
+.ms-chart .b0 { fill: #0d9488; stroke: #11111f; stroke-width: 2; }
+.ms-chart .b1 { fill: #5eead4; stroke: #11111f; stroke-width: 2; }
+.ms-chart .rl { fill: var(--sub); font-size: 11px; text-anchor: end; }
+.ms-chart .rowbg { fill: transparent; }
+.ms-chart .rowbg.on { fill: rgba(255,255,255,0.05); }
+.ms-ctip {
+  position: absolute; pointer-events: none; z-index: 3; display: flex; flex-direction: column; gap: 2px; max-width: 250px;
+  background: rgba(8,8,20,0.95); border: 1px solid var(--border); border-radius: 10px;
+  padding: .5rem .65rem; font-size: .74rem; line-height: 1.4; box-shadow: 0 10px 30px rgba(0,0,0,.5); white-space: nowrap;
+}
+.ms-ctip[hidden] { display: none; }
+.ms-ctip span { color: var(--sub); font-variant-numeric: tabular-nums; }
+.ms-tbl { margin-top: .7rem; font-size: .76rem; color: var(--sub); }
+.ms-tbl summary { cursor: pointer; width: fit-content; padding: .2rem 0; }
+.ms-tbl table { width: 100%; border-collapse: collapse; margin-top: .4rem; font-variant-numeric: tabular-nums; }
+.ms-tbl th, .ms-tbl td { text-align: left; padding: .3rem .45rem; border-bottom: 1px solid var(--border); }
+.ms-tbl th { color: var(--text); font-weight: 600; }
+.ms-sum { font-size: .8rem; color: var(--sub); margin-top: .55rem; }
+.ms-sum b { color: var(--text); font-weight: 600; }
+.ms-list { display: flex; flex-direction: column; gap: 2px; }
+.ms-row { display: grid; grid-template-columns: 1.7rem minmax(0, 1fr) auto; gap: .55rem; align-items: center; padding: .38rem .45rem; border-radius: 8px; font-size: .8rem; }
+.ms-row:hover { background: rgba(255,255,255,0.05); }
+.ms-row .e { font-size: 1.1rem; text-align: center; }
+.ms-row .t { min-width: 0; }
+.ms-row .t b { font-weight: 600; }
+.ms-row .t > span { display: block; color: var(--sub); font-size: .72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ms-via { font-style: normal; font-weight: 400; color: var(--sub); font-size: .7rem; margin-left: .25rem; }
+.ms-row-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--text); display: grid; place-items: center; cursor: pointer; font: inherit; font-size: 1rem; line-height: 1; }
+.ms-row-btn svg { width: 11px; height: 11px; }
+.ms-row-btn.x { border-color: transparent; background: transparent; color: var(--sub); opacity: .5; }
+.ms-row:hover .ms-row-btn.x, .ms-row-btn.x:focus-visible { opacity: 1; }
+.ms-row-btn:hover { background: rgba(255,255,255,0.1); }
+.ms-demo { display: flex; align-items: center; justify-content: space-between; gap: .8rem; flex-wrap: wrap; padding: .7rem 1rem; border-radius: 14px; border: 1px dashed rgba(167,139,250,.55); background: rgba(139,92,246,.12); font-size: .84rem; }
+.ms-demo .ms-btn { padding: .4rem .85rem; font-size: .76rem; }
+.ms-jfoot { display: flex; gap: .5rem .8rem; align-items: center; flex-wrap: wrap; font-size: .74rem; color: var(--sub); }
+.ms-empty-txt { font-size: .84rem; color: var(--sub); line-height: 1.6; margin-bottom: .8rem; }
+
+/* Home: quick links into MoodSense */
+.ms-home-links { display: flex; justify-content: center; gap: .5rem; flex-wrap: wrap; margin: -1.6rem 0 2.2rem; }
+.ms-home-link { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: var(--text); font: inherit; font-size: .8rem; font-weight: 600; padding: .5rem 1rem; border-radius: 999px; cursor: pointer; transition: background var(--ease); }
+.ms-home-link:hover { background: rgba(255,255,255,0.11); }
 @media (prefers-reduced-motion: reduce) { .ms-typing i, .ms-icon-btn.listening { animation: none; } }
 </style>
 <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
@@ -1428,7 +1597,7 @@ function setOrbMode(m) {
 function renderHome() {
   const orb = heroOrb();
 
-  if (!S.files.length) return orb + `
+  if (!S.files.length) return orb + msHomeLinks() + `
     <div class="empty">
       <div class="ei">${SVG.music}</div>
       <h3>Your library is empty</h3>
@@ -1456,7 +1625,7 @@ function renderHome() {
   const nothing = (!songs.length && !vids.length)
     ? '<div class="empty"><p>No results found.</p></div>' : '';
 
-  return orb + songSec + vidSec + nothing;
+  return orb + msHomeLinks() + songSec + vidSec + nothing;
 }
 
 // Big orb parallax hover tilt
@@ -1925,7 +2094,17 @@ function nextTrack() {
   let ni;
   if (S.shuffle) ni = Math.floor(Math.random() * S.queue.length);
   else { ni = S.qi + 1; if (ni >= S.queue.length) { if (S.repeat==='all') ni=0; else return; } }
-  S.qi = ni; playFile(S.queue[ni].id, ni);
+  playQueued(ni);
+}
+
+// Play position i of the current queue without rebuilding it (keeps playlists and AI mixes in order).
+function playQueued(i) {
+  const f = S.queue[i];
+  if (!f) return;
+  S.qi = i; S.current = f;
+  aud.src = `/stream/${f.id}`; aud.play().catch(() => {}); S.playing = true;
+  syncPlayerUI(f); render();
+  if (!S.meta[f.id]) fetchMeta(f);
 }
 
 function prevTrack() {
@@ -1933,7 +2112,7 @@ function prevTrack() {
   if (aud.currentTime > 3) { aud.currentTime = 0; return; }
   let pi = S.qi - 1;
   if (pi < 0) pi = S.repeat==='all' ? S.queue.length-1 : 0;
-  S.qi = pi; playFile(S.queue[pi].id, pi);
+  playQueued(pi);
 }
 
 function toggleShuffle() { S.shuffle = !S.shuffle; syncShuf(); savePrefs(); }
@@ -3056,7 +3235,8 @@ function MoodAICore() {
   }
 
   // Walk from → to across the emotion map, picking the nearest unused song at each step.
-  function buildMix(lib, from, to, n, rng = Math.random, exclude = new Set()) {
+  // bonus: optional { songId: 0..1 } nudging songs that worked for this person before.
+  function buildMix(lib, from, to, n, rng = Math.random, exclude = new Set(), bonus = {}) {
     const pool = lib.filter(s => !exclude.has(s.id));
     const src = pool.length >= Math.min(n, 3) ? pool : lib;
     const picks = [], used = new Set();
@@ -3069,6 +3249,7 @@ function MoodAICore() {
         if (used.has(s.id)) continue;
         let d = (s.v - tv) ** 2 + (s.a - ta) ** 2;
         if (picks.length) d += 0.015 * (s.vec[1] - picks[picks.length - 1].vec[1]) ** 2;   // smooth tempo changes
+        d -= 0.03 * (bonus[s.id] || 0);
         if (d < bd) { bd = d; best = s; }
       }
       if (!best) break;
@@ -3103,7 +3284,8 @@ function MoodAICore() {
     const spoken = parts.filter(p => p !== RAMP).join(' ');
     let text = parts.join(' ');
     if (!again && felt && !it.to && FOLLOW[fk]) text += '\n' + FOLLOW[fk];
-    return { text, spoken, mix: makeMix(picks, from, to, ramp, it) };
+    const calm = !again && (fk === 'stressed' || fk === 'angry' || tk === 'calmdown');
+    return { text, spoken, calm, mix: makeMix(picks, from, to, ramp, it) };
   }
   function similarMix(seed, lib, n) {
     const d = s => s.vec.reduce((acc, x, i) => acc + (x - seed.vec[i]) ** 2, 0);
@@ -3137,8 +3319,12 @@ function MoodAICore() {
 
   // lib: [{ id, title, artist, v, a, mood, energy, vec, f }], ctx: { last } → { text, spoken?, mix? }
   function respond(text, lib, ctx = {}, rng = Math.random) {
+    const t0 = norm(text);
+    if (isCrisis(text)) return { text: SUPPORT, crisis: true };      // safety always comes first
+    if (CALM_ASK.test(t0)) return { text: PANIC_LINE, calm: true };
+    if (INSIGHT_ASK.test(t0)) return { text: summarizeInsights(ctx.insights) };
     if (!lib.length) return { text: "I haven't listened to your songs yet — press “Let the AI listen” and I'll learn what each one feels like." };
-    const t = norm(text), words = t.trim().split(' ').length, last = ctx.last;
+    const t = t0, words = t.trim().split(' ').length, last = ctx.last;
     if (last && /\bwhy\b.*\b(these|this|those|that|them|songs?|picks?|picked|choose|chose|chosen|mix)\b|^\s*why\s*$/.test(t))
       return { text: explainMix(last, lib) };
     if (last && last.intent && (/\b(another (one|mix)|one more|more like (this|that|these)|again|different (songs|mix)|new mix|something else|more songs)\b/.test(t) || /^\s*(more|another)\s*$/.test(t)))
@@ -3172,7 +3358,173 @@ function MoodAICore() {
     };
   }
 
-  return { fft, hann, detectKey, extractFeatures, computeMoods, moodOf, MOODS, parseIntent, buildMix, respond };
+  // ── Wellbeing: safety, Calm Coach, Mood Journal ──
+  const CRISIS = /\b(suicid(e|al)|kill(ing)? myself|end (my life|it all)|want(ed)? to die|wanna die|self[- ]?harm(ing)?|hurt(ing)? myself|cut(ting)? myself|no reason to live|better off dead|don'?t want to (live|be alive|exist))\b/;
+  const isCrisis = text => CRISIS.test(norm(text));
+  const SUPPORT = "You matter, and you don't have to handle this alone. Please talk to someone right now — a parent, a teacher, a school counsellor or a friend. In India you can call Tele-MANAS for free, 24/7: 14416 or 1-800-891-4416. If you are in danger right now, call 112.";
+  const CALM_ASK = /\b(calm coach|breathing exercise|help me breathe|breathe with me|panic attack|panicking|calm(ing)? session|guided (breathing|session)|can'?t breathe)\b/;
+  const PANIC_LINE = "I'm here with you. Let's slow your breathing down together — tap “Start Calm Coach” below. Right now: breathe in through your nose for 4… and slowly out through your mouth for 6. (If you have chest pain or truly can't get air, tell an adult or call 112.)";
+  const INSIGHT_ASK = /\b(how (have|am|was) i (been )?(feeling|doing)|mood (report|summary|history)|my (week|insights|journal)|how('?s| is| was) my (week|mood))\b/;
+  const FEEL_LABEL = { stressed: 'stressed', sad: 'sad', angry: 'angry', happy: 'happy', tired: 'tired', bored: 'bored',
+    calm: 'calm', okay: 'okay', romantic: 'romantic', nostalgic: 'nostalgic', confident: 'confident' };
+  // Quick check-ins: [key, emoji, label, valence, arousal]
+  const CHECKINS = [
+    ['happy', '😄', 'Happy', 0.86, 0.70], ['calm', '😌', 'Calm', 0.70, 0.22], ['okay', '🙂', 'Okay', 0.58, 0.45],
+    ['tired', '😴', 'Tired', 0.50, 0.12], ['stressed', '😰', 'Stressed', 0.28, 0.80], ['sad', '😢', 'Sad', 0.15, 0.25],
+    ['angry', '😠', 'Angry', 0.18, 0.88],
+  ];
+  const WEEKDAYS = ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays'];
+  const DAY = 86400000;
+
+  // Calm Coach music: start near the person's tension, step down to calm (iso principle).
+  // Never uses high-energy songs; personal = { songId: avg anxiety drop } learned from past sessions.
+  function calmPlan(lib, anxiety, n, personal = {}, rng = Math.random) {
+    const pool = lib.filter(s => s.a <= 0.7), src = pool.length >= 2 ? pool : lib;
+    const from = { v: 0.45, a: clamp01(0.3 + anxiety * 0.035) }, to = { v: 0.65, a: 0.08 };
+    const best = Math.max(1, ...Object.values(personal));
+    const bonus = {};
+    for (const id in personal) bonus[id] = Math.max(0, personal[id]) / best;
+    let picks = buildMix(src, from, to, n, rng, new Set(), bonus);
+    // Always include the song that has calmed this person most, swapped in where it fits best,
+    // then keep the journey heading downhill in energy.
+    const fav = Object.keys(personal).filter(id => personal[id] > 0).sort((a, b) => personal[b] - personal[a])
+      .map(id => src.find(s => s.id === id)).find(Boolean);
+    if (fav && picks.length > 1 && !picks.some(s => s.id === fav.id)) {
+      let j = 1, bd = Infinity;
+      picks.forEach((s, i) => { const d = (s.v - fav.v) ** 2 + (s.a - fav.a) ** 2; if (i && d < bd) { bd = d; j = i; } });
+      picks[j] = fav;
+      picks = [picks[0], ...picks.slice(1).sort((a, b) => b.a - a.a)];
+    }
+    return { from, to, picks, fav: fav ? fav.id : null };
+  }
+
+  // Breathing patterns: [phase, seconds]
+  const BREATH = {
+    calm:  { label: 'Calm · in 4, out 6', phases: [['in', 4], ['out', 6]] },
+    box:   { label: 'Box · 4-4-4-4', phases: [['in', 4], ['hold', 4], ['out', 4], ['rest', 4]] },
+    sleep: { label: '4-7-8 · for sleep', phases: [['in', 4], ['hold', 7], ['out', 8]] },
+  };
+  // Phase lengths at this point of the session: begin ~20% faster (closer to anxious breathing),
+  // ease to the full pattern by 60% of the way, and snap each phase to whole beats of the song.
+  function breathPhases(pattern, progress, bpm) {
+    const p = BREATH[pattern] || BREATH.calm;
+    const scale = 0.8 + 0.2 * Math.min(1, Math.max(0, progress) / 0.6);
+    const beat = bpm >= 40 && bpm <= 220 ? 60 / bpm : 0;
+    return p.phases.map(([name, sec]) => {
+      let s = sec * scale;
+      if (beat) s = Math.max(1, Math.round(s / beat)) * beat;
+      return [name, s];
+    });
+  }
+
+  function journalInsights(entries, now = Date.now()) {
+    const es = entries.filter(e => e.t <= now).sort((a, b) => a.t - b.t), age = e => now - e.t;
+    const moodE = es.filter(e => e.type !== 'calm');
+    const week = moodE.filter(e => age(e) < 7 * DAY), prev = moodE.filter(e => age(e) >= 7 * DAY && age(e) < 14 * DAY);
+    const score = list => list.length ? Math.round(avg(list.map(e => e.v)) * 100) : null;
+    const counts = {};
+    week.forEach(e => { counts[e.key] = (counts[e.key] || 0) + 1; });
+    const top = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0] || null;
+
+    const daily = [];
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(now); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - i);
+      const d0 = d.getTime(); d.setDate(d.getDate() + 1);
+      const items = moodE.filter(e => e.t >= d0 && e.t < d.getTime());
+      daily.push({ t: d0, score: score(items), n: items.length, keys: [...new Set(items.map(e => e.key))] });
+    }
+
+    // A pattern only counts if it repeats on different days — one bad afternoon is not a habit.
+    const dayKey = t => { const d = new Date(t); return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; };
+    const stressy = e => e.type === 'calm' ? e.before >= 5 : (e.key === 'stressed' || e.key === 'angry' || e.key === 'sad');
+    const neg = es.filter(e => age(e) < 30 * DAY && stressy(e)), patterns = [];
+    if (neg.length >= 3 && new Set(neg.map(e => dayKey(e.t))).size >= 3) {
+      const byDay = new Array(7).fill(0), dates = Array.from({ length: 7 }, () => new Set());
+      const byPart = { morning: 0, afternoon: 0, evening: 0, night: 0 }, partDates = {};
+      for (const e of neg) {
+        const dt = new Date(e.t), h = dt.getHours(), wd = dt.getDay();
+        const part = h >= 5 && h < 12 ? 'morning' : h >= 12 && h < 17 ? 'afternoon' : h >= 17 && h < 21 ? 'evening' : 'night';
+        byDay[wd]++; dates[wd].add(dayKey(e.t));
+        byPart[part]++; (partDates[part] = partDates[part] || new Set()).add(dayKey(e.t));
+      }
+      const dMax = Math.max(...byDay), top = WEEKDAYS.filter((_, i) => byDay[i] === dMax && dates[i].size >= 2);
+      if (dMax >= 2 && dMax / neg.length >= 0.3 && top.length) patterns.push(`You tend to feel stressed on ${top.slice(0, 2).join(' and ')}.`);
+      const part = Object.keys(byPart).sort((a, b) => byPart[b] - byPart[a])[0];
+      if (byPart[part] >= 2 && byPart[part] / neg.length >= 0.4 && partDates[part].size >= 2)
+        patterns.push(part === 'night' ? 'Stress usually shows up at night — winding down earlier could help your sleep.' : `Stress usually shows up in the ${part}.`);
+    }
+    const byWd = {}, wdDates = {};
+    moodE.filter(e => age(e) < 30 * DAY).forEach(e => {
+      const w = new Date(e.t).getDay();
+      (byWd[w] = byWd[w] || []).push(e.v); (wdDates[w] = wdDates[w] || new Set()).add(dayKey(e.t));
+    });
+    const happyWd = Object.keys(byWd).filter(w => wdDates[w].size >= 2).sort((a, b) => avg(byWd[b]) - avg(byWd[a]))[0];
+    if (happyWd != null && Object.keys(byWd).length >= 3) patterns.push(`You're usually happiest on ${WEEKDAYS[happyWd]}.`);
+
+    const sessions = es.filter(e => e.type === 'calm' && e.after != null);
+    const avgBefore = sessions.length ? avg(sessions.map(s => s.before)) : null, avgAfter = sessions.length ? avg(sessions.map(s => s.after)) : null;
+    const dropPct = avgBefore ? Math.round((avgBefore - avgAfter) / avgBefore * 100) : null;
+    const per = {};
+    for (const s of sessions) for (const id of s.ids || []) (per[id] = per[id] || []).push(s.before - s.after);
+    const personal = {};
+    for (const id in per) personal[id] = avg(per[id]);
+    const topSongs = Object.keys(personal).filter(id => personal[id] > 0).sort((a, b) => personal[b] - personal[a]).slice(0, 3)
+      .map(id => ({ id, drop: Math.round(personal[id] * 10) / 10, n: per[id].length }));
+
+    const days = new Set(es.map(e => dayKey(e.t)));
+    let streak = 0, i = days.has(dayKey(now)) ? 0 : 1;
+    while (days.has(dayKey(now - i * DAY))) { streak++; i++; }
+
+    const nudges = [], recent = es.filter(e => age(e) < 3 * DAY);
+    if (recent.filter(e => e.type === 'calm' ? e.before >= 7 : e.key === 'stressed' || e.key === 'angry').length >= 3)
+      nudges.push({ kind: 'stress', text: "You've had a stressful few days. A 5-minute Calm Coach session can help — and telling a friend, parent or teacher what's going on can make it feel lighter." });
+    if (moodE.filter(e => age(e) < 7 * DAY && e.key === 'sad').length >= 4)
+      nudges.push({ kind: 'support', text: "You've felt low quite a few times this week. That's worth talking about with someone you trust — a parent, teacher or school counsellor." });
+    if (sessions.length >= 2 && dropPct >= 20)
+      nudges.push({ kind: 'win', text: `Calm Coach has lowered your anxiety by ${dropPct}% on average — it's working for you.` });
+
+    return {
+      total: es.length, count7: week.length, score7: score(week), scorePrev: score(prev), top, daily, patterns, nudges,
+      sessions: sessions.map(s => ({ t: s.t, before: s.before, after: s.after, minutes: s.minutes, demo: !!s.demo })),
+      sessionCount: sessions.length, avgBefore, avgAfter, dropPct, personal, topSongs, streak,
+    };
+  }
+  function summarizeInsights(ins) {
+    if (!ins || !ins.total) return "Your Mood Journal is empty so far. Tell me how you feel any time, or do a quick check-in on the Journal tab, and I'll start spotting patterns.";
+    const p = [];
+    if (ins.score7 != null) p.push(`This week your mood score is ${ins.score7}/100` + (ins.scorePrev != null ? ` (${ins.score7 >= ins.scorePrev ? 'up' : 'down'} ${Math.abs(ins.score7 - ins.scorePrev)} from last week).` : '.'));
+    if (ins.top) p.push(`You most often felt ${FEEL_LABEL[ins.top] || ins.top}.`);
+    p.push(...ins.patterns);
+    if (ins.sessionCount) p.push(`Calm Coach: ${ins.sessionCount} session${ins.sessionCount > 1 ? 's' : ''}, anxiety down ${ins.dropPct}% on average.`);
+    const nudge = ins.nudges.find(n => n.kind !== 'win');
+    if (nudge) p.push(nudge.text);
+    return p.join(' ');
+  }
+  // Two clearly-labelled sample weeks (demo: true) so the insights can be shown before real data exists.
+  function sampleWeek(lib, now = Date.now(), rng = Math.random) {
+    const out = [], C = Object.fromEntries(CHECKINS.map(c => [c[0], c]));
+    const at = (daysAgo, h, m = 0) => { const d = new Date(now); d.setDate(d.getDate() - daysAgo); d.setHours(h, m, 0, 0); return d.getTime(); };
+    const add = (d, h, key, note) => { const c = C[key]; out.push({ t: at(d, h, Math.floor(rng() * 50)), type: 'checkin', key, v: clamp01(c[3] + (rng() - 0.5) * 0.08), a: clamp01(c[4] + (rng() - 0.5) * 0.08), note: note || '', demo: true }); };
+    const calmIds = lib.length ? calmPlan(lib, 7, 4, {}, () => 0.5).picks.map(s => s.id) : [];
+    let k = 0;
+    for (let d = 13; d >= 0; d--) {
+      const wd = new Date(at(d, 12)).getDay();
+      if (wd === 0 || wd === 6) { add(d, 10, rng() > 0.35 ? 'happy' : 'calm', wd === 6 ? 'Football with friends' : 'Family lunch'); add(d, 20, 'calm'); }
+      else if (wd === 1 || wd === 2) {
+        add(d, 8, 'tired');
+        add(d, 19, 'stressed', wd === 1 ? 'Maths test this week' : 'So much homework');
+        const before = [8, 7, 9, 8][k % 4], after = before - [2, 3, 4, 5][Math.min(k, 3)];
+        out.push({ t: at(d, 19, 40), type: 'calm', key: 'calm-session', before, after, minutes: 5, pattern: 'calm',
+          ids: calmIds.slice(k % 2, (k % 2) + 3), demo: true });
+        k++;
+      } else { add(d, 8, 'okay'); add(d, 18, rng() > 0.5 ? 'happy' : 'okay', wd === 5 ? 'Weekend soon!' : ''); }
+      if (d === 4) add(d, 23, 'sad', "Couldn't sleep");
+    }
+    return out.filter(e => e.t <= now);
+  }
+
+  return { fft, hann, detectKey, extractFeatures, computeMoods, moodOf, MOODS, parseIntent, buildMix, respond,
+    isCrisis, SUPPORT, calmPlan, BREATH, breathPhases, CHECKINS, journalInsights, summarizeInsights, sampleWeek };
 }
 
 // ── MoodSense UI ──────────────────────────
@@ -3182,12 +3534,36 @@ const MS = {
   analyzing: false, prog: { done: 0, total: 0, current: '' },
   chat: [], thinking: false, last: null, path: null, hover: null, how: false,
   speak: false, rec: null, raf: null, mapPts: [],
+  tab: 'dj',
+  calm: { phase: 'checkin', before: 5, after: 5, note: '', minutes: 5, pattern: 'calm', voice: false, ground: true, music: true,
+          s: null, raf: null, done: 0, result: null },
+  journal: [], jSel: null, jMsg: null, ins: null, insKey: '',
 };
 try {
   const c = JSON.parse(localStorage.getItem('moodsense_v1') || 'null');
   if (c && c.v === 1 && c.feats) MS.feats = c.feats;
 } catch (_) {}
+try {
+  const j = JSON.parse(localStorage.getItem('moodsense_journal_v1') || 'null');
+  if (j && j.v === 1 && Array.isArray(j.entries)) MS.journal = j.entries.filter(e => e && typeof e.t === 'number');
+} catch (_) {}
 function msSave() { try { localStorage.setItem('moodsense_v1', JSON.stringify({ v: 1, feats: MS.feats })); } catch (_) {} }
+function msJournalSave() {
+  MS.insKey = '';
+  try { localStorage.setItem('moodsense_journal_v1', JSON.stringify({ v: 1, entries: MS.journal })); } catch (_) {}
+}
+function msLog(entry) {
+  MS.journal.push({ t: Date.now(), ...entry });
+  if (MS.journal.length > 3000) MS.journal.splice(0, MS.journal.length - 3000);
+  msJournalSave();
+}
+// Insights are cheap to compute but are cached per journal state and minute.
+function msInsights() {
+  const last = MS.journal[MS.journal.length - 1];
+  const key = MS.journal.length + ':' + (last ? last.t : 0) + ':' + Math.floor(Date.now() / 60000);
+  if (MS.insKey !== key) { MS.insKey = key; MS.ins = MoodAI.journalInsights(MS.journal); }
+  return MS.ins;
+}
 function msTitle(f) { return (S.meta[f.id] || {}).title || noExt(f.name); }
 
 const MS_ICON = {
@@ -3223,23 +3599,65 @@ function moodChip(id) {
 }
 
 // ── Page ──
+const MS_TABS = [
+  ['dj', 'AI DJ', 'An AI that listens to your songs, works out the emotion of each one, and builds playlists from how you feel.'],
+  ['calm', 'Calm Coach', 'A guided reset for stress and anxiety: breathing timed to your music, and songs that step you down to calm.'],
+  ['journal', 'Mood Journal', 'Your private mood diary. The AI spots patterns in how you feel and shows what is helping.'],
+];
 function renderMood() {
   msEnsure();
-  const hasMic = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
-  const n = MS.points.length;
+  const n = MS.points.length, tab = MS.tab;
+  const sub = (MS_TABS.find(t => t[0] === tab) || MS_TABS[0])[2];
+  const actions = tab === 'dj'
+    ? `<button class="ms-btn" onclick="msToggleHow()">${MS.how ? 'Hide explanation' : 'How it works'}</button>
+       ${n && !MS.analyzing ? '<button class="ms-btn" onclick="msAnalyze(true)">Re-listen to all</button>' : ''}`
+    : '';
+  const body = tab === 'calm' ? msCalmHTML() : tab === 'journal' ? msJournalHTML() : msDjHTML();
   return `
   <div class="ms-wrap">
     <div class="ms-head">
       <div>
         <div class="ms-eyebrow">AI · runs on this laptop</div>
         <h1 class="ms-title">MoodSense</h1>
-        <p class="ms-sub">An AI that listens to your songs, works out the emotion of each one, and builds playlists from how you feel.</p>
+        <p class="ms-sub">${sub}</p>
       </div>
-      <div class="ms-actions">
-        <button class="ms-btn" onclick="msToggleHow()">${MS.how ? 'Hide explanation' : 'How it works'}</button>
-        ${n && !MS.analyzing ? '<button class="ms-btn" onclick="msAnalyze(true)">Re-listen to all</button>' : ''}
-      </div>
+      <div class="ms-actions">${actions}</div>
     </div>
+    <div class="ms-tabs" role="tablist" aria-label="MoodSense sections">
+      ${MS_TABS.map(([k, label]) => `<button class="ms-tab${k === tab ? ' active' : ''}" role="tab" aria-selected="${k === tab}" onclick="msTab('${k}')">${label}</button>`).join('')}
+    </div>
+    ${body}
+  </div>`;
+}
+function msTab(k) {
+  if (MS.tab === k) return;
+  if (MS.calm.phase === 'session' && k !== 'calm') {
+    if (!confirm('End the calm session?')) return;
+    msCalmStop(false);
+  }
+  if (k === 'calm' && MS.calm.phase === 'result') MS.calm.phase = 'checkin';
+  MS.tab = k; render();
+}
+function msOpen(k) {
+  if (S.view === 'mood') { msTab(k); return; }
+  if (MS.calm.phase === 'session' && k !== 'calm') {
+    if (!confirm('End the calm session?')) return;
+    msCalmStop(false);
+  }
+  if (k === 'calm' && MS.calm.phase === 'result') MS.calm.phase = 'checkin';
+  MS.tab = k; navigate('mood');
+}
+// Ask the AI DJ something from another tab (no extra journal entry: the feeling was already logged).
+function msDjAsk(q) {
+  if (MS.calm.phase === 'session') return;
+  MS.tab = 'dj';
+  if (S.view !== 'mood') navigate('mood'); else render();
+  msAsk(q, { noLog: true });
+}
+function msDjHTML() {
+  const hasMic = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  const n = MS.points.length;
+  return `
     ${MS.how ? msHowHTML() : ''}
     <div class="ms-card" id="ms-status">${msStatusHTML()}</div>
     <div class="ms-grid">
@@ -3264,8 +3682,7 @@ function renderMood() {
           <button class="ms-icon-btn send" aria-label="Send">${MS_ICON.send}</button>
         </form>
       </section>
-    </div>
-  </div>`;
+    </div>`;
 }
 function msHowHTML() {
   return `<div class="ms-card"><div class="ms-card-hd">How MoodSense works <small>signal processing + psychology + recommendation</small></div>
@@ -3303,7 +3720,8 @@ function msLegendHTML() {
       <b>${m.label}</b><span>${counts[k]} song${counts[k] === 1 ? '' : 's'} · ${m.desc}</span></button>`).join('');
 }
 function msChips() {
-  const c = ["I'm stressed about exams", 'Hype me up for the gym', "I'm sad, cheer me up", 'Chill night vibes'];
+  const c = ["I'm stressed about exams", 'Help me breathe', 'Hype me up for the gym', "I'm sad, cheer me up"];
+  c.push(MS.journal.length ? 'How have I been feeling?' : 'Chill night vibes');
   if (S.current && MS.byId[S.current.id]) c.push('Songs like ' + msTitle(S.current).split(/\s+/).slice(0, 3).join(' '));
   if (MS.last) c.push('Why these songs?');
   return c;
@@ -3316,15 +3734,21 @@ function msChatHTML() {
   const byId = new Map(S.audio.map(f => [f.id, f]));
   const html = MS.chat.map((m, i) => {
     if (m.role === 'user') return `<div class="ms-msg user">${esc(m.text)}</div>`;
-    let h = esc(m.text).replace(/\n/g, '<br>');
+    if (m.crisis) return `<div class="ms-msg ai crisis" role="note"><b>💛 You're not alone</b><br>${esc(m.text)}
+      <div class="ms-mix-actions"><a class="ms-btn" href="tel:14416">📞 Tele-MANAS 14416</a><a class="ms-btn" href="tel:112">🚨 Emergency 112</a></div></div>`;
+    let h = esc(m.text).replace(/\n/g, '<br>'), acts = '';
     if (m.mix) {
       if (m.mix.journey) h += `<span class="ms-journey">${esc(m.mix.journey)}</span>`;
       h += `<span class="ms-stats">${esc(m.mix.stats)}</span><div class="ms-mix">` + m.mix.ids.map((id, j) => {
         const f = byId.get(id), p = MS.byId[id];
         if (!f) return '';
         return `<button class="ms-mix-row" onclick="msPlayMix(${i},${j})"><span class="n">${j + 1}</span><span class="t">${esc(msTitle(f))}</span><span class="m">${p ? Math.round(p.f.bpm) + ' BPM · ' + esc(p.f.key) : ''}</span></button>`;
-      }).join('') + `</div><div class="ms-mix-actions"><button class="ms-btn primary" onclick="msPlayMix(${i},0)">${MS_ICON.play} Play mix</button></div>`;
+      }).join('') + '</div>';
+      acts += `<button class="ms-btn primary" onclick="msPlayMix(${i},0)">${MS_ICON.play} Play mix</button>`;
     }
+    if (m.calm) acts += `<button class="ms-btn calm" onclick="msOpen('calm')">🌿 Start Calm Coach</button>`;
+    if (acts) h += `<div class="ms-mix-actions">${acts}</div>`;
+    if (m.logged) h += '<span class="ms-stats">📓 Saved to your Mood Journal</span>';
     return `<div class="ms-msg ai">${h}</div>`;
   }).join('');
   return html + (MS.thinking ? '<div class="ms-msg ai" aria-label="The DJ is thinking"><span class="ms-typing"><i></i><i></i><i></i></span></div>' : '');
@@ -3432,16 +3856,23 @@ function msSend(e) {
   const q = inp.value.trim(); if (!q) return;
   inp.value = ''; msAsk(q);
 }
-function msAsk(q) {
+function msAsk(q, opts = {}) {
   if (!q || MS.thinking) return;
   MS.chat.push({ role: 'user', text: q });
   MS.thinking = true; msRefreshChat();
   setTimeout(() => {
     let res;
-    try { res = MoodAI.respond(q, msLib(), { last: MS.last }); }
+    try { res = MoodAI.respond(q, msLib(), { last: MS.last, insights: msInsights() }); }
     catch (err) { console.error(err); res = { text: 'Oops — I got confused there. Try saying it another way.' }; }
     MS.thinking = false;
-    MS.chat.push({ role: 'ai', text: res.text, mix: res.mix || null });
+    const msg = { role: 'ai', text: res.text, mix: res.mix || null, calm: !!res.calm, crisis: !!res.crisis };
+    // Feelings told to the DJ go into the Mood Journal too (stored only in this browser).
+    const it = res.mix && res.mix.intent;
+    if (!opts.noLog && !res.crisis && it && it.feelings && it.feelings.length && it.from) {
+      msLog({ type: 'chat', key: it.fromKey, v: it.from.v, a: it.from.a, note: q.slice(0, 80) });
+      msg.logged = true;
+    }
+    MS.chat.push(msg);
     if (res.mix) {
       MS.last = { ids: res.mix.ids, from: res.mix.from, to: res.mix.to, ramp: res.mix.ramp, intent: res.mix.intent };
       MS.path = { ids: res.mix.ids, from: res.mix.from, to: res.mix.to, ramp: res.mix.ramp };
@@ -3457,7 +3888,7 @@ function msPlayIds(ids, start) {
   start = Math.max(0, Math.min(start || 0, tracks.length - 1));
   S.queue = tracks; S.qi = start;
   const f = tracks[start]; S.current = f;
-  aud.src = `/stream/${f.id}`; aud.play(); S.playing = true;
+  aud.src = `/stream/${f.id}`; aud.play().catch(() => {}); S.playing = true;
   syncPlayerUI(f); render();
   if (!S.meta[f.id]) fetchMeta(f);
 }
@@ -3484,15 +3915,41 @@ function msToggleSpeak() {
   if (!MS.speak && window.speechSynthesis) speechSynthesis.cancel();
   toast(MS.speak ? 'The AI DJ will speak its replies' : 'Voice replies off');
 }
+// Lower the music while the AI is talking. Counted, so overlapping voices restore the right volume.
+let _msDuckN = 0, _msDuckVol = 1, _msFade = null;
+function msDuck(on) {
+  if (on) {
+    if (_msDuckN++ === 0 && !_msFade) { _msDuckVol = aud.volume; aud.volume = Math.min(aud.volume, Math.max(0.12, aud.volume * 0.35)); }
+  } else if (_msDuckN > 0 && --_msDuckN === 0 && !_msFade) aud.volume = _msDuckVol;
+}
+function msUtter(text, rate) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = rate;
+  let started = false, ended = false;
+  u.onstart = () => { started = true; msDuck(true); };
+  u.onend = u.onerror = () => { if (started && !ended) { ended = true; msDuck(false); } };
+  return u;
+}
 function msSpeakText(text) {
   if (!window.speechSynthesis) return;
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(String(text).replace(/[“”"]/g, '').slice(0, 320));
-  u.rate = 1.02;
-  let prevVol = null;
-  u.onstart = () => { prevVol = aud.volume; aud.volume = Math.min(aud.volume, 0.2); };   // duck the music
-  u.onend = u.onerror = () => { if (prevVol !== null) aud.volume = prevVol; };
-  speechSynthesis.speak(u);
+  speechSynthesis.speak(msUtter(String(text).replace(/[“”"]/g, '').slice(0, 320), 1.02));
+}
+// Fade the music out, pause it and put the volume back.
+function msFadeOut(ms = 4000) {
+  clearInterval(_msFade); _msFade = null;
+  if (aud.paused) return;
+  const v0 = aud.volume, src = aud.src, t0 = performance.now();
+  _msFade = setInterval(() => {
+    let k = Math.min(1, (performance.now() - t0) / ms);
+    if (aud.src !== src) k = 1;
+    else aud.volume = v0 * (1 - k) * (1 - k);
+    if (k >= 1) {
+      clearInterval(_msFade); _msFade = null;
+      if (aud.src === src) aud.pause();
+      _msDuckN = 0; aud.volume = S.volume;
+    }
+  }, 50);
 }
 function msMic() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -3521,8 +3978,577 @@ function msMic() {
   } catch (_) { toast('Could not start the microphone'); }
 }
 
+// ── Shared helpers ──
+function msSetText(id, t) { const el = document.getElementById(id); if (el && el.textContent !== t) el.textContent = t; }
+function msRng(seed) {   // small seeded random so the plan you preview is the plan you get
+  let a = (seed >>> 0) || 1;
+  return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+const MS_EMO = Object.assign(Object.fromEntries(MoodAI.CHECKINS.map(c => [c[0], c[1]])),
+  { bored: '😐', romantic: '🥰', nostalgic: '🌅', confident: '😎', 'calm-session': '🌿' });
+const MS_FEEL = Object.assign(Object.fromEntries(MoodAI.CHECKINS.map(c => [c[0], c[2]])),
+  { bored: 'Bored', romantic: 'Romantic', nostalgic: 'Nostalgic', confident: 'Confident' });
+function msSudsWord(v) {
+  return v <= 1 ? 'Calm and relaxed' : v <= 3 ? 'A little uneasy' : v <= 5 ? 'Tense — stress is building'
+    : v <= 7 ? 'Very stressed' : v <= 9 ? 'Extremely anxious' : 'The worst it gets';
+}
+function msMins(m) {
+  if (m < 1) { const s = Math.max(5, Math.round(m * 60)); return `${s} seconds`; }
+  const r = Math.round(m); return `${r} minute${r === 1 ? '' : 's'}`;
+}
+function msWhen(t) {
+  const d = new Date(t), diff = Date.now() - t, day0 = new Date(); day0.setHours(0, 0, 0, 0);
+  const hm = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  if (diff < 60000) return 'just now';
+  if (diff < 3600000) return Math.round(diff / 60000) + ' min ago';
+  if (t >= day0.getTime()) return 'Today ' + hm;
+  if (t >= day0.getTime() - 86400000) return 'Yesterday ' + hm;
+  if (diff < 6 * 86400000) return d.toLocaleDateString([], { weekday: 'short' }) + ' ' + hm;
+  return d.toLocaleDateString([], { day: 'numeric', month: 'short' }) + ' ' + hm;
+}
+const msDayFmt = t => new Date(t).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' });
+function msSupportHTML(strong, id, hidden) {
+  const body = strong ? esc(MoodAI.SUPPORT)
+    : "That's a lot to carry. This session can help right now — and if you feel this bad often, please talk to someone you trust: a parent, teacher or school counsellor. In India, Tele-MANAS is free and open 24/7 on 14416.";
+  return `<div class="ms-support"${id ? ` id="${id}"` : ''}${hidden ? ' hidden' : ''} role="note"><b>💛 You're not alone</b><span>${body}</span>
+    <div class="ms-support-acts"><a class="ms-btn" href="tel:14416">📞 Tele-MANAS 14416</a>${strong ? '<a class="ms-btn" href="tel:112">🚨 Emergency 112</a>' : ''}</div></div>`;
+}
+function msHomeLinks() {
+  return `<div class="ms-home-links" aria-label="MoodSense AI">
+    <button class="ms-home-link" onclick="msOpen('dj')">✨ AI DJ</button>
+    <button class="ms-home-link" onclick="msOpen('calm')">🌿 Calm Coach</button>
+    <button class="ms-home-link" onclick="msOpen('journal')">📓 Mood Journal</button></div>`;
+}
+
+// ══ Calm Coach ══
+const MS_GROUND = [   // 5-4-3-2-1 grounding, spread through the session
+  [0.12, '👀 Look around and quietly name 5 things you can see.'],
+  [0.26, '✋ Notice 4 things you can feel — your feet on the floor, the chair, your hands.'],
+  [0.40, '👂 Listen for 3 sounds, beyond the music too.'],
+  [0.54, '👃 Notice 2 things you can smell.'],
+  [0.68, '👅 Notice 1 thing you can taste.'],
+  [0.82, '💙 Let your shoulders drop and your jaw relax. You are safe right now.'],
+];
+const MS_CUE = { in: 'Breathe in', hold: 'Hold', out: 'Breathe out', rest: 'Rest' };
+const MS_SAY = { in: 'Breathe in', hold: 'Hold', out: 'And breathe out, slowly', rest: 'Rest' };
+const MS_PAT = { calm: 'Calm 4-6', box: 'Box 4-4-4-4', sleep: 'Sleep 4-7-8' };
+const msCyc = ph => ph.reduce((a, p) => a + p[1], 0);
+const msCalmCount = min => Math.max(2, Math.min(6, Math.round(min * 60 / 200) + 1));
+function msBpm() {
+  const p = S.current && MS.byId[S.current.id];
+  return p && !aud.paused ? p.f.bpm : 0;
+}
+function msCalmPlan() {
+  const c = MS.calm, lib = msLib();
+  if (!c.music || !lib.length) return null;
+  const ins = msInsights();
+  return MoodAI.calmPlan(lib, c.before, msCalmCount(c.minutes), ins.personal,
+    msRng(c.before * 97 + c.minutes * 13 + ins.sessionCount * 7 + 1));
+}
+
+function msCalmHTML() {
+  const c = MS.calm;
+  if (c.phase === 'session' && c.s) return msSessionHTML();
+  if (c.phase === 'after') return msAfterHTML();
+  if (c.phase === 'result' && c.result) return msResultHTML();
+  return msCheckinHTML();
+}
+function msCheckinHTML() {
+  const c = MS.calm, strong = MoodAI.isCrisis(c.note), show = strong || c.before >= 9;
+  return `
+  <div class="ms-grid">
+    <section class="ms-card">
+      <div class="ms-card-hd">Before we start <small>about 10 seconds</small></div>
+      <label class="ms-q" for="ms-suds">How anxious or stressed do you feel right now?</label>
+      <div class="ms-suds">
+        <input type="range" id="ms-suds" min="0" max="10" step="1" value="${c.before}" oninput="msCalmLevel(this.value)" aria-describedby="ms-suds-word">
+        <output id="ms-suds-out" for="ms-suds">${c.before}</output>
+      </div>
+      <div class="ms-suds-scale"><span>0 · totally calm</span><span>5 · tense</span><span>10 · worst ever</span></div>
+      <div class="ms-suds-word" id="ms-suds-word">${msSudsWord(c.before)}</div>
+      <label class="ms-q" for="ms-calm-note">What's on your mind? <small>optional · stays on this laptop</small></label>
+      <input class="ms-text" id="ms-calm-note" maxlength="140" placeholder="e.g. Maths test tomorrow" value="${esc(c.note)}" oninput="msCalmNote(this.value)">
+      <div class="ms-gap"></div>
+      ${msSupportHTML(strong, 'ms-calm-support', !show)}
+      <div class="ms-opts">
+        <div><div class="ms-opt-l">Length</div><div class="ms-seg" role="group" aria-label="Session length">${[3, 5, 10].map(m =>
+          `<button class="${c.minutes === m ? 'on' : ''}" aria-pressed="${c.minutes === m}" onclick="msCalmSet('minutes',${m})">${m} min</button>`).join('')}</div></div>
+        <div><div class="ms-opt-l">Breathing</div><div class="ms-seg" role="group" aria-label="Breathing pattern">${Object.keys(MoodAI.BREATH).map(k =>
+          `<button class="${c.pattern === k ? 'on' : ''}" aria-pressed="${c.pattern === k}" onclick="msCalmSet('pattern','${k}')" title="${esc(MoodAI.BREATH[k].label)}">${MS_PAT[k]}</button>`).join('')}</div></div>
+      </div>
+      <div class="ms-checks">
+        <label><input type="checkbox" ${c.voice ? 'checked' : ''} onchange="MS.calm.voice=this.checked"> Spoken guidance — a calm voice talks you through it</label>
+        <label><input type="checkbox" ${c.ground ? 'checked' : ''} onchange="MS.calm.ground=this.checked"> Grounding prompts (5-4-3-2-1)</label>
+        <label><input type="checkbox" ${c.music ? 'checked' : ''} onchange="msCalmSet('music',this.checked)"> Calming music from my songs</label>
+      </div>
+      <button class="ms-btn primary big" id="ms-calm-go" onclick="msCalmStart()">🌿 Start ${c.minutes}-minute session</button>
+    </section>
+    <div class="ms-col">
+      <section class="ms-card"><div class="ms-card-hd">What the AI has planned <small>updates with your answer</small></div>
+        <div id="ms-calm-plan">${msCalmPlanHTML()}</div></section>
+      <section class="ms-card"><div class="ms-card-hd">Why this works</div>
+        <ul class="ms-why">
+          <li><b>Long, slow breaths out</b> switch on the vagus nerve, which slows your heart and tells your body it is safe.</li>
+          <li><b>About 6 breaths a minute</b> (“resonance breathing”) is linked in studies to lower anxiety. The AI starts closer to your stressed pace and slows you down gradually.</li>
+          <li><b>The iso principle</b> from music therapy: the music starts near how you feel, then steps down in energy so your body follows.</li>
+          <li><b>5-4-3-2-1 grounding</b> pulls your attention back to the present and away from worries.</li>
+          <li><b>It learns.</b> You rate your anxiety before and after (the 0–10 SUDS scale psychologists use), and the AI remembers which songs calm you most.</li>
+        </ul>
+        <div class="ms-note">Calm Coach is a wellbeing tool, not medical treatment. If anxiety stops you doing everyday things, talk to a doctor or counsellor.</div>
+      </section>
+    </div>
+  </div>`;
+}
+function msCalmPlanHTML() {
+  const c = MS.calm, plan = msCalmPlan(), ins = msInsights();
+  const rate = ph => (60 / msCyc(ph)).toFixed(1).replace(/\.0$/, '');
+  const ph0 = MoodAI.breathPhases(c.pattern, 0, 0), ph1 = MoodAI.breathPhases(c.pattern, 1, 0);
+  let music;
+  if (!c.music) music = '<p class="ms-plan-p">Music is off — just breathing and guidance.</p>';
+  else if (!plan) music = `<p class="ms-plan-p">The AI hasn't listened to your songs yet. Open the <b>AI DJ</b> tab and press “Let the AI listen” to add music that steps your energy down. The breathing works without it.</p>`;
+  else music = `<div class="ms-plan-l">Music · ${plan.picks.length} of your songs, energy stepping down</div><div class="ms-plan-songs">` +
+    plan.picks.map((p, i) => `<div class="ms-plan-row"><span class="n">${i + 1}</span><span class="t">${esc(p.title)}${p.id === plan.fav && ins.personal[p.id] ? ` <em class="ms-fav">★ calmed you before (−${ins.personal[p.id].toFixed(1)})</em>` : ''}</span><span class="m">${Math.round(p.f.bpm)} BPM · energy ${Math.round(p.a * 100)}%</span></div>`).join('') + '</div>';
+  return `${music}<div class="ms-plan-l">Breathing · ${esc(MoodAI.BREATH[c.pattern].label)}</div>
+    <p class="ms-plan-p">Starts at ${rate(ph0)} breaths a minute, close to how you breathe when stressed, then slows to ${rate(ph1)}.${plan ? ' Each breath is timed to the beat of the song that is playing.' : ''}</p>`;
+}
+function msCalmSet(k, v) { MS.calm[k] = v; render(); }
+function msCalmLevel(v) {
+  MS.calm.before = +v;
+  msSetText('ms-suds-out', String(v)); msSetText('ms-suds-word', msSudsWord(+v));
+  msCalmSupport();
+  const pl = document.getElementById('ms-calm-plan'); if (pl) pl.innerHTML = msCalmPlanHTML();
+}
+function msCalmNote(v) { MS.calm.note = String(v).slice(0, 140); msCalmSupport(); }
+function msCalmSupport() {
+  const el = document.getElementById('ms-calm-support'); if (!el) return;
+  const strong = MoodAI.isCrisis(MS.calm.note), show = strong || MS.calm.before >= 9;
+  if (el.hidden === !show && el.dataset.strong === String(strong)) return;
+  el.outerHTML = msSupportHTML(strong, 'ms-calm-support', !show);
+  const nu = document.getElementById('ms-calm-support'); if (nu) nu.dataset.strong = String(strong);
+}
+
+function msCalmStart() {
+  const c = MS.calm;
+  if (c.phase === 'session') return;
+  const plan = msCalmPlan();
+  c.s = {
+    elapsed: 0, last: performance.now(), lead: c.voice ? 6500 : 3000, paused: false, total: c.minutes * 60000,
+    cycleStart: 0, cycles: 0, phases: MoodAI.breathPhases(c.pattern, 0, 0), phaseKey: -1,
+    ground: 0, groundText: '', groundUntil: 0, plan, played: new Set(), music: !!plan, cue: 'Get comfortable…', count: '',
+  };
+  c.phase = 'session'; c.after = c.before; c.result = null;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  msCalmSay("Let's begin. Sit comfortably and follow the circle. Breathe in as it grows, and out as it shrinks.", true);
+  acquireWakeLock();
+  if (plan) {
+    const ids = plan.picks.map(p => p.id);
+    MS.path = { ids, from: plan.from, to: plan.to, ramp: true };
+    msPlayIds(ids, 0);              // re-renders the page
+  } else render();
+  msCalmEnsureLoop();
+}
+function msCalmEnsureLoop() {
+  const c = MS.calm;
+  if (c.phase !== 'session' || !c.s || c.raf) return;
+  c.s.last = performance.now();
+  c.raf = requestAnimationFrame(msCalmFrame);
+}
+function msCalmSay(text, prio) {
+  if (!MS.calm.voice || !window.speechSynthesis) return;
+  if (!prio && (speechSynthesis.speaking || speechSynthesis.pending)) return;   // never queue up stale cues
+  speechSynthesis.speak(msUtter(text, 0.88));
+}
+// One animation frame of the session: advance the clock, work out the breath phase, paint.
+function msCalmFrame(now) {
+  const c = MS.calm, s = c.s;
+  if (c.phase !== 'session' || !s) { c.raf = null; return; }
+  c.raf = requestAnimationFrame(msCalmFrame);
+  const dt = Math.min(250, Math.max(0, now - s.last)); s.last = now;
+  if (!s.paused) { if (s.lead > 0) s.lead -= dt; else s.elapsed += dt; }
+  const prog = Math.min(1, s.elapsed / s.total);
+  let k = 0;
+  if (s.lead > 0) { s.cue = 'Get comfortable…'; s.count = ''; }
+  else {
+    if (!s.started) { s.started = true; s.phases = MoodAI.breathPhases(c.pattern, 0, msBpm()); }   // music is playing by now
+    let cyc = msCyc(s.phases) * 1000;
+    while (s.elapsed - s.cycleStart >= cyc) {
+      s.cycleStart += cyc; s.cycles++;
+      s.phases = MoodAI.breathPhases(c.pattern, prog, msBpm());   // slows down as the session goes on
+      cyc = msCyc(s.phases) * 1000;
+    }
+    let tIn = s.elapsed - s.cycleStart, idx = 0;
+    while (idx < s.phases.length - 1 && tIn >= s.phases[idx][1] * 1000) { tIn -= s.phases[idx][1] * 1000; idx++; }
+    const [name, sec] = s.phases[idx], f = Math.min(1, tIn / (sec * 1000)), e = 0.5 - 0.5 * Math.cos(Math.PI * f);
+    k = name === 'in' ? e : name === 'hold' ? 1 : name === 'out' ? 1 - e : 0;
+    s.cue = MS_CUE[name]; s.count = String(Math.max(1, Math.ceil(sec - tIn / 1000)));
+    const key = s.cycles * 10 + idx;
+    if (key !== s.phaseKey) {
+      s.phaseKey = key;
+      if (!s.paused && (s.cycles < 3 || s.cycles % 4 === 0)) msCalmSay(MS_SAY[name]);
+    }
+  }
+  if (s.paused) { s.cue = 'Paused'; s.count = ''; }
+  if (c.ground && !s.paused) {
+    const g = MS_GROUND[s.ground];
+    if (g && prog >= g[0]) { s.ground++; s.groundText = g[1]; s.groundUntil = s.elapsed + 15000; msCalmSay(g[1].replace(/^\S+\s/, ''), true); }
+    if (s.groundText && s.elapsed > s.groundUntil) s.groundText = '';
+  }
+  if (s.plan && S.current && !aud.paused && s.plan.picks.some(p => p.id === S.current.id)) s.played.add(S.current.id);
+  msCalmPaint(0.55 + 0.45 * k, 262 - 92 * prog, prog);
+  if (prog >= 1) msCalmEnd(true);
+}
+function msLeft() {
+  const s = MS.calm.s, r = Math.max(0, Math.ceil((s.total - s.elapsed) / 1000));
+  return `${Math.floor(r / 60)}:${String(r % 60).padStart(2, '0')} left`;
+}
+const msRate = () => `${(60 / msCyc(MS.calm.s.phases)).toFixed(1)} breaths / min`;
+function msSongLine() {
+  const s = MS.calm.s;
+  if (!s.music) return 'Breathing only — no music';
+  const p = S.current && MS.byId[S.current.id];
+  if (!p || !s.plan.picks.some(x => x.id === p.id)) return '♪ Music stopped';
+  if (aud.paused) return '♪ Music paused';
+  return `♪ ${msTitle(S.current)} · ${Math.round(p.f.bpm)} BPM · breathing on the beat`;
+}
+function msCalmPaint(scale, hue, prog) {
+  const orb = document.getElementById('ms-orb'); if (!orb) return;
+  const s = MS.calm.s;
+  orb.style.transform = `scale(${scale.toFixed(4)})`;
+  orb.style.setProperty('--h', hue.toFixed(1));
+  msSetText('ms-cue', s.cue); msSetText('ms-cnt', s.count);
+  const pr = document.getElementById('ms-sess-prog'); if (pr) pr.style.width = (prog * 100).toFixed(2) + '%';
+  msSetText('ms-sess-left', msLeft()); msSetText('ms-sess-rate', msRate()); msSetText('ms-sess-song', msSongLine());
+  const g = document.getElementById('ms-ground');
+  if (g) { if (s.groundText) msSetText('ms-ground', s.groundText); g.classList.toggle('show', !!s.groundText); }
+}
+function msSessionHTML() {
+  const s = MS.calm.s, prog = Math.min(1, s.elapsed / s.total);
+  return `
+  <section class="ms-card ms-session">
+    <div class="ms-stage">
+      <div class="ms-stage-ring" aria-hidden="true"></div>
+      <div class="ms-orb" id="ms-orb" aria-hidden="true"></div>
+      <div class="ms-stage-txt"><div class="ms-cue" id="ms-cue" aria-live="polite">${esc(s.cue)}</div><div class="ms-cnt" id="ms-cnt">${esc(s.count)}</div></div>
+    </div>
+    <div class="ms-ground${s.groundText ? ' show' : ''}" id="ms-ground" aria-live="polite">${esc(s.groundText)}</div>
+    <div class="ms-sess-bar">
+      <div class="ms-bar"><i id="ms-sess-prog" style="width:${(prog * 100).toFixed(1)}%;transition:none"></i></div>
+      <div class="ms-sess-meta"><span id="ms-sess-left">${msLeft()}</span><span id="ms-sess-rate">${msRate()}</span><span id="ms-sess-song">${esc(msSongLine())}</span></div>
+    </div>
+    <div class="ms-sess-actions">
+      <button class="ms-btn" id="ms-pause" onclick="msCalmPause()">${s.paused ? 'Resume' : 'Pause'}</button>
+      <button class="ms-btn primary" onclick="msCalmEnd(false)">I feel calmer — finish</button>
+      <button class="ms-btn" onclick="msCalmStop()">Stop</button>
+    </div>
+  </section>`;
+}
+function msCalmPause() {
+  const s = MS.calm.s; if (!s) return;
+  s.paused = !s.paused;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  if (s.music && S.current && s.plan.picks.some(p => p.id === S.current.id)) { if (s.paused) aud.pause(); else aud.play().catch(() => {}); }
+  msSetText('ms-pause', s.paused ? 'Resume' : 'Pause');
+}
+function msCalmEnd(finished) {
+  const c = MS.calm, s = c.s;
+  if (c.phase !== 'session' || !s) return;
+  if (c.raf) cancelAnimationFrame(c.raf);
+  c.raf = null;
+  c.done = Math.max(0.1, Math.round(s.elapsed / 6000) / 10);
+  c.phase = 'after'; c.after = c.before;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  msCalmSay(finished ? 'Well done. When you are ready, tell me how you feel now.' : 'Well done.', true);
+  if (s.music) msFadeOut(4000);
+  setTimeout(() => { if (aud.paused) releaseWakeLock(); }, 4500);
+  if (S.view === 'mood' && MS.tab === 'calm') render();
+  else toast('Calm session finished — open Calm Coach to see how you feel');
+}
+function msCalmStop(rerender = true) {
+  const c = MS.calm, s = c.s;
+  if (c.raf) cancelAnimationFrame(c.raf);
+  c.raf = null;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  if (s && s.music) msFadeOut(1500);
+  c.phase = 'checkin'; c.s = null;
+  if (rerender) render();
+}
+function msAfterHTML() {
+  const c = MS.calm;
+  return `
+  <section class="ms-card ms-result">
+    <div class="ms-done-ic" aria-hidden="true">🌿</div>
+    <h2 class="ms-h2">Well done — you gave yourself ${msMins(c.done)}.</h2>
+    <p class="ms-res-msg">Take one more slow breath. Now rate how you feel, the same way as before.</p>
+    <div class="ms-after-box">
+      <label class="ms-q" for="ms-suds2">How anxious or stressed do you feel now?</label>
+      <div class="ms-suds">
+        <input type="range" id="ms-suds2" min="0" max="10" step="1" value="${c.after}" oninput="msCalmAfter(this.value)" aria-describedby="ms-suds2-word">
+        <output id="ms-suds2-out" for="ms-suds2">${c.after}</output>
+      </div>
+      <div class="ms-suds-scale"><span>0 · totally calm</span><span>10 · worst ever</span></div>
+      <div class="ms-suds-word" id="ms-suds2-word">${msSudsWord(c.after)}</div>
+    </div>
+    <p class="ms-note">Before the session you said <b>${c.before}</b>.</p>
+    <button class="ms-btn primary big" onclick="msCalmSave()">See my result</button>
+  </section>`;
+}
+function msCalmAfter(v) { MS.calm.after = +v; msSetText('ms-suds2-out', String(v)); msSetText('ms-suds2-word', msSudsWord(+v)); }
+function msCalmSave() {
+  const c = MS.calm, s = c.s || {}, ids = s.played ? [...s.played] : [];
+  const r = { before: c.before, after: c.after, minutes: c.done, pattern: c.pattern, ids, crisis: MoodAI.isCrisis(c.note) };
+  msLog({ type: 'calm', key: 'calm-session', before: r.before, after: r.after, minutes: r.minutes, pattern: r.pattern, ids, note: c.note.slice(0, 140) });
+  c.result = r; c.phase = 'result'; c.note = ''; c.s = null;
+  render();
+}
+function msResultHTML() {
+  const r = MS.calm.result, d = r.before - r.after, pct = r.before ? Math.round(d / r.before * 100) : 0;
+  const msg = r.before === 0 && r.after === 0 ? 'You were already calm — a great time to practise, so it is easier when stress shows up.'
+    : d >= 3 ? `Your anxiety dropped from ${r.before} to ${r.after}. Your body has moved out of “fight or flight” towards “rest and digest”.`
+    : d >= 1 ? `From ${r.before} down to ${r.after}. A little calmer is still progress — it adds up every time you practise.`
+    : d === 0 ? `Still at ${r.after}. That's okay — some days are harder. Try a longer session or box breathing, or tell someone how you feel.`
+    : `You feel a bit worse (${r.before} → ${r.after}). That can happen. Please talk to someone you trust about what is going on.`;
+  const lo = Math.min(r.before, r.after), hi = Math.max(r.before, r.after);
+  const ins = msInsights();
+  const learned = r.ids.length && d > 0 ? `<p class="ms-note">🧠 The AI noted the ${r.ids.length} song${r.ids.length > 1 ? 's' : ''} that played, so next time it can favour the ones that calm you most.</p>`
+    : r.ids.length ? '<p class="ms-note">🧠 The AI noted the songs that played — next time it will try different ones.</p>' : '';
+  return `
+  <section class="ms-card ms-result">
+    <div class="ms-eyebrow">Your result</div>
+    <div class="ms-big" role="img" aria-label="Anxiety ${r.before} before, ${r.after} after"><span>${r.before}</span><span class="arr" aria-hidden="true">→</span><span>${r.after}</span></div>
+    <div class="ms-big-l">${d > 0 ? `${pct}% calmer` : d === 0 ? 'no change' : 'a bit higher'} · anxiety out of 10</div>
+    <div class="ms-scale" aria-hidden="true">
+      <div class="trk"></div><div class="seg" style="left:${lo * 10}%;width:${(hi - lo) * 10}%"></div>
+      <i class="b0" style="left:${r.before * 10}%"></i><i class="b1" style="left:${r.after * 10}%"></i>
+    </div>
+    <div class="ms-scale-l" aria-hidden="true"><span>0 · calm</span><span class="ms-lgs"><span class="ms-lg"><i style="background:#0d9488"></i>Before</span><span class="ms-lg"><i style="background:#5eead4"></i>After</span></span><span>10</span></div>
+    <p class="ms-res-msg">${msg}</p>
+    ${learned}
+    ${ins.sessionCount > 1 && ins.dropPct != null ? `<p class="ms-note">Across ${ins.sessionCount} sessions, Calm Coach has lowered your anxiety by ${ins.dropPct}% on average.</p>` : ''}
+    ${r.after >= 8 || d < 0 || r.crisis ? msSupportHTML(r.crisis) : ''}
+    <div class="ms-sess-actions">
+      <button class="ms-btn primary" onclick="msCalmAgain()">Another session</button>
+      <button class="ms-btn" onclick="msTab('journal')">Open my Mood Journal</button>
+    </div>
+  </section>`;
+}
+function msCalmAgain() { const c = MS.calm; c.phase = 'checkin'; if (c.result) c.before = c.result.after; render(); }
+
+// ══ Mood Journal ══
+const MS_FOLLOW = {
+  stressed: ['Stress is hard. A short Calm Coach session can bring it down.', 'Start Calm Coach', "msOpen('calm')"],
+  angry: ['Anger is a lot of energy. Slow breathing helps it pass faster.', 'Start Calm Coach', "msOpen('calm')"],
+  sad: ["I'm sorry you feel low. Want music that starts gentle and slowly lifts you?", 'Cheer-up mix', "msDjAsk('I am sad, cheer me up')"],
+  tired: ['Low on energy? I can build a mix that wakes you up gently.', 'Wake-up mix', "msDjAsk('I am tired, wake me up')"],
+  happy: ['Love that! Want a feel-good mix to keep it going?', 'Feel-good mix', "msDjAsk('I am happy, keep the good vibes going')"],
+  calm: ['Nice. Want some music to stay in this calm space?', 'Calm mix', "msDjAsk('I feel calm, keep it chill')"],
+  okay: ['Thanks for checking in.', '', ''],
+};
+function msCheckinCardHTML() {
+  const m = MS.jMsg, f = m && !m.crisis && MS_FOLLOW[m.key];
+  const follow = !m ? '' : m.crisis ? msSupportHTML(true)
+    : `<div class="ms-jmsg">✅ Saved. ${esc(f ? f[0] : '')}${f && f[1] ? ` <button class="ms-btn${f[2].includes('calm') ? ' calm' : ''}" onclick="${f[2]}">${f[1]}</button>` : ''}</div>`;
+  return `
+  <section class="ms-card">
+    <div class="ms-card-hd">How are you feeling right now? <small>one tap · saved only on this laptop</small></div>
+    <div class="ms-feels" role="group" aria-label="Pick a feeling">
+      ${MoodAI.CHECKINS.map(([k, e, l]) => `<button class="ms-feel${MS.jSel === k ? ' on' : ''}" data-k="${k}" aria-pressed="${MS.jSel === k}" onclick="msJPick('${k}')"><span class="e" aria-hidden="true">${e}</span><span>${l}</span></button>`).join('')}
+    </div>
+    <div class="ms-jrow">
+      <input class="ms-text" id="ms-j-note" maxlength="140" placeholder="Add a note (optional) — what happened?" aria-label="Note" onkeydown="if(event.key==='Enter')msJSave()">
+      <button class="ms-btn primary" id="ms-j-save" onclick="msJSave()" ${MS.jSel ? '' : 'disabled'}>Save check-in</button>
+    </div>
+    ${follow}
+  </section>`;
+}
+function msJPick(k) {
+  MS.jSel = k;
+  document.querySelectorAll('.ms-feel').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
+  const sv = document.getElementById('ms-j-save'); if (sv) sv.disabled = false;
+}
+function msJSave() {
+  const c = MoodAI.CHECKINS.find(x => x[0] === MS.jSel); if (!c) return;
+  const inp = document.getElementById('ms-j-note'), note = inp ? inp.value.trim().slice(0, 140) : '';
+  msLog({ type: 'checkin', key: c[0], v: c[3], a: c[4], note });
+  MS.jSel = null; MS.jMsg = { key: c[0], crisis: MoodAI.isCrisis(note) };
+  render();
+}
+function msJDel(t) { MS.journal = MS.journal.filter(e => e.t !== t); msJournalSave(); render(); }
+function msJSample() {
+  MS.journal = MS.journal.filter(e => !e.demo).concat(MoodAI.sampleWeek(msLib()));
+  MS.journal.sort((a, b) => a.t - b.t);
+  msJournalSave(); MS.jMsg = null; render();
+  toast('Loaded two sample weeks — clear them any time');
+}
+function msJClearDemo() { MS.journal = MS.journal.filter(e => !e.demo); msJournalSave(); render(); }
+function msJClear() {
+  if (!confirm('Delete every entry in your Mood Journal? This cannot be undone.')) return;
+  MS.journal = []; MS.jMsg = null; msJournalSave(); render();
+}
+function msJournalHTML() {
+  const ins = msInsights(), demo = MS.journal.some(e => e.demo);
+  const banner = demo ? `<div class="ms-demo"><span>👀 You are looking at <b>sample data</b> so you can see what the AI finds.</span><button class="ms-btn" onclick="msJClearDemo()">Clear sample data</button></div>` : '';
+  if (!ins.total) return `${msCheckinCardHTML()}
+    <section class="ms-card"><div class="ms-card-hd">Your insights</div>
+      <p class="ms-empty-txt">After a few check-ins the AI starts spotting patterns — which days stress you out, what time of day you feel low, and which songs calm you down best. Feelings you tell the AI DJ are added here too.</p>
+      <div class="ms-jfoot"><button class="ms-btn" onclick="msJSample()">Show me with a sample week</button><span>🔒 Your journal is saved only in this browser. Nothing is uploaded.</span></div>
+    </section>`;
+  const up = ins.scorePrev != null ? ins.score7 - ins.scorePrev : null;
+  const tiles = [
+    ['Mood score · 7 days', ins.score7 != null ? `${ins.score7}<small>/100</small>` : '—',
+      up != null ? `${up >= 0 ? '▲' : '▼'} ${Math.abs(up)} vs last week` : `${ins.count7} check-in${ins.count7 === 1 ? '' : 's'} this week`],
+    ['Calm Coach sessions', String(ins.sessionCount),
+      ins.dropPct != null ? `anxiety ${ins.dropPct >= 0 ? '↓' : '↑'} ${Math.abs(ins.dropPct)}% on average` : 'none yet'],
+    ['Check-in streak', `${ins.streak}<small> day${ins.streak === 1 ? '' : 's'}</small>`, ins.streak ? 'keep it going' : 'check in today to start one'],
+    ['Most common feeling', ins.top ? `${MS_EMO[ins.top] || ''} <span class="ms-tile-w">${esc(MS_FEEL[ins.top] || ins.top)}</span>` : '—', 'this week'],
+  ].map(([k, v, d]) => `<div class="ms-card ms-tile"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`).join('');
+
+  const li = [
+    ...ins.patterns.map(p => `<li><span class="ic" aria-hidden="true">🔎</span><div>${esc(p)}</div></li>`),
+    ...ins.nudges.map(n => n.kind === 'stress'
+      ? `<li><span class="ic" aria-hidden="true">🌿</span><div>${esc(n.text)}<br><button class="ms-btn calm" onclick="msTab('calm')">Start Calm Coach</button></div></li>`
+      : n.kind === 'support'
+      ? `<li class="warm"><span class="ic" aria-hidden="true">💬</span><div>${esc(n.text)} Free 24/7 helpline in India: Tele-MANAS 14416.</div></li>`
+      : `<li><span class="ic" aria-hidden="true">🏆</span><div>${esc(n.text)}</div></li>`),
+  ];
+  const insights = `<section class="ms-card"><div class="ms-card-hd">What the AI noticed <small>from ${ins.total} entries</small></div>
+    ${li.length ? `<ul class="ms-ins">${li.join('')}</ul>` : '<p class="ms-empty-txt">Keep checking in — after a few days the AI starts spotting patterns, like which days stress you out.</p>'}
+    <div class="ms-jfoot" style="margin-top:.8rem"><button class="ms-btn" onclick="msDjAsk('How have I been feeling?')">Ask the AI DJ for a summary</button></div></section>`;
+
+  const dayRows = ins.daily.map(d => `<tr><td>${esc(msDayFmt(d.t))}</td><td>${d.score == null ? '—' : d.score}</td><td>${d.n}</td><td>${esc(d.keys.map(k => MS_FEEL[k] || k).join(', '))}</td></tr>`).join('');
+  const line = `<section class="ms-card"><div class="ms-card-hd">Mood score · last 14 days <small>100 = happiest · average of each day</small></div>
+    <div class="ms-chart" id="ms-line"></div>
+    <details class="ms-tbl"><summary>Show as table</summary><table><thead><tr><th>Day</th><th>Mood score</th><th>Entries</th><th>Feelings</th></tr></thead><tbody>${dayRows}</tbody></table></details></section>`;
+
+  const ss = ins.sessions.slice(-8);
+  const sessRows = ss.map(s => `<tr><td>${esc(msWhen(s.t))}</td><td>${s.before}</td><td>${s.after}</td><td>${s.after - s.before > 0 ? '+' : ''}${s.after - s.before}</td><td>${s.minutes}</td></tr>`).join('');
+  const calm = `<section class="ms-card"><div class="ms-card-hd">Calm Coach results <small>anxiety 0–10, before and after</small></div>
+    ${ss.length ? `<div class="ms-lgs" style="margin-bottom:.35rem"><span class="ms-lg"><i style="background:#0d9488"></i>Before</span><span class="ms-lg"><i style="background:#5eead4"></i>After</span></div>
+      <div class="ms-chart" id="ms-dumb"></div>
+      <div class="ms-sum">On average <b>${ins.avgBefore.toFixed(1)} → ${ins.avgAfter.toFixed(1)}</b>${ins.dropPct != null ? ` · ${ins.dropPct >= 0 ? `${ins.dropPct}% calmer` : `${-ins.dropPct}% more anxious`}` : ''}</div>
+      <details class="ms-tbl"><summary>Show as table</summary><table><thead><tr><th>When</th><th>Before</th><th>After</th><th>Change</th><th>Minutes</th></tr></thead><tbody>${sessRows}</tbody></table></details>`
+    : `<p class="ms-empty-txt">No sessions yet. Your before-and-after scores will show up here.</p><div class="ms-jfoot"><button class="ms-btn calm" onclick="msTab('calm')">🌿 Try Calm Coach</button></div>`}</section>`;
+
+  const byId = new Map(S.audio.map(f => [f.id, f]));
+  const top = ins.topSongs.filter(t => byId.has(t.id));
+  const songs = top.length ? `<div class="ms-list">${top.map((t, i) => `<div class="ms-row"><span class="e">${['🥇', '🥈', '🥉'][i]}</span><span class="t"><b>${esc(msTitle(byId.get(t.id)))}</b><span>anxiety −${t.drop} on average · ${t.n} session${t.n > 1 ? 's' : ''}</span></span>
+      <button class="ms-row-btn" onclick="playFile('${t.id}')" aria-label="Play ${esc(msTitle(byId.get(t.id)))}">${MS_ICON.play}</button></div>`).join('')}</div>`
+    : '<p class="ms-empty-txt">After a few Calm Coach sessions with music, the AI learns which of your songs calm you down the most.</p>';
+  const recent = MS.journal.slice().sort((a, b) => b.t - a.t).slice(0, 6).map(e => {
+    const calmE = e.type === 'calm';
+    const title = calmE ? `Calm Coach · ${e.before} → ${e.after}` : `${esc(MS_FEEL[e.key] || e.key)}${e.type === 'chat' ? ' <em class="ms-via">via AI DJ</em>' : ''}`;
+    const sub = msWhen(e.t) + (calmE ? ` · ${msMins(e.minutes || 0)}` : '') + (e.note ? ' · ' + e.note : '');
+    return `<div class="ms-row"><span class="e" aria-hidden="true">${MS_EMO[calmE ? 'calm-session' : e.key] || '•'}</span><span class="t"><b>${title}</b><span>${esc(sub)}</span></span>
+      <button class="ms-row-btn x" onclick="msJDel(${e.t})" aria-label="Delete this entry" title="Delete">×</button></div>`;
+  }).join('');
+  const side = `<section class="ms-card"><div class="ms-card-hd">Songs that calm you best <small>learned from your sessions</small></div>${songs}
+    <div class="ms-card-hd" style="margin-top:1.1rem">Recent entries</div><div class="ms-list">${recent}</div></section>`;
+
+  return `${banner}${msCheckinCardHTML()}<div class="ms-tiles">${tiles}</div>
+    <div class="ms-grid even">${insights}${line}</div>
+    <div class="ms-grid even">${calm}${side}</div>
+    <div class="ms-jfoot">${demo ? '' : '<button class="ms-btn" onclick="msJSample()">Load a sample week</button>'}<button class="ms-btn" onclick="msJClear()">Clear journal</button>
+      <span>🔒 Your journal is saved only in this browser on this laptop. Nothing is uploaded.</span></div>`;
+}
+
+// ── Journal charts (SVG, drawn after the page is in place so they can measure their width) ──
+function msDrawCharts() {
+  const ins = msInsights();
+  const lb = document.getElementById('ms-line'); if (lb) msLineChart(lb, ins.daily);
+  const db = document.getElementById('ms-dumb'); if (db) msDumbbell(db, ins.sessions.slice(-8));
+}
+function msChartTip(box, lines) {
+  const tip = box.querySelector('.ms-ctip');
+  tip.replaceChildren();
+  lines.forEach((t, i) => { const el = document.createElement(i ? 'span' : 'b'); el.textContent = t; tip.append(el); });
+  tip.hidden = false;
+  return tip;
+}
+function msPlaceTip(tip, x, y, W) {
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  let tx = x + 14; if (tx + tw > W - 2) tx = x - tw - 14;
+  tip.style.left = Math.max(2, tx) + 'px'; tip.style.top = Math.max(2, y - th / 2) + 'px';
+}
+function msLineChart(box, daily) {
+  const W = Math.max(280, box.clientWidth), H = 210, L = 32, R = 34, T = 12, B = 26, iw = W - L - R, ih = H - T - B, n = daily.length;
+  const x = i => L + i * iw / (n - 1), y = v => T + (1 - v / 100) * ih;
+  let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Line chart of your daily mood score for the last 14 days">`;
+  for (const g of [0, 25, 50, 75, 100]) svg += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" class="g"/><text x="${L - 7}" y="${y(g) + 3.5}" class="yl">${g}</text>`;
+  daily.forEach((d, i) => {
+    if ((n - 1 - i) % 2 === 0) svg += `<text x="${x(i)}" y="${H - 8}" class="xl">${i === n - 1 ? 'Today' : esc(new Date(d.t).toLocaleDateString([], { weekday: 'short' }))}</text>`;
+  });
+  let path = '', pen = false;
+  daily.forEach((d, i) => { if (d.score == null) { pen = false; return; } path += `${pen ? 'L' : 'M'}${x(i).toFixed(1)} ${y(d.score).toFixed(1)}`; pen = true; });
+  svg += `<line class="xh" x1="0" x2="0" y1="${T}" y2="${T + ih}" visibility="hidden"/><path d="${path}" class="ln"/>`;
+  daily.forEach((d, i) => { if (d.score != null) svg += `<circle cx="${x(i)}" cy="${y(d.score)}" r="4" class="mk" data-i="${i}"/>`; });
+  let li = -1; daily.forEach((d, i) => { if (d.score != null) li = i; });
+  if (li >= 0) svg += `<text x="${x(li) + 9}" y="${y(daily[li].score) + 4}" class="dl">${daily[li].score}</text>`;
+  const cw = iw / (n - 1);
+  daily.forEach((d, i) => {
+    const lab = `${msDayFmt(d.t)}: ${d.score == null ? 'no entries' : `mood score ${d.score}, ${d.n} entr${d.n === 1 ? 'y' : 'ies'}`}`;
+    svg += `<rect class="hit" x="${x(i) - cw / 2}" y="${T}" width="${cw}" height="${ih}" tabindex="0" data-i="${i}" aria-label="${esc(lab)}"><title>${esc(lab)}</title></rect>`;
+  });
+  box.innerHTML = svg + '</svg><div class="ms-ctip" hidden></div>';
+  const xh = box.querySelector('.xh'), tipEl = box.querySelector('.ms-ctip');
+  const show = i => {
+    const d = daily[i];
+    xh.setAttribute('x1', x(i)); xh.setAttribute('x2', x(i)); xh.setAttribute('visibility', 'visible');
+    box.querySelectorAll('.mk').forEach(m => m.setAttribute('r', +m.dataset.i === i ? 6 : 4));
+    const lines = [msDayFmt(d.t), d.score == null ? 'No entries this day' : `Mood score ${d.score}`];
+    if (d.n) lines.push(d.keys.map(k => `${MS_EMO[k] || ''} ${MS_FEEL[k] || k}`).join('  ·  '));
+    msPlaceTip(msChartTip(box, lines), x(i), d.score == null ? T + ih / 2 : y(d.score), W);
+  };
+  const hide = () => { xh.setAttribute('visibility', 'hidden'); tipEl.hidden = true; box.querySelectorAll('.mk').forEach(m => m.setAttribute('r', 4)); };
+  box.querySelectorAll('.hit').forEach(r => {
+    const i = +r.dataset.i;
+    r.addEventListener('mouseenter', () => show(i)); r.addEventListener('focus', () => show(i));
+    r.addEventListener('mouseleave', hide); r.addEventListener('blur', hide);
+  });
+}
+function msDumbbell(box, rows) {
+  const W = Math.max(280, box.clientWidth), RH = 34, T = 22, B = 4, L = 92, R = 42, iw = W - L - R, H = T + rows.length * RH + B;
+  const x = v => L + v / 10 * iw;
+  let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Anxiety before and after each Calm Coach session">`;
+  for (let v = 0; v <= 10; v += 2) svg += `<line x1="${x(v)}" x2="${x(v)}" y1="${T - 4}" y2="${H - B}" class="g"/><text x="${x(v)}" y="12" class="xl">${v}</text>`;
+  rows.forEach((s, i) => {
+    const cy = T + i * RH + RH / 2, dl = s.after - s.before;
+    const dt = new Date(s.t), lab = dt.toLocaleDateString([], { weekday: 'short' }) + ' ' + dt.getDate();
+    svg += `<rect class="rowbg" x="0" y="${cy - RH / 2 + 2}" width="${W}" height="${RH - 4}" rx="6" data-i="${i}"/>
+      <text x="${L - 12}" y="${cy + 4}" class="rl">${esc(lab)}</text>
+      <line x1="${x(s.before)}" x2="${x(s.after)}" y1="${cy}" y2="${cy}" class="db"/>
+      <circle cx="${x(s.before)}" cy="${cy}" r="5.5" class="b0"/><circle cx="${x(s.after)}" cy="${cy}" r="5.5" class="b1"/>
+      <text x="${W - R + 12}" y="${cy + 4}" class="dl">${dl > 0 ? '+' : dl < 0 ? '−' : '±'}${Math.abs(dl)}</text>`;
+  });
+  rows.forEach((s, i) => {
+    const cy = T + i * RH + RH / 2;
+    const lab = `${msWhen(s.t)}: anxiety ${s.before} before, ${s.after} after`;
+    svg += `<rect class="hit" x="0" y="${cy - RH / 2}" width="${W}" height="${RH}" tabindex="0" data-i="${i}" aria-label="${esc(lab)}"><title>${esc(lab)}</title></rect>`;
+  });
+  box.innerHTML = svg + '</svg><div class="ms-ctip" hidden></div>';
+  const tipEl = box.querySelector('.ms-ctip');
+  const show = i => {
+    const s = rows[i], d = s.before - s.after, pct = s.before ? Math.round(d / s.before * 100) : 0;
+    box.querySelectorAll('.rowbg').forEach(r => r.classList.toggle('on', +r.dataset.i === i));
+    const lines = [msWhen(s.t), `Before ${s.before} → after ${s.after}`, d > 0 ? `${pct}% calmer · ${msMins(s.minutes || 0)}` : d === 0 ? `no change · ${msMins(s.minutes || 0)}` : `a bit higher · ${msMins(s.minutes || 0)}`];
+    msPlaceTip(msChartTip(box, lines), x(Math.max(s.before, s.after)), T + i * RH + RH / 2, W);
+  };
+  const hide = () => { tipEl.hidden = true; box.querySelectorAll('.rowbg').forEach(r => r.classList.remove('on')); };
+  box.querySelectorAll('.hit').forEach(r => {
+    const i = +r.dataset.i;
+    r.addEventListener('mouseenter', () => show(i)); r.addEventListener('focus', () => show(i));
+    r.addEventListener('mouseleave', hide); r.addEventListener('blur', hide);
+  });
+}
+let _msRsz;
+window.addEventListener('resize', () => {
+  clearTimeout(_msRsz);
+  _msRsz = setTimeout(() => { if (S.view === 'mood' && MS.tab === 'journal') msDrawCharts(); }, 150);
+});
+
 // ── Emotion map (canvas) ──
 function msAfterRender() {
+  if (MS.calm.phase === 'session') msCalmEnsureLoop();
+  if (MS.tab === 'journal') { msDrawCharts(); return; }
+  if (MS.tab !== 'dj') return;
   const cv = document.getElementById('ms-map');
   if (cv) {
     cv.addEventListener('mousemove', msMapMove);
@@ -3536,7 +4562,7 @@ function msAfterRender() {
   if (!MS.raf) MS.raf = requestAnimationFrame(msLoop);
 }
 function msLoop(time) {
-  if (S.view !== 'mood') { MS.raf = null; return; }
+  if (S.view !== 'mood' || MS.tab !== 'dj') { MS.raf = null; return; }
   msDrawMap(time || 0);
   MS.raf = requestAnimationFrame(msLoop);
 }
