@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mediabox</title>
+<title>Pratham's Playlist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Righteous&display=swap" rel="stylesheet">
@@ -972,6 +972,120 @@ kbd {
   font-family: 'Courier New', monospace;
   color: var(--text);
 }
+
+/* ══ MoodSense (AI) ══ */
+.ms-wrap { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.1rem; padding-bottom: 1rem; }
+.ms-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.ms-eyebrow { font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: #A78BFA; font-weight: 600; }
+.ms-title {
+  font-family: var(--font-heading); font-weight: 400; font-size: 2.4rem; line-height: 1.1;
+  margin: .2rem 0 .3rem; text-wrap: balance;
+  background: linear-gradient(120deg, #ddd6fe, #818CF8 45%, #34D399);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.ms-sub { color: var(--sub); font-size: .9rem; margin: 0; max-width: 62ch; line-height: 1.55; }
+.ms-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+.ms-btn {
+  display: inline-flex; align-items: center; gap: .45rem;
+  border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: var(--text);
+  border-radius: 999px; padding: .5rem 1rem; font: inherit; font-size: .8rem; font-weight: 500; cursor: pointer;
+  transition: background var(--ease), border-color var(--ease);
+}
+.ms-btn:hover { background: rgba(255,255,255,0.1); }
+.ms-btn:focus-visible, .ms-chip-btn:focus-visible, .ms-mood-btn:focus-visible { outline: 2px solid #818CF8; outline-offset: 2px; }
+.ms-btn.primary { background: linear-gradient(135deg, #6366F1, #8B5CF6); border-color: transparent; color: #fff; box-shadow: 0 6px 20px rgba(99,102,241,.35); }
+.ms-btn.primary:hover { filter: brightness(1.1); }
+.ms-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.ms-card {
+  background: rgba(10,10,24,0.62); border: 1px solid var(--border); border-radius: 16px;
+  backdrop-filter: blur(14px); padding: 1rem; display: flex; flex-direction: column; min-width: 0;
+}
+.ms-card-hd { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font-weight: 600; font-size: .95rem; margin-bottom: .75rem; }
+.ms-card-hd small { font-size: .7rem; color: var(--sub); font-weight: 400; letter-spacing: .04em; }
+
+.ms-status { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.ms-status-txt { flex: 1; min-width: 220px; font-size: .86rem; color: var(--sub); line-height: 1.5; }
+.ms-status-txt b { color: var(--text); font-weight: 600; }
+.ms-bar { height: 6px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; margin-top: .5rem; }
+.ms-bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #818CF8, #34D399); transition: width .3s ease; }
+.ms-now { font-size: .78rem; color: var(--sub); margin-top: .35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.ms-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, 1fr); gap: 1.1rem; }
+@media (max-width: 1000px) { .ms-grid { grid-template-columns: 1fr; } }
+
+.ms-map-box { position: relative; height: 440px; border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.28); }
+#ms-map { width: 100%; height: 100%; display: block; cursor: crosshair; }
+.ms-tip {
+  position: absolute; pointer-events: none; z-index: 3; max-width: 240px;
+  background: rgba(8,8,20,0.94); border: 1px solid var(--border); border-radius: 10px;
+  padding: .5rem .65rem; font-size: .74rem; line-height: 1.45; box-shadow: 0 10px 30px rgba(0,0,0,.5);
+}
+.ms-tip b { display: block; font-size: .8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ms-tip span { color: var(--sub); font-variant-numeric: tabular-nums; }
+.ms-empty-map { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: var(--sub); font-size: .85rem; padding: 2rem; }
+
+.ms-legend { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; margin-top: .75rem; }
+@media (max-width: 640px) { .ms-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ms-mood-btn {
+  display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: .1rem;
+  text-align: left; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--text);
+  border-radius: 12px; padding: .55rem .7rem; font: inherit; cursor: pointer; border-left: 3px solid var(--mc);
+  transition: background var(--ease);
+}
+.ms-mood-btn:hover { background: rgba(255,255,255,0.07); }
+.ms-mood-btn b { display: block; font-size: .82rem; }
+.ms-mood-btn span { font-size: .68rem; color: var(--sub); }
+
+.ms-chat { flex: 1; min-height: 300px; max-height: 430px; overflow-y: auto; display: flex; flex-direction: column; gap: .6rem; padding-right: .25rem; scrollbar-width: thin; }
+.ms-msg { max-width: 90%; padding: .6rem .8rem; border-radius: 14px; font-size: .84rem; line-height: 1.5; overflow-wrap: anywhere; }
+.ms-msg.user { align-self: flex-end; background: linear-gradient(135deg, #6366F1, #818CF8); color: #fff; border-bottom-right-radius: 4px; }
+.ms-msg.ai { align-self: flex-start; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+.ms-journey { display: block; margin-top: .4rem; font-size: .72rem; color: #c4b5fd; }
+.ms-stats { display: block; margin-top: .2rem; font-size: .7rem; color: var(--sub); font-variant-numeric: tabular-nums; }
+.ms-mix { margin-top: .55rem; border-top: 1px solid var(--border); padding-top: .4rem; display: flex; flex-direction: column; gap: .1rem; }
+.ms-mix-row { display: grid; grid-template-columns: 1.2rem minmax(0, 1fr) auto; gap: .5rem; align-items: center; padding: .28rem .35rem; border-radius: 8px; cursor: pointer; font-size: .78rem; border: none; background: none; color: inherit; font-family: inherit; text-align: left; }
+.ms-mix-row:hover { background: rgba(255,255,255,0.07); }
+.ms-mix-row .n { color: var(--sub); font-size: .7rem; font-variant-numeric: tabular-nums; }
+.ms-mix-row .t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ms-mix-row .m { color: var(--sub); font-size: .68rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ms-mix-actions { display: flex; gap: .4rem; margin-top: .5rem; }
+.ms-mix-actions .ms-btn { padding: .38rem .8rem; font-size: .74rem; }
+.ms-typing { display: inline-flex; gap: 4px; padding: .2rem 0; }
+.ms-typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--sub); animation: msDot 1s infinite ease-in-out; }
+.ms-typing i:nth-child(2) { animation-delay: .15s; } .ms-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes msDot { 0%, 80%, 100% { opacity: .25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+
+.ms-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin: .7rem 0 .55rem; }
+.ms-chip-btn { border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--sub); border-radius: 999px; padding: .32rem .7rem; font: inherit; font-size: .72rem; cursor: pointer; transition: color var(--ease), background var(--ease); }
+.ms-chip-btn:hover { color: var(--text); background: rgba(255,255,255,0.09); }
+.ms-input { display: flex; gap: .4rem; }
+.ms-input input {
+  flex: 1; min-width: 0; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 999px;
+  padding: .6rem 1rem; color: var(--text); font: inherit; font-size: .85rem; outline: none;
+}
+.ms-input input:focus { border-color: #818CF8; box-shadow: 0 0 0 3px rgba(129,140,248,.2); }
+.ms-icon-btn { width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: var(--text); display: grid; place-items: center; cursor: pointer; }
+.ms-icon-btn svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ms-icon-btn.send { background: linear-gradient(135deg, #6366F1, #8B5CF6); border-color: transparent; }
+.ms-icon-btn.on { color: #34D399; border-color: rgba(52,211,153,.5); }
+.ms-icon-btn.listening { color: #fff; background: #EF4444; border-color: transparent; animation: msPulse 1.2s infinite; }
+@keyframes msPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,.5); } 50% { box-shadow: 0 0 0 8px rgba(239,68,68,0); } }
+
+.ms-how { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+@media (max-width: 900px) { .ms-how { grid-template-columns: 1fr; } }
+.ms-step { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: .85rem .95rem; }
+.ms-step h4 { margin: 0 0 .35rem; font-size: .88rem; }
+.ms-step h4 em { font-style: normal; color: #A78BFA; margin-right: .35rem; }
+.ms-step p { margin: 0; font-size: .78rem; color: var(--sub); line-height: 1.55; }
+.ms-privacy { font-size: .74rem; color: var(--sub); margin-top: .7rem; }
+
+.mood-chip { display: inline-block; margin-left: .45rem; padding: .02rem .45rem; border-radius: 999px; font-size: .62rem; font-weight: 600; vertical-align: 1px; }
+.mood-hype       { color: #FBBF24; background: rgba(251,191,36,.13); }
+.mood-intense    { color: #F87171; background: rgba(248,113,113,.13); }
+.mood-melancholy { color: #A5B4FC; background: rgba(129,140,248,.15); }
+.mood-chill      { color: #5EEAD4; background: rgba(45,212,191,.13); }
+@media (prefers-reduced-motion: reduce) { .ms-typing i, .ms-icon-btn.listening { animation: none; } }
 </style>
 <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
 </head>
@@ -993,6 +1107,10 @@ kbd {
       <button class="side-nav-btn active" data-view="home" onclick="navigate('home')" tabindex="0">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Library
+      </button>
+      <button class="side-nav-btn" data-view="mood" onclick="navigate('mood')" tabindex="0">
+        <svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+        MoodSense AI
       </button>
       <button class="side-nav-btn" data-view="settings" onclick="navigate('settings')" tabindex="0">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
@@ -1244,6 +1362,7 @@ function render() {
   if (S.view === 'videos')   el.innerHTML = renderVideos();
   if (S.view === 'settings') el.innerHTML = renderSettings();
   if (S.view === 'playlist') el.innerHTML = renderPlaylistView();
+  if (S.view === 'mood')     el.innerHTML = renderMood();
   afterRender();
 }
 
@@ -1433,7 +1552,7 @@ function trackList(files) {
           </div>
           <div class="tr-meta">
             <div class="tr-name">${esc(title)}</div>
-            <div class="tr-artist">${esc(artist)}</div>
+            <div class="tr-artist">${esc(artist)}${moodChip(f.id)}</div>
           </div>
           <div class="tr-album">${esc(album)}</div>
           <div class="tr-dur-cell">
@@ -2563,6 +2682,7 @@ function afterRender(){
   const showSphere = (S.view==='home' && S.orbMode==='sphere' && S.audio.length && window.__sphereOK);
   if(showSphere) ensureSphere();
   else if(S.view!=='home') disposeSphere();
+  if(S.view==='mood') msAfterRender();
 }
 
 function ensureSphere(){
@@ -2602,6 +2722,918 @@ function spherePlay(){
   if(S.current && S.current.id===_sphereActive.id) togglePlay();
   else playFile(_sphereActive.id);
 }
+
+// ══════════════════════════════════════════
+//  MoodSense AI — listens to each song, maps its emotion, AI DJ chat
+// ══════════════════════════════════════════
+// MoodAICore is pure (no DOM, no globals) so it runs inside a Web Worker
+// and can be unit-tested on its own.
+function MoodAICore() {
+  const TAU = Math.PI * 2;
+  const avg = a => a.length ? a.reduce((s, x) => s + x, 0) / a.length : 0;
+  const clamp01 = x => Math.max(0, Math.min(1, x));
+
+  // ── Signal processing ─────────────────────
+  const hannCache = {}, twCache = {};
+  function hann(n) {
+    if (hannCache[n]) return hannCache[n];
+    const w = new Float64Array(n);
+    for (let i = 0; i < n; i++) w[i] = 0.5 - 0.5 * Math.cos(TAU * i / (n - 1));
+    return (hannCache[n] = w);
+  }
+  function twiddles(n) {
+    if (twCache[n]) return twCache[n];
+    const c = new Float64Array(n / 2), s = new Float64Array(n / 2);
+    for (let i = 0; i < n / 2; i++) { c[i] = Math.cos(-TAU * i / n); s[i] = Math.sin(-TAU * i / n); }
+    return (twCache[n] = { c, s });
+  }
+  // In-place iterative radix-2 FFT; n must be a power of two.
+  function fft(re, im) {
+    const n = re.length;
+    for (let i = 1, j = 0; i < n; i++) {
+      let bit = n >> 1;
+      for (; j & bit; bit >>= 1) j ^= bit;
+      j ^= bit;
+      if (i < j) { let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; }
+    }
+    const { c, s } = twiddles(n);
+    for (let len = 2; len <= n; len <<= 1) {
+      const half = len >> 1, step = n / len;
+      for (let i = 0; i < n; i += len) {
+        for (let k = 0; k < half; k++) {
+          const wr = c[k * step], wi = s[k * step], a = i + k, b = a + half;
+          const xr = re[b] * wr - im[b] * wi, xi = re[b] * wi + im[b] * wr;
+          re[b] = re[a] - xr; im[b] = im[a] - xi;
+          re[a] += xr; im[a] += xi;
+        }
+      }
+    }
+  }
+
+  // Krumhansl–Kessler key profiles (index 0 = tonic)
+  const KEY_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  const MAJOR = [6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88];
+  const MINOR = [6.33, 2.68, 3.52, 5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17];
+  function pearson(x, y) {
+    const n = x.length; let mx = 0, my = 0;
+    for (let i = 0; i < n; i++) { mx += x[i]; my += y[i]; }
+    mx /= n; my /= n;
+    let sxy = 0, sxx = 0, syy = 0;
+    for (let i = 0; i < n; i++) { const dx = x[i] - mx, dy = y[i] - my; sxy += dx * dy; sxx += dx * dx; syy += dy * dy; }
+    return sxx && syy ? sxy / Math.sqrt(sxx * syy) : 0;
+  }
+  function detectKey(chroma) {
+    let best = { r: -2, tonic: 0, mode: 'major' }, bestMaj = -2, bestMin = -2;
+    for (let t = 0; t < 12; t++) {
+      const pMaj = [], pMin = [];
+      for (let i = 0; i < 12; i++) { pMaj.push(MAJOR[(i - t + 12) % 12]); pMin.push(MINOR[(i - t + 12) % 12]); }
+      const rM = pearson(chroma, pMaj), rm = pearson(chroma, pMin);
+      bestMaj = Math.max(bestMaj, rM); bestMin = Math.max(bestMin, rm);
+      if (rM > best.r) best = { r: rM, tonic: t, mode: 'major' };
+      if (rm > best.r) best = { r: rm, tonic: t, mode: 'minor' };
+    }
+    return { key: `${KEY_NAMES[best.tonic]} ${best.mode}`, mode: best.mode, modeConf: Math.abs(bestMaj - bestMin) };
+  }
+
+  // x: mono samples (Float32Array), sr: sample rate. Returns the song's audio fingerprint.
+  function extractFeatures(x, sr) {
+    const N = 2048, H = 512, half = N / 2;
+    const nFrames = Math.floor((x.length - N) / H) + 1;
+    if (!(nFrames >= 16)) throw new Error('Audio too short to analyse');
+    const win = hann(N), binHz = sr / N, bassTop = Math.max(1, Math.round(150 / binHz));
+    // Onset bands: the beat lives in kick/bass, so lows count most and hi-hats least.
+    // Each band is averaged over its bins, so the many treble bins can't outvote the few bass bins.
+    const band = new Uint8Array(half + 1), bandN = [0, 0, 0], bandW = [1.0, 0.35, 0.08];
+    for (let k = 0; k <= half; k++) { const f = k * binHz; band[k] = f < 200 ? 0 : f < 4000 ? 1 : 2; bandN[band[k]]++; }
+    const re = new Float64Array(N), im = new Float64Array(N);
+    let prev = new Float64Array(half + 1), cur = new Float64Array(half + 1);
+    const rms = new Float64Array(nFrames), flux = new Float64Array(nFrames);
+    let centSum = 0, centW = 0, bassSum = 0, bassN = 0;
+    for (let t = 0; t < nFrames; t++) {
+      const off = t * H; let e = 0;
+      for (let i = 0; i < N; i++) { const v = x[off + i]; e += v * v; re[i] = v * win[i]; im[i] = 0; }
+      const r = Math.sqrt(e / N); rms[t] = r;
+      fft(re, im);
+      let mSum = 0, fSum = 0, pAll = 0, pBass = 0;
+      const fl = [0, 0, 0];
+      for (let k = 0; k <= half; k++) {
+        const p = re[k] * re[k] + im[k] * im[k], m = Math.sqrt(p);
+        mSum += m; fSum += m * k * binHz; pAll += p;
+        if (k <= bassTop) pBass += p;
+        const lm = Math.log(1 + 100 * m); cur[k] = lm;
+        const d = lm - prev[k]; if (d > 0) fl[band[k]] += d;
+      }
+      flux[t] = t ? bandW[0] * fl[0] / bandN[0] + bandW[1] * fl[1] / bandN[1] + bandW[2] * fl[2] / bandN[2] : 0;
+      if (r > 1e-3 && mSum > 0) { centSum += (fSum / mSum) * r; centW += r; }   // loudness-weighted brightness
+      if (r > 1e-3 && pAll > 0) { bassSum += pBass / pAll; bassN++; }
+      const tmp = prev; prev = cur; cur = tmp;
+    }
+    const mean = avg(Array.from(rms));
+    let vr = 0; for (let t = 0; t < nFrames; t++) vr += (rms[t] - mean) ** 2;
+    const dyn = mean > 0 ? Math.sqrt(vr / nFrames) / mean : 0;
+
+    // Tempo: autocorrelation of the detrended onset-strength envelope (spectral flux)
+    const fps = sr / H, W = Math.max(1, Math.round(fps * 0.5));
+    const pre = new Float64Array(nFrames + 1);
+    for (let t = 0; t < nFrames; t++) pre[t + 1] = pre[t] + flux[t];
+    const env = new Float64Array(nFrames); let envSum = 0;
+    for (let t = 0; t < nFrames; t++) {
+      const a = Math.max(0, t - W), b = Math.min(nFrames, t + W + 1);
+      const v = flux[t] - (pre[b] - pre[a]) / (b - a);
+      env[t] = v > 0 ? v : 0; envSum += env[t];
+    }
+    const minLag = Math.max(1, Math.floor(60 * fps / 200)), maxLag = Math.min(nFrames - 2, Math.ceil(60 * fps / 55));
+    const acLen = Math.min(nFrames - 1, 2 * maxLag + 3);
+    const ac = new Float64Array(acLen);
+    for (let L = 0; L < acLen; L++) {
+      let s = 0; for (let t = 0; t + L < nFrames; t++) s += env[t] * env[t + L];
+      ac[L] = s / (nFrames - L);
+    }
+    let best = minLag, bestS = -Infinity;
+    for (let L = minLag; L <= maxLag; L++) {
+      const z = Math.log2((60 * fps / L) / 120);
+      const sc = ac[L] * Math.exp(-0.5 * z * z / 0.81);   // tempo prior: log-normal around 120 BPM
+      if (sc > bestS) { bestS = sc; best = L; }
+    }
+    // Octave check: if the half-speed period is clearly stronger, the faster pulse was only
+    // sub-beats (e.g. hi-hats between kicks), so the real beat is the slower one.
+    // 3-tap sums keep beat periods that fall between whole frames from being under-counted.
+    // Measured on test kits: wrong half-beat picks score ≥1.17, correct picks 0.99–1.03.
+    const ac3 = L => ac[L - 1] + ac[L] + ac[L + 1];
+    const b2 = Math.round(best * 2);
+    if (b2 + 1 < acLen && 60 * fps / b2 >= 50 && ac3(b2) > ac3(best) * 1.10) best = b2;
+    let lag = best;
+    if (best > 1 && best + 1 < acLen) {
+      const a = ac[best - 1], b = ac[best], c = ac[best + 1], den = a - 2 * b + c;
+      if (den < 0) lag = best + 0.5 * (a - c) / den;      // parabolic peak refinement
+    }
+
+    // Key: chroma from long frames (8192 samples ≈ 2.7 Hz bins) + Krumhansl–Schmuckler
+    const N2 = 8192, half2 = N2 / 2, win2 = hann(N2);
+    const pc = new Int8Array(half2 + 1).fill(-1);
+    for (let k = 1; k <= half2; k++) {
+      const f = k * sr / N2;
+      if (f >= 65 && f <= 2100) pc[k] = ((Math.round(69 + 12 * Math.log2(f / 440)) % 12) + 12) % 12;
+    }
+    const chroma = new Array(12).fill(0);
+    const re2 = new Float64Array(N2), im2 = new Float64Array(N2);
+    for (let off = 0; off + N2 <= x.length; off += N2) {
+      for (let i = 0; i < N2; i++) { re2[i] = x[off + i] * win2[i]; im2[i] = 0; }
+      fft(re2, im2);
+      for (let k = 1; k <= half2; k++) if (pc[k] >= 0) chroma[pc[k]] += Math.sqrt(re2[k] * re2[k] + im2[k] * im2[k]);
+    }
+    const key = detectKey(chroma);
+
+    return {
+      energy: mean, dyn, bright: centW ? centSum / centW : 0, bass: bassN ? bassSum / bassN : 0,
+      onset: envSum / nFrames, bpm: Math.round((60 * fps / lag) * 10) / 10,
+      beat: ac[0] > 0 ? ac[best] / ac[0] : 0,
+      key: key.key, mode: key.mode, modeConf: key.modeConf,
+    };
+  }
+
+  // ── Emotion model (Russell's circumplex: valence × arousal) ──
+  const MOODS = {
+    hype:       { label: 'Hype',       desc: 'happy & energetic', color: '#FBBF24' },
+    intense:    { label: 'Intense',    desc: 'dark & powerful',   color: '#F87171' },
+    melancholy: { label: 'Melancholy', desc: 'sad & reflective',  color: '#A5B4FC' },
+    chill:      { label: 'Chill',      desc: 'calm & peaceful',   color: '#5EEAD4' },
+  };
+  const moodOf = (v, a) => a >= 0.5 ? (v >= 0.5 ? 'hype' : 'intense') : (v >= 0.5 ? 'chill' : 'melancholy');
+  function ranks(vals) {
+    const n = vals.length, idx = vals.map((_, i) => i).sort((i, j) => vals[i] - vals[j]), r = new Array(n);
+    for (let i = 0; i < n;) {
+      let j = i; while (j + 1 < n && vals[idx[j + 1]] === vals[idx[i]]) j++;
+      const val = n > 1 ? ((i + j) / 2) / (n - 1) : 0.5;
+      for (let k = i; k <= j; k++) r[idx[k]] = val;
+      i = j + 1;
+    }
+    return r;
+  }
+  // items: [{ id, f: features }] → each song's place on the emotion map (relative to the library)
+  function computeMoods(items) {
+    if (!items.length) return [];
+    const col = k => ranks(items.map(it => +it.f[k] || 0));
+    const E = col('energy'), B = col('bpm'), O = col('onset'), BA = col('bass'), BT = col('beat'), BR = col('bright');
+    const rawA = items.map((_, i) => 0.32 * E[i] + 0.22 * B[i] + 0.22 * O[i] + 0.12 * BA[i] + 0.12 * BT[i]);
+    const rawV = items.map((it, i) => {
+      const c = Math.min(1, (it.f.modeConf || 0) * 4);
+      const modeVal = it.f.mode === 'major' ? 0.5 + 0.5 * c : 0.5 - 0.5 * c;
+      return 0.50 * modeVal + 0.30 * BR[i] + 0.20 * B[i];   // major/minor is the strongest happy-vs-sad cue
+    });
+    const RA = ranks(rawA), RV = ranks(rawV);
+    return items.map((it, i) => {
+      const a = 0.7 * RA[i] + 0.3 * rawA[i], v = 0.7 * RV[i] + 0.3 * rawV[i];
+      return { id: it.id, v, a, mood: moodOf(v, a), energy: Math.round(a * 100),
+               vec: [E[i], B[i], O[i], BA[i], BT[i], BR[i], v, a], f: it.f };
+    });
+  }
+
+  // ── Language understanding (AI DJ) ─────────
+  // [pattern, valence, arousal, key]
+  const FEELINGS = [
+    [/\b(stress(ed|ful)?|anxious|anxiety|nervous|overwhelm(ed|ing)?|panic(king)?|pressure|worried|tense|scared)\b/, 0.30, 0.78, 'stressed'],
+    [/\b(sad|down|depress(ed|ing)?|unhappy|heart ?broken|lonely|alone|cry(ing)?|blue|upset|hurt|miserable|gloomy)\b/, 0.15, 0.25, 'sad'],
+    [/\b(angry|mad|furious|annoyed|irritated|frustrat(ed|ing)|rage|raging|pissed)\b/, 0.18, 0.88, 'angry'],
+    [/\b(happy|great|amazing|awesome|good|excited|joy(ful)?|cheerful|fantastic|wonderful|grateful|ecstatic|pumped)\b/, 0.85, 0.72, 'happy'],
+    [/\b(tired|exhausted|sleepy|drained|sluggish|lazy)\b/, 0.55, 0.12, 'tired'],
+    [/\b(bored|boring|meh)\b/, 0.60, 0.55, 'bored'],
+    [/\b(calm|relaxed|peaceful|cozy|chilled|content)\b/, 0.68, 0.20, 'calm'],
+    [/\b(romantic|in love|crush|love)\b/, 0.75, 0.35, 'romantic'],
+    [/\b(nostalgic|memories|throwback)\b/, 0.40, 0.35, 'nostalgic'],
+    [/\b(confident|powerful|unstoppable|boss)\b/, 0.60, 0.85, 'confident'],
+  ];
+  // How you want to feel. [pattern, toV, toA, key, impliedFromV, impliedFromA]
+  const SHIFTS = [
+    [/\b(cheer me up|make me (feel )?(happy|better)|lift my (mood|spirits)|feel better|uplift(ing)?|brighten my day)\b/, 0.88, 0.70, 'uplift', 0.18, 0.30],
+    [/\b(calm me down|help me (calm|relax|chill)( down)?|relax me|chill me out|de-?stress|soothe me|slow (it|things) down)\b/, 0.65, 0.16, 'calmdown', 0.30, 0.82],
+    [/\b(pump me up|hype me( up)?|energi[sz]e me|motivate me|motivation|get me (going|moving|hyped)|wake me up)\b/, 0.74, 0.95, 'energize', 0.50, 0.28],
+    [/\bhelp me (focus|concentrate|study)\b/, 0.58, 0.32, 'focus', null, null],
+    [/\b(help me (fall )?asleep|help me sleep|put me to sleep)\b/, 0.60, 0.06, 'sleep', 0.50, 0.45],
+  ];
+  const ACTIVITIES = [
+    [/\b(stud(y|ying)|exams?|test tomorrow|homework|focus(ing)?|concentrat(e|ing|ion)|revision|revis(e|ing)|reading|coding|assignment)\b/, 0.58, 0.32, 'focus'],
+    [/\b(gym|work ?out|exercis(e|ing)|running|run|jog(ging)?|lifting|cardio|training|sports?|cricket|football|basketball)\b/, 0.72, 0.95, 'workout'],
+    [/\b(party|partying|dance|dancing|celebrat(e|ing|ion)|birthday|club(bing)?)\b/, 0.88, 0.90, 'party'],
+    [/\b(sleep|sleeping|bed ?time|night ?time|late night|wind down|insomnia)\b/, 0.60, 0.08, 'sleep'],
+    [/\b(drive|driving|road ?trip|car ride|travel(l?ing)?|commute)\b/, 0.76, 0.62, 'drive'],
+    [/\b(morning|wake up|waking up|breakfast)\b/, 0.80, 0.55, 'morning'],
+    [/\b(meditat(e|ing|ion)|yoga|breath(e|ing))\b/, 0.62, 0.05, 'meditate'],
+    [/\b(cook(ing)?|clean(ing)?|chores)\b/, 0.76, 0.60, 'chores'],
+  ];
+  const VIBES = [
+    [/\b(hype|upbeat|energetic|bangers?|lit|fast|turn up|loud)\b/, 0.80, 0.88, 'hype'],
+    [/\b(chill|lo-?fi|slow|soft|mellow|smooth|acoustic|quiet)\b/, 0.68, 0.18, 'chill'],
+    [/\b(sad songs?|emotional|melanchol(y|ic)|heartbreak|cry songs?)\b/, 0.15, 0.25, 'melancholy'],
+    [/\b(dark|aggressive|intense|heavy|epic|angry songs?)\b/, 0.20, 0.86, 'intense'],
+  ];
+  const STOP = new Set(("i im i'm am a an the to for and of with want need give put on play some something " +
+    "music song songs track tracks me my mix playlist vibe vibes by from bit kinda kind today tonight now please can " +
+    "you could would just like that this is it its feel feeling really very so about be get make help any more lot also " +
+    "us our we your how are what who why when where was were has have had did does doing going got but not all one out " +
+    "up off over too ive dont cant will yeah yes okay ok hey hi hello").split(' '));
+
+  const GREET = [
+    "Hey! I'm your MoodSense DJ. Tell me how you're feeling or what you're doing — like “I'm stressed about exams” or “hype me up for the gym” — and I'll build a playlist from your own songs.",
+    "Hi there! How are you feeling today? Tell me your mood or what you're up to, and I'll pick the perfect songs from your library.",
+  ];
+  const HELP = "I listen to every song in your library and place it on an emotion map (sad ↔ happy, calm ↔ energetic). Then you can tell me:\n" +
+    "• how you feel — “I'm sad”, “I'm stressed”\n• what you're doing — “studying”, “gym”, “going to sleep”\n" +
+    "• how you want to feel — “cheer me up”, “calm me down”\n• a song or artist — “songs like 505”, “play Eminem”\n" +
+    "Ask “why these songs?” after a mix and I'll explain my picks.";
+  const THANKS = ['Anytime! Enjoy the music.', 'Happy listening!', "You're welcome — tell me if you want a different vibe."];
+  const AGAIN = ["Here's a fresh mix with the same vibe.", 'Another round — same mood, different songs.'];
+  const EMPATHY = {
+    stressed: 'That sounds stressful.', sad: "I'm sorry you're feeling down.", angry: "Sounds like you're fired up.",
+    tired: 'Sounds like your battery is low.', happy: 'Love that energy!', bored: 'Boredom detected.',
+    calm: 'Nice and calm.', romantic: 'Aww, something for the heart.', nostalgic: 'Feeling nostalgic.',
+    confident: 'Main-character energy.',
+  };
+  const GOAL = {
+    focus: "Here's music to help you focus — steady tempo, low distraction.",
+    workout: 'Beast mode: high tempo and heavy beats for your workout.',
+    party: 'Party mode on — bright, fast and loud.',
+    sleep: 'Winding down for the night — softer and slower as it goes.',
+    drive: 'Road-trip ready: upbeat with a smooth groove.',
+    morning: 'Good morning! Bright songs to start the day.',
+    meditate: 'Breathe in, breathe out — your calmest songs.',
+    chores: 'Upbeat tunes to make the chores fly by.',
+    uplift: "Let's lift your mood.", calmdown: "Let's bring things down slowly.", energize: "Let's get your energy up.",
+    hype: 'Pure hype, coming up.', chill: 'Chill vibes only.', melancholy: 'Deep and emotional, coming up.',
+    intense: 'Dark and powerful, coming up.',
+  };
+  const MATCH = {
+    stressed: "Here's music that meets you where you are.", sad: 'Here are some gentle songs that feel the way you do.',
+    angry: "Here's music with matching intensity — let it out.", tired: "Here's something soft and easy.",
+    happy: "Let's keep the good vibes going.", bored: "Here's something fun to shake things up.",
+    calm: "Here's music to keep it peaceful.", romantic: "Here's something warm and soft.",
+    nostalgic: "Here's something reflective.", confident: "Here's music to match your swagger.",
+  };
+  const FOLLOW = {
+    sad: 'Want me to lift your mood? Try “cheer me up”.', stressed: 'Want help calming down? Say “calm me down”.',
+    angry: 'When you\'re ready, say “calm me down”.', tired: 'Need a boost? Say “pump me up”.',
+  };
+  const RAMP = "I'll start close to how you feel and shift the mood a little with every song — music therapists call this the iso principle.";
+
+  const pick = (rng, arr) => arr[Math.floor(rng() * arr.length) % arr.length];
+  const short = (s, n = 42) => (s = String(s || '')).length > n ? s.slice(0, n - 1).trimEnd() + '…' : s;
+  const quote = s => '“' + short(s) + '”';
+  const norm = s => ' ' + String(s).toLowerCase().replace(/[’`]/g, "'").replace(/[^a-z0-9'\s-]/g, ' ').replace(/\s+/g, ' ').trim() + ' ';
+  const push = p => ({ v: clamp01(0.5 + (p.v - 0.5) * 1.25), a: clamp01(0.5 + (p.a - 0.5) * 1.25) });
+
+  function parseIntent(text) {
+    let t = norm(text);
+    const it = { feelings: [], from: null, to: null, fromKey: null, toKey: null, shift: false, count: null };
+    const cm = t.match(/\b(\d{1,2})\s*(songs?|tracks?|tunes?)\b/);
+    if (cm) it.count = Math.max(3, Math.min(15, +cm[1]));
+    const intense = /\b(very|really|super|extremely|totally)\b/.test(t);
+    let implied = null;
+    for (const [re, v, a, key, fv, fa] of SHIFTS) {
+      const m = t.match(re);
+      if (m) { it.to = { v, a }; it.toKey = key; it.shift = true; if (fv != null) implied = { v: fv, a: fa }; t = t.replace(m[0], ' '); break; }
+    }
+    for (const [re, v, a, key] of ACTIVITIES) {
+      const m = t.match(re);
+      if (m) {
+        it.to = { v, a }; it.toKey = key;   // an activity is more specific than a general goal
+        implied = null;                     // …and says where you're headed, so don't assume a starting mood
+        t = t.replace(m[0], ' '); break;
+      }
+    }
+    for (const [re, v, a, key] of FEELINGS) {
+      const m = t.match(re); if (!m) continue;
+      const before = t.slice(0, m.index).trim().split(' ').slice(-3).join(' ');
+      const neg = /\b(not|no|never|dont|don't|isnt|isn't|wasnt|wasn't|aint|ain't|cant|can't|hardly)\b/.test(before);
+      it.feelings.push({ key: neg ? (v >= 0.5 ? 'sad' : 'happy') : key, v: neg ? 1 - v : v, a });
+    }
+    if (!it.to) for (const [re, v, a, key] of VIBES) if (re.test(t)) { it.to = { v, a }; it.toKey = key; break; }
+    if (it.feelings.length) {
+      it.from = { v: avg(it.feelings.map(f => f.v)), a: avg(it.feelings.map(f => f.a)) };
+      it.fromKey = it.feelings[0].key;
+    } else if (implied) it.from = implied;
+    if (intense) { if (it.from) it.from = push(it.from); if (it.to) it.to = push(it.to); }
+    return it;
+  }
+
+  // Walk from → to across the emotion map, picking the nearest unused song at each step.
+  function buildMix(lib, from, to, n, rng = Math.random, exclude = new Set()) {
+    const pool = lib.filter(s => !exclude.has(s.id));
+    const src = pool.length >= Math.min(n, 3) ? pool : lib;
+    const picks = [], used = new Set();
+    for (let i = 0; i < n && picks.length < src.length; i++) {
+      const k = n === 1 ? 1 : i / (n - 1);
+      const tv = from.v + (to.v - from.v) * k + (rng() - 0.5) * 0.06;
+      const ta = from.a + (to.a - from.a) * k + (rng() - 0.5) * 0.06;
+      let best = null, bd = Infinity;
+      for (const s of src) {
+        if (used.has(s.id)) continue;
+        let d = (s.v - tv) ** 2 + (s.a - ta) ** 2;
+        if (picks.length) d += 0.015 * (s.vec[1] - picks[picks.length - 1].vec[1]) ** 2;   // smooth tempo changes
+        if (d < bd) { bd = d; best = s; }
+      }
+      if (!best) break;
+      used.add(best.id); picks.push(best);
+    }
+    return picks;
+  }
+  function makeMix(picks, from, to, ramp, intent) {
+    const counts = {};
+    picks.forEach(p => { counts[p.mood] = (counts[p.mood] || 0) + 1; });
+    const dom = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+    const fromM = moodOf(from.v, from.a), toM = moodOf(to.v, to.a);
+    return {
+      ids: picks.map(p => p.id), from, to, ramp, intent,
+      stats: `${picks.length} songs · avg ${Math.round(avg(picks.map(p => p.f.bpm)))} BPM · energy ${Math.round(avg(picks.map(p => p.a)) * 100)}% · mostly ${MOODS[dom].label}`,
+      journey: ramp && fromM !== toM ? `Mood journey: ${MOODS[fromM].label} → ${MOODS[toM].label}` : '',
+    };
+  }
+  function buildFromIntent(it, lib, rng, exclude, again) {
+    const n = it.count || 6;
+    const to = it.to || it.from, from = it.from || it.to;
+    const ramp = !!(it.from && it.to) && Math.hypot(from.v - to.v, from.a - to.a) > 0.15;
+    const picks = buildMix(lib, from, to, n, rng, exclude);
+    if (!picks.length) return { text: "I couldn't find songs for that yet — try scanning more music." };
+    const parts = [], fk = it.fromKey, tk = it.toKey, felt = it.feelings.length > 0;
+    if (again) parts.push(pick(rng, AGAIN));
+    else if (felt && it.to) { if (EMPATHY[fk]) parts.push(EMPATHY[fk]); if (GOAL[tk]) parts.push(GOAL[tk]); }
+    else if (felt) { if (EMPATHY[fk]) parts.push(EMPATHY[fk]); if (MATCH[fk]) parts.push(MATCH[fk]); }
+    else if (GOAL[tk]) parts.push(GOAL[tk]);
+    if (ramp && !again) parts.push(RAMP);
+    parts.push(`Starting with ${quote(picks[0].title)}.`);
+    const spoken = parts.filter(p => p !== RAMP).join(' ');
+    let text = parts.join(' ');
+    if (!again && felt && !it.to && FOLLOW[fk]) text += '\n' + FOLLOW[fk];
+    return { text, spoken, mix: makeMix(picks, from, to, ramp, it) };
+  }
+  function similarMix(seed, lib, n) {
+    const d = s => s.vec.reduce((acc, x, i) => acc + (x - seed.vec[i]) ** 2, 0);
+    const others = lib.filter(s => s.id !== seed.id).sort((a, b) => d(a) - d(b)).slice(0, n - 1);
+    const p = { v: seed.v, a: seed.a };
+    return {
+      text: `Here are songs that sound like ${quote(seed.title)} (${Math.round(seed.f.bpm)} BPM, ${seed.f.key}). I compared every song on tempo, energy, brightness, bass and beat strength and picked the ${others.length} closest.`,
+      spoken: `Here are songs that sound like ${short(seed.title)}.`,
+      mix: makeMix([seed, ...others], p, p, false, null),
+    };
+  }
+  function findSongs(query, lib) {
+    const q = norm(query).trim().split(' ').filter(w => w.length >= 3 && !STOP.has(w));
+    if (!q.length) return [];
+    const need = Math.ceil(q.length / 2);
+    return lib.map(s => {
+      const hay = norm(s.title + ' ' + (s.artist || ''));
+      let score = 0; for (const w of q) if (hay.includes(' ' + w)) score++;
+      return { s, score };
+    }).filter(x => x.score >= need).sort((a, b) => b.score - a.score);
+  }
+  function explainMix(last, lib) {
+    const songs = last.ids.map(id => lib.find(s => s.id === id)).filter(Boolean);
+    if (!songs.length) return "I don't have a mix to explain yet — ask me for one first!";
+    const tgt = MOODS[moodOf(last.to.v, last.to.a)];
+    return `I place every song on an emotion map using only its sound — tempo, energy, brightness, bass and musical key. ` +
+      `Your request pointed to the ${tgt.label} area (${tgt.desc}), so I picked the closest songs` +
+      (last.ramp ? ', starting near your current mood and moving one step closer with each song.' : '.') + '\n' +
+      songs.slice(0, 3).map(x => `• ${quote(x.title)}: ${Math.round(x.f.bpm)} BPM, ${x.f.key}, ${x.energy}% energy → ${MOODS[x.mood].label}`).join('\n');
+  }
+
+  // lib: [{ id, title, artist, v, a, mood, energy, vec, f }], ctx: { last } → { text, spoken?, mix? }
+  function respond(text, lib, ctx = {}, rng = Math.random) {
+    if (!lib.length) return { text: "I haven't listened to your songs yet — press “Let the AI listen” and I'll learn what each one feels like." };
+    const t = norm(text), words = t.trim().split(' ').length, last = ctx.last;
+    if (last && /\bwhy\b.*\b(these|this|those|that|them|songs?|picks?|picked|choose|chose|chosen|mix)\b|^\s*why\s*$/.test(t))
+      return { text: explainMix(last, lib) };
+    if (last && last.intent && (/\b(another (one|mix)|one more|more like (this|that|these)|again|different (songs|mix)|new mix|something else|more songs)\b/.test(t) || /^\s*(more|another)\s*$/.test(t)))
+      return buildFromIntent(last.intent, lib, rng, new Set(last.ids), true);
+    const it = parseIntent(text);
+    if (it.from || it.to) return buildFromIntent(it, lib, rng, new Set(), false);
+    if (/^\s*(hi+|hello|hey+|yo|hola|namaste|sup)\b/.test(t) && words <= 5) return { text: pick(rng, GREET) };
+    if (/\b(what can you do|how do(es)? (this|it|you) work|who are you|what are you)\b/.test(t) || /^\s*help\s*$/.test(t)) return { text: HELP };
+    if (/^\s*(thanks|thank you|thx|ty|nice|cool|awesome|love it|perfect)\b/.test(t) && words <= 6) return { text: pick(rng, THANKS) };
+    const lm = t.match(/\b(?:like|similar to|sounds like|same vibe as)\s+(.+)$/);
+    if (lm) { const hit = findSongs(lm[1], lib)[0]; if (hit) return similarMix(hit.s, lib, it.count || 6); }
+    const hits = findSongs(text, lib);
+    if (hits.length) {
+      const picks = hits.slice(0, it.count || 8).map(h => h.s), p = { v: avg(picks.map(x => x.v)), a: avg(picks.map(x => x.a)) };
+      return { text: `I found ${picks.length} song${picks.length > 1 ? 's' : ''} matching ${quote(text.trim())}. Starting with ${quote(picks[0].title)}.`, mix: makeMix(picks, p, p, false, null) };
+    }
+    const corners = [[0.78, 0.78], [0.78, 0.22], [0.22, 0.22], [0.22, 0.78]], used = new Set(), picks = [];
+    const n = Math.min(it.count || 6, lib.length);
+    while (picks.length < n) {
+      for (const [cv, ca] of corners) {
+        if (picks.length >= n) break;
+        let best = null, bd = Infinity;
+        for (const s of lib) { if (used.has(s.id)) continue; const dd = (s.v - cv) ** 2 + (s.a - ca) ** 2; if (dd < bd) { bd = dd; best = s; } }
+        if (best) { used.add(best.id); picks.push(best); }
+      }
+    }
+    const mid = { v: 0.5, a: 0.5 };
+    return {
+      text: "I couldn't quite read a mood from that, so here's a taste of all four corners of your emotion map. Tell me how you feel (“I'm tired”), what you're doing (“studying”, “gym”) or how you want to feel (“cheer me up”).",
+      mix: makeMix(picks, mid, mid, false, null),
+    };
+  }
+
+  return { fft, hann, detectKey, extractFeatures, computeMoods, moodOf, MOODS, parseIntent, buildMix, respond };
+}
+
+// ── MoodSense UI ──────────────────────────
+const MoodAI = MoodAICore();
+const MS = {
+  feats: {}, ver: 0, sigVer: -1, sigAudio: null, points: [], byId: {},
+  analyzing: false, prog: { done: 0, total: 0, current: '' },
+  chat: [], thinking: false, last: null, path: null, hover: null, how: false,
+  speak: false, rec: null, raf: null, mapPts: [],
+};
+try {
+  const c = JSON.parse(localStorage.getItem('moodsense_v1') || 'null');
+  if (c && c.v === 1 && c.feats) MS.feats = c.feats;
+} catch (_) {}
+function msSave() { try { localStorage.setItem('moodsense_v1', JSON.stringify({ v: 1, feats: MS.feats })); } catch (_) {} }
+function msTitle(f) { return (S.meta[f.id] || {}).title || noExt(f.name); }
+
+const MS_ICON = {
+  ear:   '<svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>',
+  mic:   '<svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4M8 22h8"/></svg>',
+  send:  '<svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>',
+  voice: '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>',
+  play:  '<svg viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><polygon points="6 4 20 12 6 20"/></svg>',
+};
+
+// Recompute each song's emotion only when the analysis or the library changes.
+function msEnsure() {
+  if (MS.sigVer === MS.ver && MS.sigAudio === S.audio) return;
+  MS.sigVer = MS.ver; MS.sigAudio = S.audio;
+  const items = S.audio.filter(f => MS.feats[f.id] && !MS.feats[f.id].error).map(f => ({ id: f.id, f: MS.feats[f.id] }));
+  MS.points = MoodAI.computeMoods(items);
+  MS.byId = {};
+  for (const p of MS.points) MS.byId[p.id] = p;
+}
+function msLib() {
+  msEnsure();
+  const byId = new Map(S.audio.map(f => [f.id, f]));
+  return MS.points.filter(p => byId.has(p.id)).map(p => {
+    const f = byId.get(p.id), m = S.meta[p.id] || {};
+    return { ...p, title: m.title || noExt(f.name), artist: m.artist || '' };
+  });
+}
+function moodChip(id) {
+  if (!MS.ver && !MS.points.length && !Object.keys(MS.feats).length) return '';
+  msEnsure();
+  const p = MS.byId[id];
+  return p ? `<span class="mood-chip mood-${p.mood}">${MoodAI.MOODS[p.mood].label}</span>` : '';
+}
+
+// ── Page ──
+function renderMood() {
+  msEnsure();
+  const hasMic = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  const n = MS.points.length;
+  return `
+  <div class="ms-wrap">
+    <div class="ms-head">
+      <div>
+        <div class="ms-eyebrow">AI · runs on this laptop</div>
+        <h1 class="ms-title">MoodSense</h1>
+        <p class="ms-sub">An AI that listens to your songs, works out the emotion of each one, and builds playlists from how you feel.</p>
+      </div>
+      <div class="ms-actions">
+        <button class="ms-btn" onclick="msToggleHow()">${MS.how ? 'Hide explanation' : 'How it works'}</button>
+        ${n && !MS.analyzing ? '<button class="ms-btn" onclick="msAnalyze(true)">Re-listen to all</button>' : ''}
+      </div>
+    </div>
+    ${MS.how ? msHowHTML() : ''}
+    <div class="ms-card" id="ms-status">${msStatusHTML()}</div>
+    <div class="ms-grid">
+      <section class="ms-card">
+        <div class="ms-card-hd">Emotion map <small id="ms-count">sad ↔ happy · calm ↔ energetic · ${n} songs</small></div>
+        <div class="ms-map-box">
+          <canvas id="ms-map" aria-label="Emotion map of your songs"></canvas>
+          ${n ? '' : '<div class="ms-empty-map" id="ms-empty">Songs appear here as the AI listens to them.</div>'}
+          <div class="ms-tip" id="ms-tip" hidden></div>
+        </div>
+        <div class="ms-legend" id="ms-legend">${msLegendHTML()}</div>
+      </section>
+      <section class="ms-card">
+        <div class="ms-card-hd"><span>AI DJ <small>tell me how you feel</small></span>
+          <button class="ms-icon-btn${MS.speak ? ' on' : ''}" id="ms-speak" style="width:32px;height:32px" onclick="msToggleSpeak()" title="Speak replies aloud" aria-label="Speak replies aloud">${MS_ICON.voice}</button>
+        </div>
+        <div class="ms-chat" id="ms-chat" data-lenis-prevent>${msChatHTML()}</div>
+        <div class="ms-chips" id="ms-chips">${msChipsHTML()}</div>
+        <form class="ms-input" onsubmit="msSend(event)">
+          <input id="ms-in" placeholder="How are you feeling?" autocomplete="off" aria-label="Message the AI DJ">
+          ${hasMic ? `<button type="button" class="ms-icon-btn" id="ms-mic" onclick="msMic()" title="Talk to the DJ" aria-label="Talk to the DJ">${MS_ICON.mic}</button>` : ''}
+          <button class="ms-icon-btn send" aria-label="Send">${MS_ICON.send}</button>
+        </form>
+      </section>
+    </div>
+  </div>`;
+}
+function msHowHTML() {
+  return `<div class="ms-card"><div class="ms-card-hd">How MoodSense works <small>signal processing + psychology + recommendation</small></div>
+    <div class="ms-how">
+      <div class="ms-step"><h4><em>1</em>Listen</h4><p>Each song is decoded and 45 seconds of it are analysed with a Fast Fourier Transform (2048-sample frames, 43 per second). From the spectrum the AI measures <b>tempo</b> (onset autocorrelation), <b>energy</b>, <b>brightness</b> (spectral centroid), <b>bass</b> and the <b>musical key</b> (Krumhansl–Schmuckler key finding).</p></div>
+      <div class="ms-step"><h4><em>2</em>Understand</h4><p>Those measurements become two scores from <b>Russell's circumplex model of emotion</b>: <b>arousal</b> (calm ↔ energetic) and <b>valence</b> (sad ↔ happy). Loud, fast, punchy songs score high arousal; bright sound, major keys and faster tempos lean happy.</p></div>
+      <div class="ms-step"><h4><em>3</em>Recommend</h4><p>The AI DJ reads your message for <b>feelings</b>, <b>activities</b> and <b>goals</b>, turns them into a point on the map, then picks the <b>nearest songs</b>. To change your mood it follows the <b>iso principle</b> from music therapy: start at your mood, move one small step per song.</p></div>
+    </div>
+    <div class="ms-privacy">Privacy: songs and typed messages never leave this laptop. (Voice input uses Chrome's speech service.)</div></div>`;
+}
+function msStatusHTML() {
+  const total = S.audio.length;
+  if (!total) return `<div class="ms-status"><div class="ms-status-txt"><b>No songs yet.</b> Add your music folder in Settings and scan it, then come back.</div><button class="ms-btn" onclick="navigate('settings')">Open Settings</button></div>`;
+  if (MS.analyzing) {
+    const { done, total: t, current } = MS.prog, pct = t ? Math.round(done / t * 100) : 0;
+    return `<div class="ms-status-txt"><b>Listening… ${done} / ${t}</b> — measuring tempo, energy, brightness, bass and key.
+      <div class="ms-bar"><i style="width:${pct}%"></i></div><div class="ms-now">Now: ${esc(current)}</div></div>`;
+  }
+  const analyzed = S.audio.filter(f => MS.feats[f.id]).length;
+  const failed = S.audio.filter(f => MS.feats[f.id] && MS.feats[f.id].error).length;
+  const missing = total - analyzed;
+  if (!analyzed) {
+    const secs = Math.max(10, Math.round(total * 1.2));
+    return `<div class="ms-status"><div class="ms-status-txt"><b>The AI hasn't heard your songs yet.</b> It will listen to all ${total} (about ${secs < 90 ? secs + ' seconds' : Math.round(secs / 60) + ' minutes'}) and work out each one's mood — no internet needed.</div>
+      <button class="ms-btn primary" onclick="msAnalyze(false)">${MS_ICON.ear} Let the AI listen</button></div>`;
+  }
+  return `<div class="ms-status"><div class="ms-status-txt"><b>Listened to ${analyzed - failed} song${analyzed - failed === 1 ? '' : 's'}.</b> ${failed ? `${failed} couldn't be decoded. ` : ''}${missing ? `${missing} new song${missing > 1 ? 's' : ''} not analysed yet.` : 'Every song now has a mood — try the AI DJ.'}</div>
+    ${missing ? `<button class="ms-btn primary" onclick="msAnalyze(false)">${MS_ICON.ear} Listen to ${missing} new</button>` : ''}</div>`;
+}
+function msLegendHTML() {
+  const counts = { hype: 0, intense: 0, melancholy: 0, chill: 0 };
+  MS.points.forEach(p => counts[p.mood]++);
+  return Object.entries(MoodAI.MOODS).map(([k, m]) =>
+    `<button class="ms-mood-btn" style="--mc:${m.color}" onclick="msPlayMood('${k}')" ${counts[k] ? '' : 'disabled'} title="Play every ${m.label} song">
+      <b>${m.label}</b><span>${counts[k]} song${counts[k] === 1 ? '' : 's'} · ${m.desc}</span></button>`).join('');
+}
+function msChips() {
+  const c = ["I'm stressed about exams", 'Hype me up for the gym', "I'm sad, cheer me up", 'Chill night vibes'];
+  if (S.current && MS.byId[S.current.id]) c.push('Songs like ' + msTitle(S.current).split(/\s+/).slice(0, 3).join(' '));
+  if (MS.last) c.push('Why these songs?');
+  return c;
+}
+function msChipsHTML() {
+  return msChips().map(c => `<button class="ms-chip-btn" data-q="${esc(c)}" onclick="msAsk(this.dataset.q)">${esc(c)}</button>`).join('');
+}
+function msChatHTML() {
+  if (!MS.chat.length) MS.chat.push({ role: 'ai', text: "Hi! I'm your MoodSense DJ. Tell me how you're feeling or what you're doing — like “I'm stressed about exams” or “hype me up for the gym” — and I'll build a playlist from your own songs." });
+  const byId = new Map(S.audio.map(f => [f.id, f]));
+  const html = MS.chat.map((m, i) => {
+    if (m.role === 'user') return `<div class="ms-msg user">${esc(m.text)}</div>`;
+    let h = esc(m.text).replace(/\n/g, '<br>');
+    if (m.mix) {
+      if (m.mix.journey) h += `<span class="ms-journey">${esc(m.mix.journey)}</span>`;
+      h += `<span class="ms-stats">${esc(m.mix.stats)}</span><div class="ms-mix">` + m.mix.ids.map((id, j) => {
+        const f = byId.get(id), p = MS.byId[id];
+        if (!f) return '';
+        return `<button class="ms-mix-row" onclick="msPlayMix(${i},${j})"><span class="n">${j + 1}</span><span class="t">${esc(msTitle(f))}</span><span class="m">${p ? Math.round(p.f.bpm) + ' BPM · ' + esc(p.f.key) : ''}</span></button>`;
+      }).join('') + `</div><div class="ms-mix-actions"><button class="ms-btn primary" onclick="msPlayMix(${i},0)">${MS_ICON.play} Play mix</button></div>`;
+    }
+    return `<div class="ms-msg ai">${h}</div>`;
+  }).join('');
+  return html + (MS.thinking ? '<div class="ms-msg ai" aria-label="The DJ is thinking"><span class="ms-typing"><i></i><i></i><i></i></span></div>' : '');
+}
+
+// ── Partial refreshes (keep the chat input and map intact) ──
+function msRefreshChat() {
+  const el = document.getElementById('ms-chat');
+  if (el) { el.innerHTML = msChatHTML(); el.scrollTop = el.scrollHeight; }
+  const chips = document.getElementById('ms-chips');
+  if (chips) chips.innerHTML = msChipsHTML();
+}
+function msRefreshStatus() {
+  const el = document.getElementById('ms-status');
+  if (el) el.innerHTML = msStatusHTML();
+}
+function msRefreshLegend() {
+  msEnsure();
+  const lg = document.getElementById('ms-legend'); if (lg) lg.innerHTML = msLegendHTML();
+  const ct = document.getElementById('ms-count'); if (ct) ct.textContent = `sad ↔ happy · calm ↔ energetic · ${MS.points.length} songs`;
+  if (MS.points.length) { const em = document.getElementById('ms-empty'); if (em) em.remove(); }
+}
+function msToggleHow() { MS.how = !MS.how; render(); }
+
+// ── Listening (analysis) ──
+let _msWorker, _msJob = 0;
+const _msJobs = new Map();
+function msWorker() {
+  if (_msWorker !== undefined) return _msWorker;
+  try {
+    const src = `const MoodAI=(${MoodAICore.toString()})();onmessage=e=>{const d=e.data;try{postMessage({id:d.id,features:MoodAI.extractFeatures(d.samples,d.sr)})}catch(err){postMessage({id:d.id,error:String((err&&err.message)||err)})}};`;
+    _msWorker = new Worker(URL.createObjectURL(new Blob([src], { type: 'text/javascript' })));
+    _msWorker.onmessage = e => {
+      const j = _msJobs.get(e.data.id); if (!j) return;
+      _msJobs.delete(e.data.id); clearTimeout(j.timer);
+      if (e.data.error) j.fail(e.data.error); else j.done(e.data.features);
+    };
+    _msWorker.onerror = () => {
+      _msWorker = null;
+      for (const j of _msJobs.values()) { clearTimeout(j.timer); j.crash(); }
+      _msJobs.clear();
+    };
+  } catch (_) { _msWorker = null; }
+  return _msWorker;
+}
+// Runs feature extraction in a background thread so the UI stays smooth; falls back to the main thread.
+function msExtract(samples, sr) {
+  const local = () => MoodAI.extractFeatures(samples, sr);
+  const w = msWorker();
+  if (!w) return Promise.resolve().then(local);
+  return new Promise((resolve, reject) => {
+    const id = ++_msJob;
+    const crash = () => { try { resolve(local()); } catch (e) { reject(e); } };
+    const timer = setTimeout(() => { _msJobs.delete(id); crash(); }, 30000);
+    _msJobs.set(id, { timer, done: resolve, fail: msg => reject(new Error(msg)), crash });
+    w.postMessage({ id, samples, sr });
+  });
+}
+// 45 s mono window starting ~30% into the song (skips intros).
+function msWindow(buf) {
+  const sr = buf.sampleRate, len = buf.length, n = Math.min(len, Math.round(45 * sr));
+  const start = len > n ? Math.round(Math.min(len - n, len * 0.3)) : 0;
+  const out = new Float32Array(n), ch = buf.numberOfChannels;
+  for (let c = 0; c < ch; c++) {
+    const d = buf.getChannelData(c);
+    for (let i = 0; i < n; i++) out[i] += d[start + i] / ch;
+  }
+  return out;
+}
+async function msAnalyze(force) {
+  if (MS.analyzing) return;
+  const list = S.audio.filter(f => force || !MS.feats[f.id]);
+  if (!list.length) { toast('MoodSense has already listened to every song'); return; }
+  const AC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  if (!AC) { toast('This browser cannot analyse audio — please use Chrome'); return; }
+  MS.analyzing = true; MS.prog = { done: 0, total: list.length, current: '' };
+  if (S.view === 'mood') render();
+  const actx = new AC(1, 1, 22050);   // decodeAudioData resamples to 22.05 kHz
+  let ok = 0;
+  for (const f of list) {
+    MS.prog.current = msTitle(f); msRefreshStatus();
+    try {
+      const res = await fetch(`/stream/${f.id}`);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const buf = await actx.decodeAudioData(await res.arrayBuffer());
+      const feats = await msExtract(msWindow(buf), buf.sampleRate);
+      feats.duration = Math.round(buf.duration);
+      MS.feats[f.id] = feats; ok++;
+    } catch (err) {
+      console.warn('MoodSense could not analyse', f.name, err);
+      MS.feats[f.id] = { error: true };
+    }
+    MS.prog.done++; MS.ver++;
+    msSave(); msRefreshStatus(); msRefreshLegend();
+  }
+  MS.analyzing = false; MS.ver++;
+  toast(`MoodSense listened to ${ok} song${ok === 1 ? '' : 's'}`);
+  if (S.view === 'mood' || S.view === 'home') render();
+}
+
+// ── AI DJ chat ──
+function msSend(e) {
+  if (e) e.preventDefault();
+  const inp = document.getElementById('ms-in'); if (!inp) return;
+  const q = inp.value.trim(); if (!q) return;
+  inp.value = ''; msAsk(q);
+}
+function msAsk(q) {
+  if (!q || MS.thinking) return;
+  MS.chat.push({ role: 'user', text: q });
+  MS.thinking = true; msRefreshChat();
+  setTimeout(() => {
+    let res;
+    try { res = MoodAI.respond(q, msLib(), { last: MS.last }); }
+    catch (err) { console.error(err); res = { text: 'Oops — I got confused there. Try saying it another way.' }; }
+    MS.thinking = false;
+    MS.chat.push({ role: 'ai', text: res.text, mix: res.mix || null });
+    if (res.mix) {
+      MS.last = { ids: res.mix.ids, from: res.mix.from, to: res.mix.to, ramp: res.mix.ramp, intent: res.mix.intent };
+      MS.path = { ids: res.mix.ids, from: res.mix.from, to: res.mix.to, ramp: res.mix.ramp };
+    }
+    msRefreshChat();
+    if (MS.speak) msSpeakText(res.spoken || res.text);
+  }, 500 + Math.random() * 400);
+}
+function msPlayIds(ids, start) {
+  const byId = new Map(S.audio.map(f => [f.id, f]));
+  const tracks = ids.map(id => byId.get(id)).filter(Boolean);
+  if (!tracks.length) return;
+  start = Math.max(0, Math.min(start || 0, tracks.length - 1));
+  S.queue = tracks; S.qi = start;
+  const f = tracks[start]; S.current = f;
+  aud.src = `/stream/${f.id}`; aud.play(); S.playing = true;
+  syncPlayerUI(f); render();
+  if (!S.meta[f.id]) fetchMeta(f);
+}
+function msPlayMix(mi, j) {
+  const m = MS.chat[mi]; if (!m || !m.mix) return;
+  MS.path = { ids: m.mix.ids, from: m.mix.from, to: m.mix.to, ramp: m.mix.ramp };
+  msPlayIds(m.mix.ids, j);
+}
+function msPlayMood(k) {
+  msEnsure();
+  const [cv, ca] = { hype: [0.78, 0.78], intense: [0.22, 0.78], melancholy: [0.22, 0.22], chill: [0.78, 0.22] }[k];
+  const d = p => (p.v - cv) ** 2 + (p.a - ca) ** 2;
+  const ids = MS.points.filter(p => p.mood === k).sort((a, b) => d(a) - d(b)).map(p => p.id);
+  if (!ids.length) return;
+  MS.path = { ids: ids.slice(0, 12), from: null, to: null, ramp: false };
+  msPlayIds(ids, 0);
+  toast(`Playing ${ids.length} ${MoodAI.MOODS[k].label} song${ids.length === 1 ? '' : 's'}`);
+}
+
+// ── Voice in / voice out ──
+function msToggleSpeak() {
+  MS.speak = !MS.speak;
+  const b = document.getElementById('ms-speak'); if (b) b.classList.toggle('on', MS.speak);
+  if (!MS.speak && window.speechSynthesis) speechSynthesis.cancel();
+  toast(MS.speak ? 'The AI DJ will speak its replies' : 'Voice replies off');
+}
+function msSpeakText(text) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(String(text).replace(/[“”"]/g, '').slice(0, 320));
+  u.rate = 1.02;
+  let prevVol = null;
+  u.onstart = () => { prevVol = aud.volume; aud.volume = Math.min(aud.volume, 0.2); };   // duck the music
+  u.onend = u.onerror = () => { if (prevVol !== null) aud.volume = prevVol; };
+  speechSynthesis.speak(u);
+}
+function msMic() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast('Voice input needs Google Chrome'); return; }
+  if (MS.rec) { MS.rec.stop(); return; }
+  const r = new SR();
+  r.lang = navigator.language || 'en-US'; r.interimResults = true; r.maxAlternatives = 1;
+  let heard = '';
+  r.onresult = e => {
+    heard = Array.from(e.results).map(x => x[0].transcript).join('');
+    const inp = document.getElementById('ms-in'); if (inp) inp.value = heard;
+  };
+  r.onerror = e => {
+    if (e.error === 'not-allowed') toast('Allow microphone access to talk to the DJ');
+    else if (e.error !== 'no-speech' && e.error !== 'aborted') toast('Voice input error: ' + e.error);
+  };
+  r.onend = () => {
+    MS.rec = null;
+    const b = document.getElementById('ms-mic'); if (b) b.classList.remove('listening');
+    const q = heard.trim();
+    if (q) { const inp = document.getElementById('ms-in'); if (inp) inp.value = ''; msAsk(q); }
+  };
+  try {
+    r.start(); MS.rec = r;
+    const b = document.getElementById('ms-mic'); if (b) b.classList.add('listening');
+  } catch (_) { toast('Could not start the microphone'); }
+}
+
+// ── Emotion map (canvas) ──
+function msAfterRender() {
+  const cv = document.getElementById('ms-map');
+  if (cv) {
+    cv.addEventListener('mousemove', msMapMove);
+    cv.addEventListener('mouseleave', () => {
+      MS.hover = null;
+      const tip = document.getElementById('ms-tip'); if (tip) tip.hidden = true;
+    });
+    cv.addEventListener('click', () => { if (MS.hover) playFile(MS.hover); });
+  }
+  const chat = document.getElementById('ms-chat'); if (chat) chat.scrollTop = chat.scrollHeight;
+  if (!MS.raf) MS.raf = requestAnimationFrame(msLoop);
+}
+function msLoop(time) {
+  if (S.view !== 'mood') { MS.raf = null; return; }
+  msDrawMap(time || 0);
+  MS.raf = requestAnimationFrame(msLoop);
+}
+function msMapMove(e) {
+  const cv = e.currentTarget, r = cv.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+  let best = null, bd = 14 * 14;
+  for (const p of MS.mapPts) { const d = (p.x - mx) ** 2 + (p.y - my) ** 2; if (d < bd) { bd = d; best = p; } }
+  MS.hover = best ? best.id : null;
+  cv.style.cursor = best ? 'pointer' : 'crosshair';
+  const tip = document.getElementById('ms-tip'); if (!tip) return;
+  const pt = best && MS.byId[best.id], f = best && S.audio.find(x => x.id === best.id);
+  if (!pt || !f) { tip.hidden = true; return; }
+  const artist = (S.meta[f.id] || {}).artist, mood = MoodAI.MOODS[pt.mood];
+  tip.innerHTML = `<b>${esc(msTitle(f))}</b>${artist ? `<span>${esc(artist)}</span><br>` : ''}` +
+    `<span>${Math.round(pt.f.bpm)} BPM · ${esc(pt.f.key)} · energy ${pt.energy}%</span><br>` +
+    `<span style="color:${mood.color}">${mood.label}</span> <span>· click to play</span>`;
+  tip.hidden = false;
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  let tx = best.x + 14, ty = best.y - th - 10;
+  if (tx + tw > r.width - 6) tx = best.x - tw - 14;
+  if (ty < 6) ty = best.y + 14;
+  tip.style.left = tx + 'px'; tip.style.top = ty + 'px';
+}
+function msDrawMap(time) {
+  const cv = document.getElementById('ms-map'); if (!cv) return;
+  msEnsure();
+  const w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return;
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+  const g = cv.getContext('2d');
+  g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+  const P = 30, X = v => P + v * (w - 2 * P), Y = a => P + (1 - a) * (h - 2 * P), M = MoodAI.MOODS;
+
+  // Quadrants + labels
+  for (const [k, v0, a0, v1, a1] of [['intense', 0, .5, .5, 1], ['hype', .5, .5, 1, 1], ['melancholy', 0, 0, .5, .5], ['chill', .5, 0, 1, .5]]) {
+    g.fillStyle = M[k].color + '12';
+    g.fillRect(X(v0), Y(a1), X(v1) - X(v0), Y(a0) - Y(a1));
+    g.fillStyle = M[k].color + 'C0'; g.font = '600 11px Poppins, sans-serif';
+    const left = v0 < .5, top = a0 >= .5;
+    g.textAlign = left ? 'left' : 'right'; g.textBaseline = top ? 'top' : 'bottom';
+    g.fillText(M[k].label.toUpperCase(), left ? X(0) + 10 : X(1) - 10, top ? Y(1) + 10 : Y(0) - 10);
+  }
+  // Axes
+  g.strokeStyle = 'rgba(255,255,255,0.13)'; g.lineWidth = 1; g.setLineDash([4, 5]);
+  g.beginPath(); g.moveTo(X(.5), Y(1)); g.lineTo(X(.5), Y(0)); g.moveTo(X(0), Y(.5)); g.lineTo(X(1), Y(.5)); g.stroke();
+  g.setLineDash([]);
+  g.fillStyle = 'rgba(255,255,255,0.45)'; g.font = '500 10px Poppins, sans-serif'; g.textAlign = 'center';
+  g.textBaseline = 'top'; g.fillText('ENERGETIC', X(.5), 9);
+  g.textBaseline = 'bottom'; g.fillText('CALM', X(.5), h - 8);
+  g.textBaseline = 'middle';
+  g.save(); g.translate(12, Y(.5)); g.rotate(-Math.PI / 2); g.fillText('SAD', 0, 0); g.restore();
+  g.save(); g.translate(w - 12, Y(.5)); g.rotate(Math.PI / 2); g.fillText('HAPPY', 0, 0); g.restore();
+
+  // Current mix: a mood journey is drawn as a route; any other mix as spokes from its goal
+  const pathPts = MS.path ? MS.path.ids.map(id => MS.byId[id]).filter(Boolean) : [];
+  if (pathPts.length > 1 && MS.path.ramp) {
+    g.strokeStyle = 'rgba(255,255,255,0.5)'; g.lineWidth = 1.5; g.setLineDash([5, 5]); g.lineDashOffset = -(time / 50) % 10;
+    g.beginPath(); pathPts.forEach((p, i) => i ? g.lineTo(X(p.v), Y(p.a)) : g.moveTo(X(p.v), Y(p.a))); g.stroke();
+    g.setLineDash([]); g.lineDashOffset = 0;
+  } else if (pathPts.length && MS.path.to) {
+    const gx = X(MS.path.to.v), gy = Y(MS.path.to.a);
+    g.strokeStyle = 'rgba(255,255,255,0.16)'; g.lineWidth = 1;
+    g.beginPath(); for (const p of pathPts) { g.moveTo(gx, gy); g.lineTo(X(p.v), Y(p.a)); } g.stroke();
+  }
+  // Songs
+  MS.mapPts = [];
+  const playing = S.current && S.current.id;
+  for (const p of MS.points) {
+    const x = X(p.v), y = Y(p.a), c = M[p.mood].color, hov = MS.hover === p.id, on = playing === p.id;
+    const r = on ? 8 + Math.sin(time / 260) * 1.6 : hov ? 8 : 5.5;
+    g.beginPath(); g.arc(x, y, r, 0, TAU_MS);
+    g.fillStyle = c; g.shadowColor = c; g.shadowBlur = on || hov ? 18 : 8; g.fill(); g.shadowBlur = 0;
+    if (on) { g.lineWidth = 2; g.strokeStyle = '#fff'; g.stroke(); }
+    MS.mapPts.push({ id: p.id, x, y });
+  }
+  // Numbered steps of the current mix
+  g.font = '600 9px Poppins, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  pathPts.forEach((p, i) => {
+    const x = X(p.v) + 9, y = Y(p.a) - 9;
+    g.fillStyle = 'rgba(8,8,20,0.92)'; g.beginPath(); g.arc(x, y, 7, 0, TAU_MS); g.fill();
+    g.fillStyle = '#fff'; g.fillText(String(i + 1), x, y + 0.5);
+  });
+  // You → Goal markers
+  if (MS.path && MS.path.to) {
+    g.strokeStyle = 'rgba(255,255,255,0.85)'; g.fillStyle = 'rgba(255,255,255,0.85)'; g.lineWidth = 1.5;
+    g.font = '600 10px Poppins, sans-serif'; g.textBaseline = 'bottom';
+    const tx = X(MS.path.to.v), ty = Y(MS.path.to.a), rr = 13 + Math.sin(time / 300) * 2;
+    g.beginPath(); g.arc(tx, ty, rr, 0, TAU_MS); g.stroke();
+    g.fillText('GOAL', tx, Math.max(14, ty - rr - 3));
+    if (MS.path.ramp && MS.path.from) {
+      const fx = X(MS.path.from.v), fy = Y(MS.path.from.a);
+      g.setLineDash([2, 3]); g.beginPath(); g.arc(fx, fy, 10, 0, TAU_MS); g.stroke(); g.setLineDash([]);
+      g.fillText('YOU', fx, Math.max(14, fy - 13));
+    }
+  }
+}
+const TAU_MS = Math.PI * 2;
 
 // ══════════════════════════════════════════
 init();
