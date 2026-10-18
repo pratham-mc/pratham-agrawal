@@ -631,6 +631,11 @@ body {
 .ctrl:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .ctrl.on { color: var(--accent); }
 .ctrl.on:hover { color: #4ade80; }
+#rep-btn { position: relative; }
+#rep-btn.one::after {
+  content: '1'; position: absolute; top: -3px; right: -4px; width: 13px; height: 13px; border-radius: 50%;
+  background: var(--accent); color: #0F0F23; font-size: 9px; font-weight: 800; line-height: 13px; text-align: center;
+}
 .pp-btn {
   width: 38px; height: 38px;
   background: var(--text);
@@ -1426,7 +1431,8 @@ function restorePrefs() {
     const p = JSON.parse(localStorage.getItem('mb_prefs') || '{}');
     S.volume = p.vol ?? 1;
     S.shuffle = p.shuffle ?? false;
-    S.repeat  = p.repeat ?? 'none';
+    // Prefs saved before v2 could have Repeat switched on by accident (Ctrl+Shift+R), so start those fresh.
+    S.repeat  = p.v >= 2 && ['none', 'all', 'one'].includes(p.repeat) ? p.repeat : 'none';
     S.orbMode = p.orbMode === 'sphere' ? 'sphere' : 'glow';
   } catch(_) {}
   aud.volume = S.volume;
@@ -1436,7 +1442,7 @@ function restorePrefs() {
 }
 
 function savePrefs() {
-  localStorage.setItem('mb_prefs', JSON.stringify({ vol: S.volume, shuffle: S.shuffle, repeat: S.repeat, orbMode: S.orbMode }));
+  localStorage.setItem('mb_prefs', JSON.stringify({ v: 2, vol: S.volume, shuffle: S.shuffle, repeat: S.repeat, orbMode: S.orbMode }));
 }
 
 async function loadConfig() {
@@ -2011,7 +2017,7 @@ function playPlaylist(plId) {
   S.queue = tracks; S.qi = 0;
   const f = tracks[0];
   S.current = f;
-  aud.src = `/stream/${f.id}`; aud.play(); S.playing = true;
+  aud.src = `/stream/${f.id}`; aud.play().catch(() => {}); S.playing = true;
   syncPlayerUI(f); render();
   if (!S.meta[f.id]) fetchMeta(f);
 }
@@ -2024,7 +2030,7 @@ function playPlaylistTrack(plId, idx) {
   if (!f) return;
   S.queue = tracks; S.qi = idx;
   S.current = f;
-  aud.src = `/stream/${f.id}`; aud.play(); S.playing = true;
+  aud.src = `/stream/${f.id}`; aud.play().catch(() => {}); S.playing = true;
   syncPlayerUI(f); render();
   if (!S.meta[f.id]) fetchMeta(f);
 }
@@ -2079,7 +2085,7 @@ function playFile(id, listIdx) {
   S.queue = pool;
   S.qi = listIdx != null ? listIdx : pool.findIndex(x => x.id === id);
   if (S.qi < 0) S.qi = 0;
-  aud.src = `/stream/${id}`; aud.play(); S.playing = true;
+  aud.src = `/stream/${id}`; aud.play().catch(() => {}); S.playing = true;
   syncPlayerUI(f); render();
   if (!S.meta[id]) fetchMeta(f);
 }
@@ -2092,7 +2098,10 @@ function togglePlay() {
 function nextTrack() {
   if (!S.queue.length) return;
   let ni;
-  if (S.shuffle) ni = Math.floor(Math.random() * S.queue.length);
+  if (S.shuffle) {
+    ni = Math.floor(Math.random() * S.queue.length);
+    if (ni === S.qi && S.queue.length > 1) ni = (ni + 1 + Math.floor(Math.random() * (S.queue.length - 1))) % S.queue.length;
+  }
   else { ni = S.qi + 1; if (ni >= S.queue.length) { if (S.repeat==='all') ni=0; else return; } }
   playQueued(ni);
 }
@@ -2291,7 +2300,8 @@ function syncShuf() {
 function syncRep() {
   const b = document.getElementById('rep-btn');
   b.classList.toggle('on', S.repeat !== 'none');
-  const t = S.repeat === 'one' ? 'Repeat One' : S.repeat === 'all' ? 'Repeat All' : 'Repeat';
+  b.classList.toggle('one', S.repeat === 'one');
+  const t = S.repeat === 'one' ? 'Repeat One (this song loops)' : S.repeat === 'all' ? 'Repeat All' : 'Repeat';
   b.title = t; b.setAttribute('aria-label', t);
 }
 
@@ -2330,11 +2340,13 @@ function closeVideo() {
 //  Keyboard shortcuts
 // ══════════════════════════════════════════
 document.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT') return;
+  const t = e.target;
+  if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable) return;
+  if (e.ctrlKey || e.metaKey) return;   // leave browser shortcuts alone (Ctrl+Shift+R used to flip Repeat)
   if (e.code === 'Space')     { e.preventDefault(); togglePlay(); }
-  if (e.code === 'KeyS')      toggleShuffle();
-  if (e.code === 'KeyR')      toggleRepeat();
-  if (e.code === 'KeyM')      toggleMute();
+  if (!e.altKey && e.code === 'KeyS') toggleShuffle();
+  if (!e.altKey && e.code === 'KeyR') toggleRepeat();
+  if (!e.altKey && e.code === 'KeyM') toggleMute();
   if (e.code === 'Escape')    { closeVideo(); closeCtx(); }
   if (e.code === 'ArrowRight' && e.altKey)  nextTrack();
   if (e.code === 'ArrowLeft'  && e.altKey)  prevTrack();
