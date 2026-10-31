@@ -7,10 +7,22 @@ import { parseFile } from 'music-metadata';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
+// Set HOST=0.0.0.0 to let phones on the same Wi-Fi open http://<laptop-ip>:PORT directly.
+const HOST = process.env.HOST || '127.0.0.1';
+// The phone app (hosted on GitHub Pages) may read the song list and download songs from this laptop.
+const PHONE_ORIGINS = new Set((process.env.PHONE_ORIGINS || 'https://pratham-mc.github.io').split(',').map(s => s.trim()).filter(Boolean));
 const CONFIG_FILE    = path.join(__dirname, 'config.json');
 const PLAYLISTS_FILE = path.join(__dirname, 'playlists.json');
 
 app.use(express.json());
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (req.method === 'GET' && origin && PHONE_ORIGINS.has(origin)) {
+    res.set('Access-Control-Allow-Origin', origin);
+    res.set('Vary', 'Origin');
+  }
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
 
 const encodeId = (p) => Buffer.from(p).toString('base64url');
@@ -27,6 +39,22 @@ const MIME = {
   '.mov': 'video/quicktime', '.webm': 'video/webm', '.m4v': 'video/mp4',
   '.wmv': 'video/x-ms-wmv', '.flv': 'video/x-flv',
 };
+
+function readDirs() {
+  try { return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8')).directories || []; } catch (_) { return []; }
+}
+// Only hand out music/video files inside the chosen folders (important when the app is opened through a tunnel link).
+function mediaPath(id) {
+  const fp = path.resolve(decodeId(id));
+  const ext = path.extname(fp).toLowerCase();
+  if (!AUDIO_EXT.has(ext) && !VIDEO_EXT.has(ext)) return null;
+  const norm = p => (process.platform === 'win32' ? p.toLowerCase() : p);
+  const inside = readDirs().some(d => {
+    const root = norm(path.resolve(d));
+    return norm(fp).startsWith(root.endsWith(path.sep) ? root : root + path.sep);
+  });
+  return inside ? fp : null;
+}
 
 function scanDir(dirPath, results = []) {
   try {
@@ -90,6 +118,13 @@ app.post('/api/playlists', (req, res) => {
   res.json({ ok: true });
 });
 
+// Songs in the saved music folders (used by the phone app to download them).
+app.get('/api/library', (req, res) => {
+  const files = [];
+  for (const d of readDirs()) if (fs.existsSync(d)) scanDir(d, files);
+  res.json({ files: files.filter(f => f.type === 'audio').map(({ id, name, ext, type, size }) => ({ id, name, ext, type, size })) });
+});
+
 app.post('/api/scan', (req, res) => {
   const dirs = req.body.directories || [];
   const files = [];
@@ -100,8 +135,9 @@ app.post('/api/scan', (req, res) => {
 });
 
 app.get('/api/metadata/:id', async (req, res) => {
-  const fp = decodeId(req.params.id);
+  const fp = mediaPath(req.params.id);
   try {
+    if (!fp) throw new Error('not allowed');
     const meta = await parseFile(fp, { skipCovers: false, duration: true });
     const c = meta.common;
     res.json({
@@ -119,7 +155,8 @@ app.get('/api/metadata/:id', async (req, res) => {
 });
 
 app.get('/api/artwork/:id', async (req, res) => {
-  const fp = decodeId(req.params.id);
+  const fp = mediaPath(req.params.id);
+  if (!fp) return res.status(404).end();
   try {
     const meta = await parseFile(fp, { skipCovers: false });
     const pic = meta.common.picture?.[0];
@@ -133,8 +170,8 @@ app.get('/api/artwork/:id', async (req, res) => {
 });
 
 app.get('/stream/:id', (req, res) => {
-  const fp = decodeId(req.params.id);
-  if (!fs.existsSync(fp)) return res.status(404).end();
+  const fp = mediaPath(req.params.id);
+  if (!fp || !fs.existsSync(fp)) return res.status(404).end();
 
   const stat = fs.statSync(fp);
   const total = stat.size;
@@ -166,7 +203,7 @@ app.get('/stream/:id', (req, res) => {
 // Export for Electron (starts on a random free port when port=0)
 export function startServer(port = PORT) {
   return new Promise((resolve, reject) => {
-    const srv = app.listen(port, '127.0.0.1', () => {
+    const srv = app.listen(port, HOST, () => {
       const { port: actualPort } = srv.address();
       resolve(actualPort);
     });

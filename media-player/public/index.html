@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Pratham's Playlist</title>
+<meta name="theme-color" content="#0F0F23">
+<meta name="description" content="Your music, on your laptop and your phone — with an AI DJ, Calm Coach and Mood Journal.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Playlist">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Righteous&display=swap" rel="stylesheet">
@@ -1259,6 +1268,134 @@ a.ms-btn { text-decoration: none; }
 .ms-home-links { display: flex; justify-content: center; gap: .5rem; flex-wrap: wrap; margin: -1.6rem 0 2.2rem; }
 .ms-home-link { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: var(--text); font: inherit; font-size: .8rem; font-weight: 600; padding: .5rem 1rem; border-radius: 999px; cursor: pointer; transition: background var(--ease); }
 .ms-home-link:hover { background: rgba(255,255,255,0.11); }
+/* ══ Phone library & laptop link (Settings) ══ */
+.ph-card { margin-bottom: 1.6rem; padding: 1.1rem 1.15rem 1.2rem; border-radius: 16px; background: rgba(10,10,24,0.72);
+  border: 1px solid var(--border); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.ph-card .stg-desc { color: #b6c2d4; }
+.ph-usage { font-size: .8rem; color: var(--sub); margin: -.2rem 0 .9rem; }
+.ph-btns { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; }
+.ph-prog { margin-top: 1rem; font-size: .78rem; color: var(--sub); }
+.ph-prog[hidden] { display: none; }
+.ph-prog-t { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: .1rem; }
+.ph-note { font-size: .82rem; color: var(--sub); margin: .3rem 0 .9rem; line-height: 1.5; }
+.ph-note.ok { color: #6ee7b7; }
+.ph-note.err { color: #fca5a5; }
+.ph-qr { display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap; margin-top: .4rem; }
+.ph-qr-box { background: #fff; border-radius: 12px; padding: 4px; line-height: 0; box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+.ph-qr-box svg { width: 220px; height: 220px; display: block; }
+.ph-qr-txt { flex: 1; min-width: 220px; font-size: .8rem; color: var(--sub); line-height: 1.6; overflow-wrap: anywhere; }
+.ph-qr-txt a { color: #a5b4fc; }
+.btn-ghost[onclick] { cursor: pointer; }
+
+/* ══ Phone layout ══ */
+.mnav, .pl-close { display: none; }
+@media (hover: none) {
+  .ctx-btn, .tr-actions { opacity: 1; }
+  .track-row:hover, .pl-track-row:hover { background: none; }
+}
+@media (max-width: 760px) {
+  body { height: 100dvh; }
+  .sidebar, .edge-trigger { display: none !important; }
+  .topbar { padding: calc(.55rem + env(safe-area-inset-top)) .8rem .55rem; gap: .5rem; }
+  .topbar-side:not(.right) { display: none; }
+  .topbar-side.right { flex: 0 0 auto; }
+  .search-wrap { flex: 1 1 auto; max-width: none; }
+  #scan-btn { padding: .45rem .75rem; font-size: .76rem; }
+  .content { padding: 1rem .85rem 1.5rem; }
+
+  /* Bottom tabs */
+  .mnav { display: flex; flex-shrink: 0; z-index: 11; background: rgba(7,7,18,.97); border-top: 1px solid var(--border); padding: 0 .4rem env(safe-area-inset-bottom); }
+  .mnav-btn { flex: 1; min-height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    background: none; border: none; color: var(--sub); font: inherit; font-size: .66rem; font-weight: 600; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .mnav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .mnav-btn.active { color: var(--text); }
+  .mnav-btn.active svg { stroke: #a5b4fc; }
+  .mnav-btn:focus-visible { outline: 2px solid #818CF8; outline-offset: -4px; border-radius: 10px; }
+
+  /* Mini player */
+  .player-bar { position: relative; height: 64px; padding: 0 .55rem 0 .75rem; gap: .35rem; }
+  .pl-left { width: auto; min-width: 0; flex: 1; gap: .65rem; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .pl-art { width: 44px; height: 44px; border-radius: 6px; }
+  .pl-center { flex: 0 0 auto; }
+  .pl-controls { gap: .15rem; }
+  #shuf-btn, #rep-btn, .ctrl-prev { display: none; }
+  .ctrl { padding: .5rem; min-width: 44px; min-height: 44px; }
+  .pp-btn { width: 42px; height: 42px; }
+  .progress-row { position: absolute; left: 0; right: 0; top: -1px; gap: 0; }
+  .progress-row > span { display: none; }
+  .prog, .prog:hover { height: 2px; border-radius: 0; }
+  .prog-fill { background: #a5b4fc; }
+  .prog-dot { display: none; }
+  .pl-right { display: none; }
+
+  /* Full-screen player (tap the mini player) */
+  .player-bar.open {
+    position: fixed; inset: 0; z-index: 250; height: auto; flex-direction: column; justify-content: center; align-items: stretch; gap: 1.6rem;
+    padding: calc(3.5rem + env(safe-area-inset-top)) 1.6rem calc(1.6rem + env(safe-area-inset-bottom));
+    background: radial-gradient(120% 70% at 50% 0%, rgba(99,102,241,.38), transparent 62%), radial-gradient(90% 50% at 50% 100%, rgba(20,184,166,.16), transparent 70%), #0b0b1a;
+    border-top: none; animation: sheetUp .28s ease-out;
+  }
+  @keyframes sheetUp { from { transform: translateY(18%); opacity: 0; } to { transform: none; opacity: 1; } }
+  .player-bar.open .pl-close {
+    display: grid; place-items: center; position: absolute; top: calc(.7rem + env(safe-area-inset-top)); left: .8rem;
+    width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,.06); color: var(--text); cursor: pointer;
+  }
+  .pl-close svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .player-bar.open .pl-left { flex: 0 0 auto; flex-direction: column; align-items: stretch; gap: 1.4rem; cursor: default; overflow: visible; }
+  .player-bar.open .pl-art { width: min(80vw, 46vh, 360px); height: auto; aspect-ratio: 1; align-self: center; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+  .player-bar.open .pl-art svg { width: 28%; height: 28%; }
+  .player-bar.open .pl-title { font-size: 1.3rem; font-weight: 700; white-space: normal; line-height: 1.3; }
+  .player-bar.open .pl-artist { font-size: .92rem; margin-top: .3rem; }
+  .player-bar.open .pl-center { flex: 0 0 auto; gap: 1.3rem; align-items: stretch; }
+  .player-bar.open .progress-row { position: static; order: -1; gap: .7rem; font-size: .74rem; font-variant-numeric: tabular-nums; }
+  .player-bar.open .progress-row > span { display: inline; }
+  .player-bar.open .prog { height: 6px; border-radius: 3px; }
+  .player-bar.open .prog::before { content: ''; position: absolute; left: 0; right: 0; top: -12px; bottom: -12px; }
+  .player-bar.open .prog-dot { display: block; opacity: 1; width: 14px; height: 14px; }
+  .player-bar.open .pl-controls { justify-content: space-between; }
+  .player-bar.open #shuf-btn, .player-bar.open #rep-btn, .player-bar.open .ctrl-prev { display: flex; }
+  .player-bar.open .ctrl svg { width: 28px; height: 28px; }
+  .player-bar.open #shuf-btn svg, .player-bar.open #rep-btn svg { width: 22px; height: 22px; }
+  .player-bar.open .pp-btn { width: 70px; height: 70px; }
+  .player-bar.open .pp-btn svg { width: 26px; height: 26px; }
+
+  /* Lists */
+  .track-header { display: none; }
+  .track-row, .pl-track-row { grid-template-columns: 1.4rem 2.6rem minmax(0, 1fr) auto; gap: .6rem; padding: .45rem .35rem; }
+  .tr-album, .pl-track-row > .tr-dur { display: none; }
+  .tr-art { width: 2.6rem; height: 2.6rem; }
+  .ctx-btn { padding: .55rem .5rem; }
+  .music-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .8rem; }
+  .pl-header { flex-wrap: wrap; gap: 1rem; }
+
+  /* Hero orb */
+  .hero-orb-wrap { padding: .6rem 0 2.4rem; }
+  .hero-orb { width: 210px; height: 210px; }
+
+  /* Menus and messages sit above the player and tabs */
+  .toast { bottom: calc(126px + env(safe-area-inset-bottom)); max-width: calc(100vw - 2rem); white-space: normal; text-align: center; }
+  .ctx-menu { left: .6rem !important; right: .6rem; top: auto !important; width: auto !important; min-width: 0 !important;
+    bottom: calc(126px + env(safe-area-inset-bottom)); max-height: 60dvh; overflow-y: auto; }
+  .ctx-item { padding-top: .75rem; padding-bottom: .75rem; }
+
+  /* Settings */
+  .dir-row { flex-wrap: wrap; }
+  .dir-row .dir-input { flex: 1 1 220px; min-width: 0; }
+  .ph-qr-box svg { width: 180px; height: 180px; }
+
+  /* MoodSense */
+  .ms-wrap { gap: .9rem; }
+  .ms-title { font-size: 2rem; }
+  .ms-card { padding: .85rem; }
+  .ms-map-box { height: 320px; }
+  .ms-chat { min-height: 220px; max-height: 52dvh; }
+  .ms-tab { padding: .5rem .9rem; font-size: .8rem; }
+  .ms-big { font-size: 2.7rem; }
+  .ms-home-links { margin: -1.4rem 0 1.8rem; }
+  .ms-home-link { padding: .55rem .85rem; }
+  .ms-input input { font-size: 16px; }          /* stops iPhone zooming into the text box */
+  .ms-text, .dir-input, #search { font-size: 16px; }
+}
 @media (prefers-reduced-motion: reduce) { .ms-typing i, .ms-icon-btn.listening { animation: none; } }
 </style>
 <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
@@ -1313,9 +1450,15 @@ a.ms-btn { text-decoration: none; }
   </div>
 </div>
 
+<!-- Song picker for the phone library -->
+<input type="file" id="ph-file" accept="audio/*,.mp3,.m4a,.aac,.wav,.flac,.ogg,.opus" multiple hidden onchange="phAddFiles(this.files)">
+
 <!-- Player bar -->
 <div class="player-bar">
-  <div class="pl-left">
+  <button class="pl-close" onclick="playerSheet(false)" aria-label="Close player">
+    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+  </button>
+  <div class="pl-left" onclick="playerSheet(true)">
     <div class="pl-art" id="pl-art">
       <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
     </div>
@@ -1329,7 +1472,7 @@ a.ms-btn { text-decoration: none; }
       <button class="ctrl" id="shuf-btn" onclick="toggleShuffle()" title="Shuffle (S)" aria-label="Shuffle">
         <svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
       </button>
-      <button class="ctrl" onclick="prevTrack()" title="Previous (Alt+←)" aria-label="Previous track">
+      <button class="ctrl ctrl-prev" onclick="prevTrack()" title="Previous (Alt+←)" aria-label="Previous track">
         <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
       </button>
       <button class="pp-btn" id="pp-btn" onclick="togglePlay()" title="Play/Pause (Space)" aria-label="Play">
@@ -1360,6 +1503,18 @@ a.ms-btn { text-decoration: none; }
     </div>
   </div>
 </div>
+<!-- Bottom tabs (phones) -->
+<nav class="mnav" aria-label="Main">
+  <button class="mnav-btn active" data-view="home" onclick="navigate('home')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Library
+  </button>
+  <button class="mnav-btn" data-view="mood" onclick="navigate('mood')">
+    <svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>MoodSense
+  </button>
+  <button class="mnav-btn" data-view="settings" onclick="navigate('settings')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Settings
+  </button>
+</nav>
 
 <!-- Video modal -->
 <div class="vid-modal" id="vid-modal" onclick="if(event.target===this)closeVideo()" role="dialog" aria-modal="true">
@@ -1395,6 +1550,8 @@ const S = {
   volume: 1, muted: false,
   view: 'home', q: '',
   meta: {}, dirs: [],
+  server: null,             // true when the laptop server is reachable; false = phone-only mode
+  serverFiles: [],
   musicTab: 'list',
   orbMode: 'glow',          // 'glow' | 'sphere'
 };
@@ -1418,12 +1575,17 @@ const SVG = {
 // ══════════════════════════════════════════
 async function init() {
   restorePrefs();
+  await loadConfig();
+  await phLoad();
   await loadPlaylists();
   renderSidebarPlaylists();
-  await loadConfig();
-  if (S.dirs.length) await scan(S.dirs);
+  setLibrary([]);
+  if (!S.server) setBtn('Add songs');
+  if (S.server && S.dirs.length) await scan(S.dirs);
   else render();
   wireAudio();
+  phFromHash();
+  phUsage();
 }
 
 function restorePrefs() {
@@ -1446,23 +1608,24 @@ function savePrefs() {
 }
 
 async function loadConfig() {
+  // On GitHub Pages (the phone app) there is no laptop server: everything comes from the phone library.
+  if (/\.github\.io$/.test(location.hostname) || location.protocol === 'file:') { S.server = false; return; }
   try {
     const d = await api('/api/config');
     S.dirs = d.directories || [];
-  } catch(_) {}
+    S.server = true;
+  } catch(_) { S.server = false; }
 }
 
 async function saveConfig() {
-  await api('/api/config', 'POST', { directories: S.dirs });
+  if (S.server) await api('/api/config', 'POST', { directories: S.dirs });
 }
 
 async function scan(dirs) {
   setBtn('Scanning…');
   try {
     const d = await api('/api/scan', 'POST', { directories: dirs });
-    S.files = d.files || [];
-    S.audio = S.files.filter(f => f.type === 'audio');
-    S.video = S.files.filter(f => f.type === 'video');
+    setLibrary(d.files || []);
     render();
     toast(`Found ${S.audio.length} songs · ${S.video.length} videos`);
     batchMeta(S.audio);
@@ -1473,6 +1636,7 @@ async function scan(dirs) {
 }
 
 async function rescan() {
+  if (!S.server) { phPick(); return; }
   if (!S.dirs.length) { navigate('settings'); toast('Add a folder first'); return; }
   await scan(S.dirs);
 }
@@ -1493,6 +1657,7 @@ async function batchMeta(files) {
 
 async function fetchMeta(f) {
   if (S.meta[f.id]) return S.meta[f.id];
+  if (f.local || !S.server) return S.meta[f.id] = S.meta[f.id] || {};
   try {
     const d = await api(`/api/metadata/${f.id}`);
     S.meta[f.id] = d;
@@ -1504,19 +1669,698 @@ async function fetchMeta(f) {
 }
 
 // ══════════════════════════════════════════
+//  Phone library: songs saved inside the app (IndexedDB),
+//  so they play with no laptop and no internet.
+// ══════════════════════════════════════════
+const PHONE = matchMedia('(hover: none) and (pointer: coarse)').matches;
+const PHONE_APP_URL = 'https://pratham-mc.github.io/pratham-agrawal/media-player/public/';
+const PH = {
+  db: null, songs: new Map(), url: {}, art: {}, busy: false, prog: null,
+  laptop: '', remote: null, usage: null, installEvt: null,
+};
+try { PH.laptop = localStorage.getItem('ph_laptop') || ''; } catch (_) {}
+const PH_DB = 'pratham_playlist', PH_STORE = 'songs';
+const AUDIO_RE = /\.(mp3|m4a|aac|wav|flac|ogg|oga|opus|weba|webm|mp4|3gp|amr|wma)$/i;
+const MIME_BY_EXT = { mp3: 'audio/mpeg', m4a: 'audio/mp4', mp4: 'audio/mp4', aac: 'audio/aac', wav: 'audio/wav', flac: 'audio/flac',
+  ogg: 'audio/ogg', oga: 'audio/ogg', opus: 'audio/ogg', weba: 'audio/webm', webm: 'audio/webm', '3gp': 'audio/3gpp', amr: 'audio/amr' };
+
+// Where to play / show a song from: the phone copy if there is one, otherwise the laptop server.
+function mediaURL(id) { return PH.url[id] || `/stream/${id}`; }
+function artURL(id) { return PH.art[id] || `/api/artwork/${id}`; }
+
+function phOpen() {
+  if (PH.db) return Promise.resolve(PH.db);
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) { reject(new Error('This browser cannot save songs')); return; }
+    const r = indexedDB.open(PH_DB, 1);
+    r.onupgradeneeded = () => { if (!r.result.objectStoreNames.contains(PH_STORE)) r.result.createObjectStore(PH_STORE, { keyPath: 'id' }); };
+    r.onsuccess = () => { PH.db = r.result; PH.db.onversionchange = () => { PH.db.close(); PH.db = null; }; resolve(PH.db); };
+    r.onerror = () => reject(r.error);
+    r.onblocked = () => reject(new Error('Close the app in other tabs and try again'));
+  });
+}
+function phReq(mode, fn) {
+  return phOpen().then(db => new Promise((resolve, reject) => {
+    const tx = db.transaction(PH_STORE, mode), req = fn(tx.objectStore(PH_STORE));
+    tx.oncomplete = () => resolve(req ? req.result : undefined);
+    tx.onerror = tx.onabort = () => reject(tx.error || new Error('Could not save on this phone'));
+  }));
+}
+const phAll = () => phReq('readonly', st => st.getAll());
+const phPut = rec => phReq('readwrite', st => st.put(rec));
+const phDelete = id => phReq('readwrite', st => st.delete(id));
+
+function phIndex(r) {
+  PH.songs.set(r.id, r);
+  if (PH.url[r.id]) URL.revokeObjectURL(PH.url[r.id]);
+  if (PH.art[r.id]) URL.revokeObjectURL(PH.art[r.id]);
+  PH.url[r.id] = URL.createObjectURL(r.blob);
+  if (r.art) PH.art[r.id] = URL.createObjectURL(r.art); else delete PH.art[r.id];
+  S.meta[r.id] = { title: r.title || noExt(r.name), artist: r.artist || null, album: r.album || null,
+    duration: r.duration || null, hasArtwork: !!r.art, local: true };
+}
+function phForget(id) {
+  if (PH.url[id]) URL.revokeObjectURL(PH.url[id]);
+  if (PH.art[id]) URL.revokeObjectURL(PH.art[id]);
+  delete PH.url[id]; delete PH.art[id]; delete S.meta[id];
+  PH.songs.delete(id);
+}
+async function phLoad() {
+  try { (await phAll()).forEach(phIndex); }
+  catch (e) { console.warn('Phone library unavailable:', e); }
+}
+function phFiles() {
+  return [...PH.songs.values()]
+    .map(r => ({ id: r.id, name: r.name, ext: r.ext, type: 'audio', size: r.size, modified: r.added, local: true }))
+    .sort((a, b) => (S.meta[a.id].title || '').localeCompare(S.meta[b.id].title || '', undefined, { sensitivity: 'base' }));
+}
+// Laptop songs + phone songs. A laptop song that is already on the phone is shown once (the phone copy).
+function setLibrary(serverFiles) {
+  if (serverFiles) S.serverFiles = serverFiles;
+  const onPhone = new Set([...PH.songs.values()].map(r => r.srcId).filter(Boolean));
+  const server = (S.serverFiles || []).filter(f => !onPhone.has(f.id));
+  S.files = [...server, ...phFiles()];
+  S.audio = S.files.filter(f => f.type === 'audio');
+  S.video = S.files.filter(f => f.type === 'video');
+}
+async function phPersist() {
+  try { if (navigator.storage && navigator.storage.persist && !(await navigator.storage.persisted())) await navigator.storage.persist(); } catch (_) {}
+}
+async function phUsage() {
+  try { if (navigator.storage && navigator.storage.estimate) { const e = await navigator.storage.estimate(); PH.usage = e; } } catch (_) {}
+  const el = document.getElementById('ph-usage'); if (el) el.textContent = phUsageText();
+}
+function phUsageText() {
+  let bytes = 0; for (const r of PH.songs.values()) bytes += (r.size || 0) + (r.art ? r.art.size : 0);
+  const n = PH.songs.size;
+  let t = `${n} song${n === 1 ? '' : 's'} saved on this device · ${fmtSize(bytes)}`;
+  if (PH.usage && PH.usage.quota) t += ` · ${fmtSize(Math.max(0, PH.usage.quota - PH.usage.usage))} free for the app`;
+  return t;
+}
+const phUid = () => 'ph_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const phExt = name => ((name.match(/\.([^.]+)$/) || [])[1] || '').toLowerCase();
+
+// "Artist - Title (Official Audio).mp3" → { artist, title }
+function guessFromName(name) {
+  let base = noExt(name).replace(/_/g, ' ').replace(/\s+/g, ' ').trim();
+  base = base.replace(/\s*[([](official[^)\]]*|lyrics?[^)\]]*|audio|video|hd|hq|4k|\d{2,3}\s?kbps)[)\]]/gi, '').trim();
+  const m = base.match(/^(.+?)\s+[-–—]\s+(.+)$/);
+  return m ? { artist: m[1].trim(), title: m[2].trim() } : { artist: null, title: base || name };
+}
+function probeDuration(blob) {
+  return new Promise(resolve => {
+    const a = new Audio(), u = URL.createObjectURL(blob);
+    let done = false;
+    const fin = v => { if (done) return; done = true; URL.revokeObjectURL(u); a.removeAttribute('src'); try { a.load(); } catch (_) {} resolve(v); };
+    a.preload = 'metadata';
+    a.onloadedmetadata = () => fin(isFinite(a.duration) && a.duration > 0 ? a.duration : null);
+    a.onerror = () => fin(null);
+    setTimeout(() => fin(null), 8000);
+    a.src = u;
+  });
+}
+
+// ── Reading song tags in the browser (MP3 ID3, M4A/AAC, FLAC) ──
+const latin1 = u8 => { let s = ''; for (let i = 0; i < u8.length; i++) s += String.fromCharCode(u8[i]); return s; };
+function tagText(u8, enc) {
+  try {
+    if (enc === 1) {
+      if (u8[0] === 0xFE && u8[1] === 0xFF) return new TextDecoder('utf-16be').decode(u8.subarray(2));
+      if (u8[0] === 0xFF && u8[1] === 0xFE) return new TextDecoder('utf-16le').decode(u8.subarray(2));
+      return new TextDecoder('utf-16le').decode(u8);
+    }
+    if (enc === 2) return new TextDecoder('utf-16be').decode(u8);
+    if (enc === 3) return new TextDecoder('utf-8').decode(u8);
+    return latin1(u8);
+  } catch (_) { return ''; }
+}
+const cleanTag = s => (String(s || '').replace(/﻿/g, '').split('\0').map(x => x.trim()).find(Boolean)) || null;
+function imgType(data, hint) {
+  if (data[0] === 0xFF && data[1] === 0xD8) return 'image/jpeg';
+  if (data[0] === 0x89 && data[1] === 0x50) return 'image/png';
+  if (data[0] === 0x47 && data[1] === 0x49) return 'image/gif';
+  if (data[0] === 0x52 && data[1] === 0x49 && data[8] === 0x57) return 'image/webp';
+  return /^image\//.test(hint || '') ? hint : 'image/jpeg';
+}
+function unsync(u8) {
+  const out = new Uint8Array(u8.length); let n = 0;
+  for (let i = 0; i < u8.length; i++) { out[n++] = u8[i]; if (u8[i] === 0xFF && u8[i + 1] === 0x00) i++; }
+  return out.subarray(0, n);
+}
+const syncsafe = (b, o) => (b[o] & 0x7f) << 21 | (b[o + 1] & 0x7f) << 14 | (b[o + 2] & 0x7f) << 7 | (b[o + 3] & 0x7f);
+const be32 = (b, o) => ((b[o] << 24) >>> 0) + (b[o + 1] << 16 | b[o + 2] << 8 | b[o + 3]);
+function parseID3(b) {          // b: whole tag including the 10-byte header
+  const ver = b[3], flags = b[5], out = {};
+  let body = b.subarray(10, 10 + syncsafe(b, 6));
+  if ((flags & 0x80) && ver < 4) body = unsync(body);
+  let p = 0;
+  if ((flags & 0x40) && ver >= 3) p = ver === 4 ? syncsafe(body, 0) : be32(body, 0) + 4;
+  const idLen = ver === 2 ? 3 : 4, hdr = ver === 2 ? 6 : 10;
+  const KEYS = { TIT2: 'title', TT2: 'title', TPE1: 'artist', TP1: 'artist', TPE2: 'albumartist', TP2: 'albumartist', TALB: 'album', TAL: 'album' };
+  while (p + hdr <= body.length) {
+    const id = latin1(body.subarray(p, p + idLen));
+    if (!/^[A-Z0-9]{3,4}$/.test(id)) break;
+    const size = ver === 2 ? (body[p + 3] << 16 | body[p + 4] << 8 | body[p + 5]) : ver === 4 ? syncsafe(body, p + 4) : be32(body, p + 4);
+    const ff = ver >= 3 ? body[p + 9] : 0;
+    p += hdr;
+    if (size <= 0 || p + size > body.length) break;
+    let d = body.subarray(p, p + size);
+    p += size;
+    if (ver === 3 && (ff & 0xC0)) continue;                    // compressed / encrypted
+    if (ver === 4) {
+      if (ff & 0x0C) continue;
+      if (ff & 0x40) d = d.subarray(1);                         // grouping id
+      if (ff & 0x01) d = d.subarray(4);                         // data length indicator
+      if (ff & 0x02) d = unsync(d);
+    }
+    if (KEYS[id] && !out[KEYS[id]]) out[KEYS[id]] = cleanTag(tagText(d.subarray(1), d[0]));
+    else if ((id === 'APIC' || id === 'PIC') && !out.picture && d.length > 16) {
+      const enc = d[0]; let q = 1, hint = '';
+      if (id === 'PIC') { hint = 'image/' + latin1(d.subarray(1, 4)).toLowerCase().replace('jpg', 'jpeg'); q = 4; }
+      else { let e = q; while (e < d.length && d[e]) e++; hint = latin1(d.subarray(q, e)).toLowerCase(); q = e + 1; }
+      q++;                                                       // picture type
+      if (enc === 1 || enc === 2) { while (q + 1 < d.length && (d[q] || d[q + 1])) q += 2; q += 2; }
+      else { while (q < d.length && d[q]) q++; q++; }
+      const data = d.slice(q);
+      if (data.length > 64) out.picture = { mime: imgType(data, hint), data };
+    }
+  }
+  if (!out.artist && out.albumartist) out.artist = out.albumartist;
+  return out;
+}
+function parseID3v1(b) {         // last 128 bytes
+  if (latin1(b.subarray(0, 3)) !== 'TAG') return {};
+  const f = (o, n) => cleanTag(latin1(b.subarray(o, o + n)));
+  return { title: f(3, 30), artist: f(33, 30), album: f(63, 30) };
+}
+function mp4Boxes(u8, s, e) {
+  const out = [];
+  while (s + 8 <= e) {
+    let size = be32(u8, s), hdr = 8;
+    const type = latin1(u8.subarray(s + 4, s + 8));
+    if (size === 1) { size = be32(u8, s + 8) * 4294967296 + be32(u8, s + 12); hdr = 16; }
+    else if (size === 0) size = e - s;
+    if (size < hdr || s + size > e) break;
+    out.push({ type, s: s + hdr, e: s + size });
+    s += size;
+  }
+  return out;
+}
+function parseMP4Moov(moov) {     // moov: contents of the moov box
+  const find = (s, e, t) => mp4Boxes(moov, s, e).find(b => b.type === t);
+  const udta = find(0, moov.length, 'udta'); if (!udta) return {};
+  const meta = find(udta.s, udta.e, 'meta'); if (!meta) return {};
+  const ms = be32(moov, meta.s) === 0 ? meta.s + 4 : meta.s;     // "meta" is usually a full box
+  const ilst = find(ms, meta.e, 'ilst'); if (!ilst) return {};
+  const out = {}, KEYS = { '©nam': 'title', '©ART': 'artist', aART: 'albumartist', '©alb': 'album' };
+  for (const item of mp4Boxes(moov, ilst.s, ilst.e)) {
+    const data = mp4Boxes(moov, item.s, item.e).find(b => b.type === 'data');
+    if (!data || data.e - data.s < 8) continue;
+    const kind = be32(moov, data.s) & 0xFFFFFF, val = moov.subarray(data.s + 8, data.e);
+    if (KEYS[item.type] && !out[KEYS[item.type]]) out[KEYS[item.type]] = cleanTag(new TextDecoder('utf-8').decode(val));
+    else if (item.type === 'covr' && !out.picture && val.length > 64) out.picture = { mime: imgType(val, kind === 14 ? 'image/png' : 'image/jpeg'), data: val.slice() };
+  }
+  if (!out.artist && out.albumartist) out.artist = out.albumartist;
+  return out;
+}
+function parseFlacBlocks(blocks) {   // [{type, data}]
+  const out = {};
+  for (const { type, data: d } of blocks) {
+    const dv = new DataView(d.buffer, d.byteOffset, d.byteLength);
+    try {
+      if (type === 4) {
+        let p = 4 + dv.getUint32(0, true); const n = dv.getUint32(p, true); p += 4;
+        for (let k = 0; k < n && p + 4 <= d.length; k++) {
+          const l = dv.getUint32(p, true); p += 4;
+          const s = new TextDecoder('utf-8').decode(d.subarray(p, p + l)); p += l;
+          const eq = s.indexOf('='); if (eq < 0) continue;
+          const key = { TITLE: 'title', ARTIST: 'artist', ALBUM: 'album', ALBUMARTIST: 'albumartist' }[s.slice(0, eq).toUpperCase()];
+          if (key && !out[key]) out[key] = cleanTag(s.slice(eq + 1));
+        }
+      } else if (type === 6 && !out.picture) {
+        let p = 4; const ml = dv.getUint32(p); p += 4;
+        const hint = latin1(d.subarray(p, p + ml)); p += ml;
+        p += 4 + dv.getUint32(p) + 16;
+        const n = dv.getUint32(p); p += 4;
+        const data = d.slice(p, p + n);
+        if (data.length > 64) out.picture = { mime: imgType(data, hint), data };
+      }
+    } catch (_) {}
+  }
+  if (!out.artist && out.albumartist) out.artist = out.albumartist;
+  return out;
+}
+const readBytes = async (file, s, e) => new Uint8Array(await file.slice(s, e).arrayBuffer());
+async function readTags(file) {
+  try {
+    const head = await readBytes(file, 0, 16);
+    if (latin1(head.subarray(0, 3)) === 'ID3') {
+      const total = 10 + syncsafe(head, 6);
+      const t = parseID3(await readBytes(file, 0, Math.min(total, 40 << 20)));
+      if (t.title || t.artist) return t;
+    }
+    if (latin1(head.subarray(4, 8)) === 'ftyp') {
+      let off = 0;
+      for (let i = 0; i < 100 && off + 8 <= file.size; i++) {
+        const h = await readBytes(file, off, off + 16);
+        let size = be32(h, 0), hdr = 8;
+        if (size === 1) { size = be32(h, 8) * 4294967296 + be32(h, 12); hdr = 16; } else if (size === 0) size = file.size - off;
+        if (size < hdr) break;
+        if (latin1(h.subarray(4, 8)) === 'moov') return size > (64 << 20) ? {} : parseMP4Moov(await readBytes(file, off + hdr, off + size));
+        off += size;
+      }
+      return {};
+    }
+    if (latin1(head.subarray(0, 4)) === 'fLaC') {
+      const blocks = []; let off = 4;
+      for (let i = 0; i < 64 && off + 4 <= file.size; i++) {
+        const h = await readBytes(file, off, off + 4), type = h[0] & 0x7f, len = h[1] << 16 | h[2] << 8 | h[3];
+        if (type === 4 || type === 6) blocks.push({ type, data: await readBytes(file, off + 4, off + 4 + len) });
+        off += 4 + len;
+        if (h[0] & 0x80) break;
+      }
+      return parseFlacBlocks(blocks);
+    }
+    if (file.size > 128) return parseID3v1(await readBytes(file, file.size - 128, file.size));
+  } catch (e) { console.warn('Could not read tags of', file.name, e); }
+  return {};
+}
+
+// ── Adding songs that are on the phone ──
+function phPick() {
+  const inp = document.getElementById('ph-file');
+  if (!inp) return;
+  inp.value = '';
+  inp.click();
+}
+function phSetProgress(text, frac) {
+  PH.prog = text ? { text, frac } : null;
+  const box = document.getElementById('ph-prog');
+  if (box) {
+    box.hidden = !text;
+    const t = box.querySelector('.ph-prog-t'), bar = box.querySelector('i');
+    if (t) t.textContent = text || '';
+    if (bar) bar.style.width = Math.round((frac || 0) * 100) + '%';
+  }
+}
+function phHas(name, size) { for (const r of PH.songs.values()) if (r.name === name && r.size === size) return true; return false; }
+async function phSaveSong(rec) {
+  await phPut(rec);
+  phIndex(rec);
+}
+async function phAddFiles(list) {
+  const files = [...(list || [])].filter(f => /^audio\//.test(f.type) || AUDIO_RE.test(f.name));
+  if (!files.length) { toast('Choose music files (MP3, M4A, WAV, FLAC…)'); return; }
+  if (PH.busy) { toast('Still busy with the last batch — one moment'); return; }
+  PH.busy = true; phPersist();
+  let added = 0, skipped = 0, failed = 0, full = false;
+  for (let i = 0; i < files.length; i++) {
+    const f = files[i];
+    phSetProgress(`Adding ${i + 1} of ${files.length}: ${f.name}`, i / files.length);
+    if (phHas(f.name, f.size)) { skipped++; continue; }
+    try {
+      const tags = await readTags(f), guess = guessFromName(f.name), ext = phExt(f.name);
+      // Copy the bytes so the song stays even if the original file is moved or deleted.
+      const blob = new Blob([await f.arrayBuffer()], { type: f.type || MIME_BY_EXT[ext] || 'audio/mpeg' });
+      await phSaveSong({
+        id: phUid(), name: f.name, ext: '.' + ext, size: f.size, added: Date.now(), source: 'phone',
+        title: tags.title || guess.title, artist: tags.artist || guess.artist, album: tags.album || null,
+        duration: await probeDuration(blob), blob,
+        art: tags.picture ? new Blob([tags.picture.data], { type: tags.picture.mime }) : null,
+      });
+      added++;
+    } catch (e) {
+      console.warn('Could not add', f.name, e);
+      failed++;
+      if (e && /quota/i.test(e.name + e.message)) { full = true; break; }
+    }
+  }
+  PH.busy = false; phSetProgress('');
+  setLibrary(); render(); phUsage();
+  toast(full ? `Storage is full — added ${added} song${added === 1 ? '' : 's'}`
+    : `Added ${added} song${added === 1 ? '' : 's'}` + (skipped ? ` · ${skipped} already here` : '') + (failed ? ` · ${failed} failed` : ''));
+}
+async function phRemove(id) {
+  const r = PH.songs.get(id); if (!r) return;
+  if (!confirm(`Remove “${S.meta[id] && S.meta[id].title || r.name}” from this device?`)) return;
+  try { await phDelete(id); } catch (e) { toast('Could not remove it'); return; }
+  if (S.current && S.current.id === id) { aud.pause(); aud.removeAttribute('src'); S.current = null; S.playing = false; syncPP(); }
+  phForget(id);
+  S.queue = S.queue.filter(f => f.id !== id); S.qi = Math.min(S.qi, S.queue.length - 1);
+  setLibrary(); render(); phUsage();
+  toast('Removed from this device');
+}
+async function phRemoveAll() {
+  if (!PH.songs.size || !confirm(`Remove all ${PH.songs.size} songs saved on this device?`)) return;
+  for (const id of [...PH.songs.keys()]) { try { await phDelete(id); } catch (_) {} phForget(id); }
+  if (S.current && !S.files.some(f => f.id === S.current.id && !f.local)) { aud.pause(); S.playing = false; syncPP(); }
+  setLibrary(); render(); phUsage();
+}
+
+// ── Getting songs from the laptop (through its https link, e.g. a cloudflared tunnel) ──
+function phCleanLink(v) {
+  let s = String(v || '').trim();
+  const m = s.match(/#laptop=([^&]+)/); if (m) s = decodeURIComponent(m[1]);
+  s = s.replace(/\/+$/, '');
+  if (s && !/^https?:\/\//i.test(s)) s = 'https://' + s;
+  return s;
+}
+async function phLaptopConnect(link) {
+  const base = phCleanLink(link != null ? link : (document.getElementById('ph-link') || {}).value || PH.laptop);
+  if (!base) { toast('Paste the link from your laptop first'); return; }
+  if (location.protocol === 'https:' && /^http:/i.test(base)) {
+    PH.remote = { state: 'error', msg: 'That link starts with http://. Phones need the https:// link that cloudflared prints on the laptop.' };
+    render(); return;
+  }
+  PH.laptop = base; try { localStorage.setItem('ph_laptop', base); } catch (_) {}
+  PH.remote = { state: 'loading' }; render();
+  try {
+    const r = await fetch(`${base}/api/library?t=${Date.now()}`);
+    if (!r.ok) throw new Error(r.status === 404 ? 'Update the laptop app (it needs the latest server.js)' : 'HTTP ' + r.status);
+    const d = await r.json();
+    PH.remote = { state: 'ok', files: (d.files || []).filter(f => f.type === 'audio') };
+  } catch (e) {
+    PH.remote = { state: 'error', msg: /Update the laptop/.test(e.message) ? e.message
+      : "Couldn't reach your laptop. Check that the laptop app and cloudflared are both running, and that the link is the newest one." };
+  }
+  render();
+}
+function phHasRemote(id) { for (const r of PH.songs.values()) if (r.srcId === id) return true; return false; }
+async function phLaptopDownload() {
+  const rem = PH.remote;
+  if (!rem || rem.state !== 'ok') return;
+  const todo = rem.files.filter(f => !phHasRemote(f.id));
+  if (!todo.length) { toast('Every laptop song is already on this device'); return; }
+  if (PH.busy) { toast('Still busy — one moment'); return; }
+  PH.busy = true; phPersist();
+  const base = PH.laptop;
+  let ok = 0, failed = 0, full = false;
+  for (let i = 0; i < todo.length; i++) {
+    const f = todo[i];
+    phSetProgress(`Downloading ${i + 1} of ${todo.length}: ${noExt(f.name)}`, i / todo.length);
+    try {
+      const meta = await fetch(`${base}/api/metadata/${f.id}`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
+      const res = await fetch(`${base}/stream/${f.id}`);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const blob = await res.blob();
+      let art = null;
+      if (meta.hasArtwork) { const a = await fetch(`${base}/api/artwork/${f.id}`).catch(() => null); if (a && a.ok) art = await a.blob(); }
+      const guess = guessFromName(f.name);
+      await phSaveSong({
+        id: phUid(), srcId: f.id, name: f.name, ext: f.ext || '.' + phExt(f.name), size: blob.size, added: Date.now(), source: 'laptop',
+        title: meta.title || guess.title, artist: meta.artist || guess.artist, album: meta.album || null,
+        duration: meta.duration || null, blob: blob.type ? blob : new Blob([blob], { type: MIME_BY_EXT[phExt(f.name)] || 'audio/mpeg' }), art,
+      });
+      ok++;
+      if (i % 5 === 4) { setLibrary(); if (S.view !== 'settings') render(); }
+    } catch (e) {
+      console.warn('Download failed:', f.name, e);
+      failed++;
+      if (e && /quota/i.test(e.name + e.message)) { full = true; break; }
+      if (failed >= 3 && !ok) break;       // the link probably stopped working
+    }
+  }
+  PH.busy = false; phSetProgress('');
+  setLibrary(); render(); phUsage();
+  toast(full ? `Storage is full — downloaded ${ok}` : `Downloaded ${ok} song${ok === 1 ? '' : 's'} to this device` + (failed ? ` · ${failed} failed` : ''));
+}
+
+// ── Settings: songs on this device ──
+function phSectionHTML() {
+  const rem = PH.remote, laptopN = rem && rem.state === 'ok' ? rem.files.length : 0;
+  const missing = rem && rem.state === 'ok' ? rem.files.filter(f => !phHasRemote(f.id)).length : 0;
+  const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const installed = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  return `
+    <div class="ph-card">
+      <div class="stg-sub">Songs on this ${PHONE ? 'phone' : 'device'}</div>
+      <div class="stg-desc">Saved inside the app, so they play with no laptop and no internet.</div>
+      <div class="ph-usage" id="ph-usage">${phUsageText()}</div>
+      <div class="ph-btns">
+        <button class="btn" onclick="phPick()">＋ Add songs from this ${PHONE ? 'phone' : 'device'}</button>
+        ${PH.songs.size ? '<button class="btn-ghost" onclick="phRemoveAll()">Remove all</button>' : ''}
+      </div>
+      <div class="ph-prog" id="ph-prog"${PH.prog ? '' : ' hidden'}><span class="ph-prog-t">${esc(PH.prog ? PH.prog.text : '')}</span><div class="ms-bar"><i style="width:${PH.prog ? Math.round(PH.prog.frac * 100) : 0}%"></i></div></div>
+    </div>
+    ${S.server ? '' : `
+    <div class="ph-card">
+      <div class="stg-sub">Get songs from my laptop</div>
+      <div class="stg-desc">On the laptop: start the app, run <code>cloudflared tunnel --url http://localhost:3000</code>, then open Settings there and scan the QR code with this phone. Or paste the https link here.</div>
+      <div class="dir-row">
+        <input class="dir-input" id="ph-link" type="url" inputmode="url" autocomplete="off" placeholder="https://something.trycloudflare.com" value="${esc(PH.laptop)}" onkeydown="if(event.key==='Enter')phLaptopConnect()">
+        <button class="btn" onclick="phLaptopConnect()">Connect</button>
+      </div>
+      ${!rem ? '' : rem.state === 'loading' ? '<div class="ph-note">Connecting to your laptop…</div>'
+        : rem.state === 'error' ? `<div class="ph-note err">${esc(rem.msg)}</div>`
+        : `<div class="ph-note ok">Connected · ${laptopN} song${laptopN === 1 ? '' : 's'} on the laptop · ${missing ? `${missing} not on this phone yet` : 'all already here'}</div>
+           ${missing ? `<button class="btn" onclick="phLaptopDownload()">⬇ Download ${missing} song${missing === 1 ? '' : 's'}</button>` : ''}`}
+    </div>`}
+    ${S.server || installed ? '' : `
+    <div class="ph-card">
+      <div class="stg-sub">Install as an app</div>
+      ${PH.installEvt ? '<button class="btn" onclick="phInstall()">Install app</button>'
+        : `<div class="stg-desc">${ios ? 'In Safari tap <b>Share</b> → <b>Add to Home Screen</b>.' : 'In Chrome tap <b>⋮</b> → <b>Install app</b> (or <b>Add to Home screen</b>).'} It then opens full screen, like a normal app, and works offline.</div>`}
+    </div>`}`;
+}
+function phInstall() {
+  const e = PH.installEvt; if (!e) return;
+  PH.installEvt = null; e.prompt();
+  e.userChoice.finally(() => render());
+}
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); PH.installEvt = e; if (S.view === 'settings') render(); });
+
+// ── Phones: tap the mini player to open a full-screen player (Back closes it) ──
+const MOBILE_MQ = matchMedia('(max-width: 760px)');
+function playerSheet(open) {
+  const bar = document.querySelector('.player-bar');
+  if (open && (!MOBILE_MQ.matches || !S.current)) return;
+  if (open === bar.classList.contains('open')) return;
+  bar.classList.toggle('open', open);
+  if (open) history.pushState({ sheet: 1 }, '');
+  else if (history.state && history.state.sheet) history.back();
+}
+window.addEventListener('popstate', () => { document.querySelector('.player-bar').classList.remove('open'); });
+MOBILE_MQ.addEventListener && MOBILE_MQ.addEventListener('change', e => { if (!e.matches) playerSheet(false); });
+
+// ── Lock screen / notification controls ──
+function syncMediaSession(f) {
+  if (!('mediaSession' in navigator) || !f) return;
+  const m = S.meta[f.id] || {};
+  const art = m.hasArtwork ? artURL(f.id) : 'icon-512.png';
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: m.title || noExt(f.name), artist: m.artist || '', album: m.album || "Pratham's Playlist",
+      artwork: [{ src: new URL(art, location.href).href, sizes: '512x512' }],
+    });
+  } catch (_) {}
+}
+function syncPositionState() {
+  if (!('mediaSession' in navigator) || !navigator.mediaSession.setPositionState || !isFinite(aud.duration) || !aud.duration) return;
+  try { navigator.mediaSession.setPositionState({ duration: aud.duration, playbackRate: aud.playbackRate || 1, position: Math.min(aud.currentTime, aud.duration) }); } catch (_) {}
+}
+if ('mediaSession' in navigator) {
+  const set = (a, fn) => { try { navigator.mediaSession.setActionHandler(a, fn); } catch (_) {} };
+  set('play', () => { aud.play().catch(() => {}); });
+  set('pause', () => aud.pause());
+  set('previoustrack', () => prevTrack());
+  set('nexttrack', () => nextTrack());
+  set('seekto', d => { if (d && d.seekTime != null) { aud.currentTime = d.seekTime; syncPositionState(); } });
+  set('seekbackward', d => { aud.currentTime = Math.max(0, aud.currentTime - ((d && d.seekOffset) || 10)); });
+  set('seekforward', d => { aud.currentTime = Math.min(aud.duration || 0, aud.currentTime + ((d && d.seekOffset) || 10)); });
+}
+
+// ── Tiny QR code generator (byte mode, versions 1–10, error correction M) → SVG ──
+// Follows the QR spec (ISO/IEC 18004); structure after Project Nayuki's reference encoder.
+const QR = (() => {
+  // [ecc codewords per block, [[blocks, data codewords], ...]] for versions 1..10, level M
+  const BLOCKS = [null,
+    [10, [[1, 16]]], [16, [[1, 28]]], [26, [[1, 44]]], [18, [[2, 32]]], [24, [[2, 43]]],
+    [16, [[4, 27]]], [18, [[4, 31]]], [22, [[2, 38], [2, 39]]], [22, [[3, 36], [2, 37]]], [26, [[4, 43], [1, 44]]]];
+  const ALIGN = [null, [], [6, 18], [6, 22], [6, 26], [6, 30], [6, 34], [6, 22, 38], [6, 24, 42], [6, 26, 46], [6, 28, 50]];
+  const EXP = new Uint8Array(512), LOG = new Uint8Array(256);
+  for (let i = 0, x = 1; i < 255; i++) { EXP[i] = x; LOG[x] = i; x <<= 1; if (x & 0x100) x ^= 0x11D; }
+  for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+  const mul = (a, b) => (a && b ? EXP[LOG[a] + LOG[b]] : 0);
+  function rsDivisor(deg) {
+    const r = new Uint8Array(deg); r[deg - 1] = 1; let root = 1;
+    for (let i = 0; i < deg; i++) {
+      for (let j = 0; j < deg; j++) { r[j] = mul(r[j], root); if (j + 1 < deg) r[j] ^= r[j + 1]; }
+      root = mul(root, 2);
+    }
+    return r;
+  }
+  function rsRemainder(data, div) {
+    const r = new Uint8Array(div.length);
+    for (const b of data) {
+      const f = b ^ r[0]; r.copyWithin(0, 1); r[r.length - 1] = 0;
+      for (let i = 0; i < r.length; i++) r[i] ^= mul(div[i], f);
+    }
+    return r;
+  }
+  const MASKS = [
+    (x, y) => (x + y) % 2 === 0, (x, y) => y % 2 === 0, x => x % 3 === 0, (x, y) => (x + y) % 3 === 0,
+    (x, y) => (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0, (x, y) => (x * y) % 2 + (x * y) % 3 === 0,
+    (x, y) => ((x * y) % 2 + (x * y) % 3) % 2 === 0, (x, y) => ((x + y) % 2 + (x * y) % 3) % 2 === 0];
+
+  function encode(text, forceMask) {
+    const bytes = new TextEncoder().encode(text);
+    let ver = 0, dataCw = 0;
+    for (let v = 1; v <= 10; v++) {
+      dataCw = BLOCKS[v][1].reduce((a, [n, d]) => a + n * d, 0);
+      if (4 + (v < 10 ? 8 : 16) + bytes.length * 8 <= dataCw * 8) { ver = v; break; }
+    }
+    if (!ver) throw new Error('Text too long for a QR code');
+    // Data bits
+    const bits = [];
+    const put = (val, len) => { for (let i = len - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+    put(4, 4); put(bytes.length, ver < 10 ? 8 : 16);
+    for (const b of bytes) put(b, 8);
+    put(0, Math.min(4, dataCw * 8 - bits.length));
+    while (bits.length % 8) bits.push(0);
+    const data = [];
+    for (let i = 0; i < bits.length; i += 8) data.push(parseInt(bits.slice(i, i + 8).join(''), 2));
+    for (let p = 0xEC; data.length < dataCw; p ^= 0xEC ^ 0x11) data.push(p);
+    // Error correction per block, then interleave
+    const [eccLen, groups] = BLOCKS[ver], div = rsDivisor(eccLen), blocks = [];
+    let k = 0;
+    for (const [n, d] of groups) for (let i = 0; i < n; i++) { const blk = data.slice(k, k + d); k += d; blocks.push({ d: blk, e: rsRemainder(blk, div) }); }
+    const cw = [], maxD = Math.max(...blocks.map(b => b.d.length));
+    for (let i = 0; i < maxD; i++) for (const b of blocks) if (i < b.d.length) cw.push(b.d[i]);
+    for (let i = 0; i < eccLen; i++) for (const b of blocks) cw.push(b.e[i]);
+
+    const size = ver * 4 + 17;
+    const mod = Array.from({ length: size }, () => new Array(size).fill(false));
+    const fn = Array.from({ length: size }, () => new Array(size).fill(false));
+    const set = (x, y, dark) => { mod[y][x] = dark; fn[y][x] = true; };
+    for (let i = 0; i < size; i++) { set(6, i, i % 2 === 0); set(i, 6, i % 2 === 0); }
+    for (const [cx, cy] of [[3, 3], [size - 4, 3], [3, size - 4]])
+      for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) {
+        const x = cx + dx, y = cy + dy, dist = Math.max(Math.abs(dx), Math.abs(dy));
+        if (x >= 0 && x < size && y >= 0 && y < size) set(x, y, dist !== 2 && dist !== 4);
+      }
+    const al = ALIGN[ver], last = al.length - 1;
+    for (let i = 0; i < al.length; i++) for (let j = 0; j < al.length; j++) {
+      if ((i === 0 && j === 0) || (i === 0 && j === last) || (i === last && j === 0)) continue;
+      for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) set(al[i] + dx, al[j] + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1);
+    }
+    const drawFormat = mask => {
+      const d = (0 << 3) | mask;                          // level M = 00
+      let r = d; for (let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+      const b = ((d << 10) | r) ^ 0x5412, bit = i => ((b >>> i) & 1) === 1;
+      for (let i = 0; i <= 5; i++) set(8, i, bit(i));
+      set(8, 7, bit(6)); set(8, 8, bit(7)); set(7, 8, bit(8));
+      for (let i = 9; i < 15; i++) set(14 - i, 8, bit(i));
+      for (let i = 0; i < 8; i++) set(size - 1 - i, 8, bit(i));
+      for (let i = 8; i < 15; i++) set(8, size - 15 + i, bit(i));
+      set(8, size - 8, true);
+    };
+    drawFormat(0);                                       // reserve the format areas
+    if (ver >= 7) {
+      let r = ver; for (let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25);
+      const b = (ver << 12) | r;
+      for (let i = 0; i < 18; i++) { const bit = ((b >>> i) & 1) === 1, a = size - 11 + (i % 3), c = Math.floor(i / 3); set(a, c, bit); set(c, a, bit); }
+    }
+    // Place the codewords in the zig-zag order
+    let i = 0;
+    for (let right = size - 1; right >= 1; right -= 2) {
+      if (right === 6) right = 5;
+      for (let v = 0; v < size; v++) for (let j = 0; j < 2; j++) {
+        const x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - v : v;
+        if (!fn[y][x] && i < cw.length * 8) { mod[y][x] = ((cw[i >>> 3] >>> (7 - (i & 7))) & 1) === 1; i++; }
+      }
+    }
+    const applyMask = m => { for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (!fn[y][x] && MASKS[m](x, y)) mod[y][x] = !mod[y][x]; };
+    const penalty = () => {
+      let p = 0, dark = 0;
+      for (let y = 0; y < size; y++) for (const horiz of [true, false]) {
+        let run = 1;
+        for (let x = 1; x < size; x++) {
+          const a = horiz ? mod[y][x] : mod[x][y], b = horiz ? mod[y][x - 1] : mod[x - 1][y];
+          if (a === b) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1;
+        }
+      }
+      for (let y = 0; y < size - 1; y++) for (let x = 0; x < size - 1; x++) {
+        const c = mod[y][x]; if (c === mod[y][x + 1] && c === mod[y + 1][x] && c === mod[y + 1][x + 1]) p += 3;
+      }
+      for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (mod[y][x]) dark++;
+      return p + Math.floor(Math.abs(dark * 20 - size * size * 10) / (size * size)) * 10;
+    };
+    let best = forceMask != null ? forceMask : 0;
+    if (forceMask == null) {
+      let bp = Infinity;
+      for (let m = 0; m < 8; m++) { applyMask(m); drawFormat(m); const pn = penalty(); if (pn < bp) { bp = pn; best = m; } applyMask(m); }
+    }
+    applyMask(best); drawFormat(best);
+    return { size, ver, mask: best, mod, fn, cw };
+  }
+  function svg(text, px = 6) {
+    const q = encode(text), n = q.size + 8;
+    let d = '';
+    for (let y = 0; y < q.size; y++) for (let x = 0; x < q.size; x++) if (q.mod[y][x]) d += `M${x + 4} ${y + 4}h1v1h-1z`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n} ${n}" width="${n * px}" height="${n * px}" shape-rendering="crispEdges" role="img" aria-label="QR code"><rect width="${n}" height="${n}" fill="#fff"/><path d="${d}" fill="#000"/></svg>`;
+  }
+  return { encode, svg };
+})();
+
+// ── Laptop side: show a QR code that opens the phone app already connected to this laptop ──
+try { PH.share = localStorage.getItem('ph_share') || ''; } catch (_) { PH.share = ''; }
+function sendToPhoneHTML() {
+  return `
+    <div class="ph-card">
+      <div class="stg-sub">Send songs to your phone</div>
+      <div class="stg-desc">
+        1. Keep this app running.<br>
+        2. In a new PowerShell window run <code>cloudflared tunnel --url http://localhost:3000</code><br>
+        3. Paste the <b>https://…trycloudflare.com</b> link it prints here, then scan the QR code with your phone's camera.
+      </div>
+      <div class="dir-row">
+        <input class="dir-input" id="ph-share" type="url" autocomplete="off" placeholder="https://something.trycloudflare.com" value="${esc(PH.share)}" oninput="phShare(this.value)">
+      </div>
+      <div class="ph-qr" id="ph-qr">${phQRHTML(PH.share)}</div>
+    </div>`;
+}
+function phQRHTML(link) {
+  const l = phCleanLink(link);
+  if (!/^https:\/\/[^\s/]+\.[a-z]{2,}$/i.test(l)) return link && link.trim() ? '<div class="ph-note">Paste the full https:// link from cloudflared.</div>' : '';
+  const url = PHONE_APP_URL + '#laptop=' + l;
+  let code = '';
+  try { code = QR.svg(url, 5); } catch (_) { return '<div class="ph-note err">That link is too long for a QR code.</div>'; }
+  return `<div class="ph-qr-box">${code}</div>
+    <div class="ph-qr-txt">Scan it with the phone camera. Pratham's Playlist opens on the phone, connected to this laptop — then tap <b>Download</b>.
+      <br>No camera? Send yourself this link: <a href="${esc(url)}" target="_blank" rel="noopener">${esc(url)}</a></div>`;
+}
+function phShare(v) {
+  PH.share = v;
+  try { localStorage.setItem('ph_share', v); } catch (_) {}
+  const el = document.getElementById('ph-qr'); if (el) el.innerHTML = phQRHTML(v);
+}
+
+// Opened from the laptop's QR code: …/#laptop=https://xxxx.trycloudflare.com
+function phFromHash() {
+  const m = location.hash.match(/laptop=([^&]+)/);
+  if (!m) return;
+  const link = phCleanLink(decodeURIComponent(m[1]));
+  history.replaceState(null, '', location.pathname + location.search);
+  if (!link || S.server) return;
+  navigate('settings');
+  phLaptopConnect(link);
+}
+
+// ══════════════════════════════════════════
 //  Navigation & Render
 // ══════════════════════════════════════════
 function navigate(v) {
   S.view = v;
   S.activePlaylistId = null;
-  document.querySelectorAll('.side-nav-btn[data-view]').forEach(n => n.classList.toggle('active', n.dataset.view === v));
+  document.querySelectorAll('.side-nav-btn[data-view], .mnav-btn[data-view]').forEach(n => n.classList.toggle('active', n.dataset.view === v));
+  document.getElementById('content').scrollTop = 0;
   render();
 }
 
 function navigatePlaylist(id) {
   S.activePlaylistId = id;
   S.view = 'playlist';
-  document.querySelectorAll('.side-nav-btn[data-view]').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.side-nav-btn[data-view], .mnav-btn[data-view]').forEach(n => n.classList.remove('active'));
   render();
 }
 
@@ -1603,13 +2447,22 @@ function setOrbMode(m) {
 function renderHome() {
   const orb = heroOrb();
 
-  if (!S.files.length) return orb + msHomeLinks() + `
+  if (!S.files.length) return orb + msHomeLinks() + (S.server ? `
     <div class="empty">
       <div class="ei">${SVG.music}</div>
       <h3>Your library is empty</h3>
       <p>Add your Music and Videos folders to get started.</p>
       <button class="btn" onclick="navigate('settings')">Add Folders</button>
-    </div>`;
+    </div>` : `
+    <div class="empty">
+      <div class="ei">${SVG.music}</div>
+      <h3>No songs on this ${PHONE ? 'phone' : 'device'} yet</h3>
+      <p>Add songs you've downloaded, or copy them from your laptop. They're saved inside the app and play offline.</p>
+      <div class="ph-btns" style="justify-content:center">
+        <button class="btn" onclick="phPick()">＋ Add songs</button>
+        <button class="btn-ghost" onclick="navigate('settings')">Get songs from my laptop</button>
+      </div>
+    </div>`);
 
   const songs = filtered(S.audio);
   const vids  = filtered(S.video);
@@ -1694,7 +2547,7 @@ function musicCard(f) {
   return `
     <div class="music-card${isCur?' playing':''}" onclick="playFile('${f.id}')" tabindex="0">
       <div class="mc-art" style="background:${grad(f.id)}">
-        ${m.hasArtwork ? `<img src="/api/artwork/${f.id}" onerror="this.remove()">` : SVG.music}
+        ${m.hasArtwork ? `<img src="${artURL(f.id)}" alt="" onerror="this.remove()">` : SVG.music}
         <div class="mc-play">${SVG.play}</div>
       </div>
       <div class="mc-title">${esc(title)}</div>
@@ -1723,7 +2576,7 @@ function trackList(files) {
             <div class="eq"><span></span><span></span><span></span></div>
           </div>
           <div class="tr-art" style="background:${grad(f.id)}">
-            ${m.hasArtwork ? `<img src="/api/artwork/${f.id}" onerror="this.remove()">` : SVG.music}
+            ${m.hasArtwork ? `<img src="${artURL(f.id)}" alt="" onerror="this.remove()">` : SVG.music}
           </div>
           <div class="tr-meta">
             <div class="tr-name">${esc(title)}</div>
@@ -1785,7 +2638,9 @@ function renderSettings() {
   return `
     <div class="settings-wrap">
       <div class="sec-title" style="margin-bottom:1.5rem">Settings</div>
-
+      ${!S.server || PH.songs.size ? phSectionHTML() : ''}
+      ${S.server ? sendToPhoneHTML() : ''}
+      ${S.server ? `
       <div class="stg-sub">Media Folders</div>
       <div class="stg-desc">
         Add folders where your music and videos are stored.<br>
@@ -1810,6 +2665,7 @@ function renderSettings() {
       </div>
 
       ${S.dirs.length ? `<button class="btn" style="margin-top:1.25rem" onclick="rescan()">Scan Now</button>` : ''}
+      ` : ''}
 
       <div style="margin-top:3rem">
         <div class="stg-sub">Library Stats</div>
@@ -1819,7 +2675,7 @@ function renderSettings() {
         </div>
       </div>
 
-      <div style="margin-top:3rem">
+      <div style="margin-top:3rem"${PHONE ? ' hidden' : ''}>
         <div class="stg-sub">Keyboard Shortcuts</div>
         <div style="font-size:.8rem;color:var(--sub);line-height:2.2">
           <kbd>Space</kbd> Play / Pause &nbsp;·&nbsp;
@@ -1899,7 +2755,7 @@ function renderPlaylistView() {
               <div class="eq"><span></span><span></span><span></span></div>
             </div>
             <div class="tr-art" style="background:${grad(f.id)}">
-              ${m.hasArtwork ? `<img src="/api/artwork/${f.id}" onerror="this.remove()">` : SVG.music}
+              ${m.hasArtwork ? `<img src="${artURL(f.id)}" alt="" onerror="this.remove()">` : SVG.music}
             </div>
             <div class="tr-meta">
               <div class="tr-name">${esc(title)}</div>
@@ -1928,13 +2784,17 @@ function renderPlaylistView() {
 // ══════════════════════════════════════════
 async function loadPlaylists() {
   try {
+    if (!S.server) throw new Error('phone mode');
     const d = await api('/api/playlists');
     S.playlists = d.playlists || [];
-  } catch(_) { S.playlists = []; }
+  } catch(_) {
+    try { S.playlists = JSON.parse(localStorage.getItem('mb_playlists') || '[]'); } catch (__) { S.playlists = []; }
+  }
 }
 
 function savePlaylists() {
-  api('/api/playlists', 'POST', { playlists: S.playlists }).catch(() => {});
+  if (S.server) api('/api/playlists', 'POST', { playlists: S.playlists }).catch(() => {});
+  else try { localStorage.setItem('mb_playlists', JSON.stringify(S.playlists)); } catch (_) {}
 }
 
 function renderSidebarPlaylists() {
@@ -2017,7 +2877,7 @@ function playPlaylist(plId) {
   S.queue = tracks; S.qi = 0;
   const f = tracks[0];
   S.current = f;
-  aud.src = `/stream/${f.id}`; aud.play().catch(() => {}); S.playing = true;
+  aud.src = mediaURL(f.id); aud.play().catch(() => {}); S.playing = true;
   syncPlayerUI(f); render();
   if (!S.meta[f.id]) fetchMeta(f);
 }
@@ -2030,7 +2890,7 @@ function playPlaylistTrack(plId, idx) {
   if (!f) return;
   S.queue = tracks; S.qi = idx;
   S.current = f;
-  aud.src = `/stream/${f.id}`; aud.play().catch(() => {}); S.playing = true;
+  aud.src = mediaURL(f.id); aud.play().catch(() => {}); S.playing = true;
   syncPlayerUI(f); render();
   if (!S.meta[f.id]) fetchMeta(f);
 }
@@ -2058,10 +2918,15 @@ function showCtx(e, fileId) {
       <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
       New playlist…
     </div>
+    ${PH.songs.has(fileId) ? `<div class="ctx-divider"></div>
+    <div class="ctx-item" role="menuitem" onclick="closeCtx();phRemove('${fileId}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/></svg>
+      Remove from this device
+    </div>` : ''}
   `;
 
-  const x = Math.min(e.clientX, window.innerWidth - 220);
-  const y = Math.min(e.clientY, window.innerHeight - (S.playlists.length * 40 + 120));
+  const x = Math.max(8, Math.min(e.clientX, window.innerWidth - 220));
+  const y = Math.max(8, Math.min(e.clientY, window.innerHeight - (S.playlists.length * 40 + (PH.songs.has(fileId) ? 170 : 120))));
   menu.style.left = x + 'px';
   menu.style.top  = y + 'px';
   menu.style.display = 'block';
@@ -2085,7 +2950,7 @@ function playFile(id, listIdx) {
   S.queue = pool;
   S.qi = listIdx != null ? listIdx : pool.findIndex(x => x.id === id);
   if (S.qi < 0) S.qi = 0;
-  aud.src = `/stream/${id}`; aud.play().catch(() => {}); S.playing = true;
+  aud.src = mediaURL(id); aud.play().catch(() => {}); S.playing = true;
   syncPlayerUI(f); render();
   if (!S.meta[id]) fetchMeta(f);
 }
@@ -2111,7 +2976,7 @@ function playQueued(i) {
   const f = S.queue[i];
   if (!f) return;
   S.qi = i; S.current = f;
-  aud.src = `/stream/${f.id}`; aud.play().catch(() => {}); S.playing = true;
+  aud.src = mediaURL(f.id); aud.play().catch(() => {}); S.playing = true;
   syncPlayerUI(f); render();
   if (!S.meta[f.id]) fetchMeta(f);
 }
@@ -2160,9 +3025,13 @@ function wireAudio() {
   });
   aud.addEventListener('loadedmetadata', () => {
     document.getElementById('tot-t').textContent = fmtTime(aud.duration);
+    const m = S.current && S.meta[S.current.id];
+    if (m && !m.duration && isFinite(aud.duration)) m.duration = aud.duration;
+    syncPositionState();
   });
-  aud.addEventListener('play',  () => { S.playing=true;  syncPP(); startOrbViz(); acquireWakeLock(); });
-  aud.addEventListener('pause', () => { S.playing=false; syncPP(); releaseWakeLock(); });
+  aud.addEventListener('seeked', syncPositionState);
+  aud.addEventListener('play',  () => { S.playing=true;  syncPP(); startOrbViz(); acquireWakeLock(); if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing'; });
+  aud.addEventListener('pause', () => { S.playing=false; syncPP(); releaseWakeLock(); if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused'; });
   aud.addEventListener('ended', () => {
     if (S.repeat==='one') { aud.currentTime=0; aud.play(); } else nextTrack();
   });
@@ -2173,6 +3042,7 @@ function wireAudio() {
 let _wakeLock = null;
 async function acquireWakeLock() {
   if (!('wakeLock' in navigator) || _wakeLock) return;
+  if (PHONE && !(typeof MS !== 'undefined' && MS.calm.phase === 'session')) return;
   try {
     _wakeLock = await navigator.wakeLock.request('screen');
     _wakeLock.addEventListener('release', () => { _wakeLock = null; });
@@ -2193,6 +3063,7 @@ let _actx, _analyser, _srcNode, _freqData, _vizRAF, _vizLevel = 0;
 
 function ensureAudioGraph() {
   if (_actx) return true;
+  if (PHONE) return false;
   try {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return false;
@@ -2212,7 +3083,7 @@ function ensureAudioGraph() {
 }
 
 function startOrbViz() {
-  if (!ensureAudioGraph()) return;
+  if (!ensureAudioGraph()) { if (PHONE && !_vizRAF) vizTick(); return; }
   if (_actx.state === 'suspended') _actx.resume();
   if (!_vizRAF) vizTick();
 }
@@ -2233,6 +3104,11 @@ function vizTick() {
     }
     target = (sum / wsum) / 255;   // 0..1
     target = Math.min(1, target * 1.35);
+  } else if (S.playing && !aud.paused) {
+    // No analyser on phones: pulse on the beat of the song (tempo from MoodSense when it has listened)
+    const p = S.current && typeof MS !== 'undefined' && MS.byId[S.current.id];
+    const beat = ((aud.currentTime || 0) * ((p && p.f.bpm) || 100) / 60) % 1;
+    target = 0.12 + 0.5 * Math.pow(1 - beat, 4);
   }
 
   // smooth toward target (and decay to 0 when paused)
@@ -2253,6 +3129,7 @@ function vizTick() {
 
 // ── Sync UI ───────────────────────────────
 function syncPlayerUI(f) {
+  syncMediaSession(f);
   const m = S.meta[f.id] || {};
   document.getElementById('pl-title').textContent  = m.title  || noExt(f.name);
   document.getElementById('pl-artist').textContent = m.artist || '–';
@@ -2261,7 +3138,7 @@ function syncPlayerUI(f) {
     artEl.style.background = '';
     artEl.innerHTML = '';
     const img = document.createElement('img');
-    img.src = `/api/artwork/${f.id}`;
+    img.src = artURL(f.id);
     img.alt = '';
     img.onerror = () => { artEl.innerHTML = SVG.music; artEl.style.background = grad(f.id); };
     artEl.appendChild(img);
@@ -2862,9 +3739,9 @@ function buildSphereItems(){
     const m=S.meta[f.id]||{};
     const title=m.title||noExt(f.name);
     const hue=hueFromId(f.id);
-    const image = (m.hasArtwork===true) ? `/api/artwork/${f.id}`
-                : (m.hasArtwork===false) ? sphereCoverURL(f.id,title,hue)
-                : `/api/artwork/${f.id}`;      // unknown → try artwork, fallback fills on error
+    const image = (m.hasArtwork===true) ? artURL(f.id)
+                : (m.hasArtwork===false || f.local || !S.server) ? sphereCoverURL(f.id,title,hue)
+                : artURL(f.id);      // unknown → try artwork, fallback fills on error
     return { id:f.id, title, description:(m.artist||''), image, hue };
   });
 }
@@ -3611,6 +4488,7 @@ function moodChip(id) {
 }
 
 // ── Page ──
+const MS_DEVICE = PHONE ? 'phone' : 'laptop';
 const MS_TABS = [
   ['dj', 'AI DJ', 'An AI that listens to your songs, works out the emotion of each one, and builds playlists from how you feel.'],
   ['calm', 'Calm Coach', 'A guided reset for stress and anxiety: breathing timed to your music, and songs that step you down to calm.'],
@@ -3629,7 +4507,7 @@ function renderMood() {
   <div class="ms-wrap">
     <div class="ms-head">
       <div>
-        <div class="ms-eyebrow">AI · runs on this laptop</div>
+        <div class="ms-eyebrow">AI · runs on this ${MS_DEVICE}</div>
         <h1 class="ms-title">MoodSense</h1>
         <p class="ms-sub">${sub}</p>
       </div>
@@ -3703,7 +4581,7 @@ function msHowHTML() {
       <div class="ms-step"><h4><em>2</em>Understand</h4><p>Those measurements become two scores from <b>Russell's circumplex model of emotion</b>: <b>arousal</b> (calm ↔ energetic) and <b>valence</b> (sad ↔ happy). Loud, fast, punchy songs score high arousal; bright sound, major keys and faster tempos lean happy.</p></div>
       <div class="ms-step"><h4><em>3</em>Recommend</h4><p>The AI DJ reads your message for <b>feelings</b>, <b>activities</b> and <b>goals</b>, turns them into a point on the map, then picks the <b>nearest songs</b>. To change your mood it follows the <b>iso principle</b> from music therapy: start at your mood, move one small step per song.</p></div>
     </div>
-    <div class="ms-privacy">Privacy: songs and typed messages never leave this laptop. (Voice input uses Chrome's speech service.)</div></div>`;
+    <div class="ms-privacy">Privacy: songs and typed messages never leave this ${MS_DEVICE}. (Voice input uses Chrome's speech service.)</div></div>`;
 }
 function msStatusHTML() {
   const total = S.audio.length;
@@ -3843,7 +4721,7 @@ async function msAnalyze(force) {
   for (const f of list) {
     MS.prog.current = msTitle(f); msRefreshStatus();
     try {
-      const res = await fetch(`/stream/${f.id}`);
+      const res = await fetch(mediaURL(f.id));
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const buf = await actx.decodeAudioData(await res.arrayBuffer());
       const feats = await msExtract(msWindow(buf), buf.sampleRate);
@@ -3900,7 +4778,7 @@ function msPlayIds(ids, start) {
   start = Math.max(0, Math.min(start || 0, tracks.length - 1));
   S.queue = tracks; S.qi = start;
   const f = tracks[start]; S.current = f;
-  aud.src = `/stream/${f.id}`; aud.play().catch(() => {}); S.playing = true;
+  aud.src = mediaURL(f.id); aud.play().catch(() => {}); S.playing = true;
   syncPlayerUI(f); render();
   if (!S.meta[f.id]) fetchMeta(f);
 }
@@ -4078,7 +4956,7 @@ function msCheckinHTML() {
       </div>
       <div class="ms-suds-scale"><span>0 · totally calm</span><span>5 · tense</span><span>10 · worst ever</span></div>
       <div class="ms-suds-word" id="ms-suds-word">${msSudsWord(c.before)}</div>
-      <label class="ms-q" for="ms-calm-note">What's on your mind? <small>optional · stays on this laptop</small></label>
+      <label class="ms-q" for="ms-calm-note">What's on your mind? <small>optional · stays on this ${MS_DEVICE}</small></label>
       <input class="ms-text" id="ms-calm-note" maxlength="140" placeholder="e.g. Maths test tomorrow" value="${esc(c.note)}" oninput="msCalmNote(this.value)">
       <div class="ms-gap"></div>
       ${msSupportHTML(strong, 'ms-calm-support', !show)}
@@ -4361,7 +5239,7 @@ function msCheckinCardHTML() {
     : `<div class="ms-jmsg">✅ Saved. ${esc(f ? f[0] : '')}${f && f[1] ? ` <button class="ms-btn${f[2].includes('calm') ? ' calm' : ''}" onclick="${f[2]}">${f[1]}</button>` : ''}</div>`;
   return `
   <section class="ms-card">
-    <div class="ms-card-hd">How are you feeling right now? <small>one tap · saved only on this laptop</small></div>
+    <div class="ms-card-hd">How are you feeling right now? <small>one tap · saved only on this ${MS_DEVICE}</small></div>
     <div class="ms-feels" role="group" aria-label="Pick a feeling">
       ${MoodAI.CHECKINS.map(([k, e, l]) => `<button class="ms-feel${MS.jSel === k ? ' on' : ''}" data-k="${k}" aria-pressed="${MS.jSel === k}" onclick="msJPick('${k}')"><span class="e" aria-hidden="true">${e}</span><span>${l}</span></button>`).join('')}
     </div>
@@ -4459,7 +5337,7 @@ function msJournalHTML() {
     <div class="ms-grid even">${insights}${line}</div>
     <div class="ms-grid even">${calm}${side}</div>
     <div class="ms-jfoot">${demo ? '' : '<button class="ms-btn" onclick="msJSample()">Load a sample week</button>'}<button class="ms-btn" onclick="msJClear()">Clear journal</button>
-      <span>🔒 Your journal is saved only in this browser on this laptop. Nothing is uploaded.</span></div>`;
+      <span>🔒 Your journal is saved only in this app on this ${MS_DEVICE}. Nothing is uploaded.</span></div>`;
 }
 
 // ── Journal charts (SVG, drawn after the page is in place so they can measure their width) ──
@@ -4674,13 +5552,16 @@ function msDrawMap(time) {
 const TAU_MS = Math.PI * 2;
 
 // ══════════════════════════════════════════
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(e => console.warn('Offline mode unavailable:', e)));
+}
 init();
 </script>
 <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
 <script>
   // Attach Lenis smooth scroll to the main content area
   const contentEl = document.querySelector('.content');
-  if (contentEl) {
+  if (contentEl && window.Lenis) {
     const lenis = new Lenis({
       wrapper: contentEl,
       content: contentEl.firstElementChild || contentEl,
