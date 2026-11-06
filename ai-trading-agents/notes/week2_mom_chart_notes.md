@@ -12,7 +12,6 @@
 - [ ] `charts/bhp_sma.png`
 - [ ] `charts/rio_sma.png`
 - [ ] `charts/fmg_ax_sma.png`
-- [ ] `charts/vale_sma_2020_2021.png` (zoomed in — easiest to see the crossings)
 
 ## Would she trust the crossover signals?
 

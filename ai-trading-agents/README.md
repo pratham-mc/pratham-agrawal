@@ -68,8 +68,8 @@ ai-trading-agents/
 
 **Week 2 — Real data and signal charts**
 - [x] `download_data.py`, `indicators.py`, `charts.py`
-- [ ] Run `download_data.py` → 4 CSVs appear in `data/`
-- [ ] Run `charts.py` → 4 charts + 1 zoomed chart appear in `charts/`
+- [x] Run `download_data.py` → 4 CSVs appear in `data/`
+- [x] Run `charts.py` → 4 charts appear in `charts/`
 - [ ] Show the charts to Mom → write `notes/week2_mom_chart_notes.md`
 
 **Week 3 — The backtester**
