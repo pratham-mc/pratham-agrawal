@@ -25,11 +25,12 @@ ai-trading-agents/
 ├── indicators.py          ← Week 2: adds the 20-day and 50-day moving averages
 ├── charts.py              ← Week 2: draws price + moving average charts into charts/
 │
-├── backtest.py            ← Week 3: the backtester, the Buy and Hold agent, and the scoring
+├── agents.py              ← the trading robots: Buy and Hold (Week 3), Momentum (Week 4)
+├── backtest.py            ← Weeks 3–4: the backtester, the scoring, and the agents' race
 │
 ├── data/                  ← real price CSVs (filled when you run download_data.py)
 ├── charts/                ← saved chart images
-└── notes/                 ← written work: Domain Brief, Mom's comments, "no peeking" rule
+└── notes/                 ← written work: Domain Brief, Mom's comments, "no peeking" rule, Week 4 verdict
 ```
 
 ## How to run it (on your own computer)
@@ -53,15 +54,19 @@ ai-trading-agents/
    ```bash
    python backtest.py
    ```
+   ```bash
+   python backtest.py BHP
+   ```
 
 `download_data.py` needs the internet. It only has to run once; after that the prices are saved in `data/`.
 
 ---
 
-## Weeks 1–3 checklist
+## Weeks 1–4 checklist
 
 **Week 1 — Understand the market, set up tools**
-- [ ] Interview Mom (about 90 min, record with permission) → write `notes/week1_domain_brief.md`
+- [x] Interview Mom (about 90 min, record with permission)
+- [ ] Write it up → `notes/week1_domain_brief.md`
 - [ ] Install Python 3.11+, VS Code (+ Python extension), make a GitHub account
 - [x] Project README (this page)
 - [x] `week1_practice.py` — run it and see a chart appear
@@ -73,8 +78,14 @@ ai-trading-agents/
 - [ ] Show the charts to Mom → write `notes/week2_mom_chart_notes.md`
 
 **Week 3 — The backtester**
-- [x] `backtest.py` with the backtester, the Buy and Hold agent and the scoring code
-- [ ] Run `backtest.py` → `charts/buy_and_hold.png` and the printed statistics
+- [x] `backtest.py` with the backtester and the scoring code; the Buy and Hold agent in `agents.py`
+- [x] Run it → Buy and Hold chart and the printed statistics
 - [ ] Write the "no peeking" rule in your own words → `notes/week3_no_peeking_rule.md`
+
+**Week 4 — The Momentum agent**
+- [x] `agents.py` with the Momentum agent
+- [ ] Run `python backtest.py` and `python backtest.py BHP` → `charts/race_VALE.png`, `charts/race_BHP.png` and the scores side by side
+- [ ] Find 3 Momentum trades on the Week 2 chart; write the five-sentence verdict → `notes/week4_verdict.md`
+- [ ] Ask Mom about trend-following → add her answer to `notes/week4_verdict.md`
 
 The project rule: AI tools can help write code, but I must be able to explain every line I keep.

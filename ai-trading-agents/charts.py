@@ -2,8 +2,7 @@
 Week 2: draw each stock with its two moving averages and save the pictures.
 
 Run:       python charts.py
-Creates:   charts/VALE_sma.png, charts/BHP_sma.png, ... plus a zoomed-in
-           chart of the last two years of VALE, where the crossings are easy to see.
+Creates:   charts/VALE_sma.png, charts/BHP_sma.png, charts/RIO_sma.png, charts/FMG_AX_sma.png
 
 For practice data instead:  python charts.py sample.csv
 """
@@ -44,6 +43,3 @@ else:
         else:
             print("No file", path, "- run python download_data.py first")
 
-    # Ten years squashes the lines together, so also zoom into the last two years
-    if os.path.exists("data/VALE.csv"):
-        draw_chart("data/VALE.csv", "VALE last 2 years", start="2024-01-01")

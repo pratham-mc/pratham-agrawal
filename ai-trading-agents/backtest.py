@@ -1,18 +1,19 @@
 """
-Week 3: the backtester.
+Weeks 3 and 4: the backtester, and a head-to-head race between agents.
 
-Replays history one day at a time, lets an agent decide what to do,
+Replays history one day at a time, lets each agent decide what to do,
 and keeps track of the fake money.
 
-Run:   python backtest.py            (Buy and Hold on VALE)
+Run:   python backtest.py            (Buy and Hold vs Momentum on VALE)
        python backtest.py BHP        (another stock: BHP, RIO, FMG_AX)
        python backtest.py sample.csv (practice data)
 """
 import os
 import sys
+import pandas as pd
 import matplotlib.pyplot as plt
 from indicators import add_moving_averages, load_prices
-from agents import buy_and_hold
+from agents import buy_and_hold, momentum_agent
 
 STARTING_CASH = 100000
 FEE = 0.001  # 0.1% charged on every buy and every sell, like a real broker
@@ -90,28 +91,48 @@ if __name__ == "__main__":
         sys.exit()
 
     data = load_prices(path)
+    if len(data) <= 60:
+        print("Only", len(data), "days in", path, "- the backtest needs more than 60 days")
+        sys.exit()
     data = add_moving_averages(data)
-
-    values, trades = run_backtest(data, buy_and_hold)
-    results = score(values, trades)
     dates = data.index[60:]  # the days the backtest covered
 
-    print("Buy and Hold on", name)
-    print("From", dates[0].date(), "to", dates[-1].date(), "-", len(dates), "trading days")
-    for label, number in results.items():
-        print(f"  {label}: {number:,}")
-    for day, action, price in trades:
-        print(f"  Trade: {action} on {day} at {price}")
+    # The agents taking part in the race: name to show -> agent function
+    agents = {"Buy and Hold": buy_and_hold, "Momentum": momentum_agent}
 
+    all_values = {}   # each agent's daily portfolio values
+    all_trades = {}   # each agent's list of trades
+    all_scores = {}   # each agent's score card
+    for agent_name, agent in agents.items():
+        values, trades = run_backtest(data, agent)
+        all_values[agent_name] = values
+        all_trades[agent_name] = trades
+        all_scores[agent_name] = score(values, trades)
+
+    # 1) The scores side by side: one row per agent
+    print("Head-to-head on", name)
+    print("From", dates[0].date(), "to", dates[-1].date(), "-", len(dates), "trading days")
+    print()
+    print(pd.DataFrame.from_dict(all_scores, orient="index"))  # orient="index": one row per agent
+    print()
+
+    # 2) The Momentum agent's trades, numbered, so you can find them on the Week 2 chart
+    print("Momentum trades:")
+    for number, (day, action, price) in enumerate(all_trades["Momentum"], start=1):
+        print(f"  {number}. {action} on {day} at {price}")
+
+    # 3) One chart with one line per agent
     os.makedirs("charts", exist_ok=True)
     plt.figure(figsize=(12, 6))
-    plt.plot(dates, values, label="Buy and Hold")
+    for agent_name, values in all_values.items():
+        plt.plot(dates, values, label=agent_name)
     plt.axhline(STARTING_CASH, color="grey", linestyle="--", label="Starting cash")
-    plt.title("Buy and Hold on " + name + ": value of 100,000 of fake money")
+    plt.title("Buy and Hold vs Momentum on " + name + ": value of 100,000 of fake money")
     plt.ylabel("Portfolio value")
+    plt.gca().yaxis.set_major_formatter("{x:,.0f}")  # show 400,000 instead of 0.4 x 1e6
     plt.grid(alpha=0.3)
     plt.legend()
-    filename = "charts/buy_and_hold_" + name.replace(" ", "_") + ".png"
+    filename = "charts/race_" + name.replace(" ", "_") + ".png"
     plt.savefig(filename, dpi=120, bbox_inches="tight")
     print("Saved", filename)
     plt.show()
