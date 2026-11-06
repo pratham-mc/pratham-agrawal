@@ -1,23 +1,49 @@
-# Week 2: draw each stock's price with its two moving averages and save the charts.
-# Run download_data.py first, so the data/ folder has the CSV files.
+"""
+Week 2: draw each stock with its two moving averages and save the pictures.
 
+Run:       python charts.py
+Creates:   charts/VALE_sma.png, charts/BHP_sma.png, ... plus a zoomed-in
+           chart of the last two years of VALE, where the crossings are easy to see.
+
+For practice data instead:  python charts.py sample.csv
+"""
 import os
-import pandas as pd
+import sys
 import matplotlib.pyplot as plt
-from indicators import add_moving_averages
+from indicators import add_moving_averages, load_prices
 
-os.makedirs("charts", exist_ok=True)    # make the charts/ folder if it is not there yet
+os.makedirs("charts", exist_ok=True)
 
-# file name in data/  ->  name to show in the chart title
-stocks = {"VALE": "VALE", "BHP": "BHP", "RIO": "RIO", "FMG_AX": "FMG.AX"}
 
-# One chart per stock: the full 10 years
-for file_name, title in stocks.items():
-    data = pd.read_csv("data/" + file_name + ".csv", index_col=0, parse_dates=True)
+def draw_chart(path, name, start=None):
+    data = load_prices(path)
     data = add_moving_averages(data)
+    if start:
+        data = data[data.index >= start]  # keep only rows from this date onward
 
-    data[["Close", "SMA_20", "SMA_50"]].plot(figsize=(12, 6), title=title + " with moving averages")
+    data[["Close", "SMA_20", "SMA_50"]].plot(
+        figsize=(12, 6), title=name + " with 20-day and 50-day moving averages"
+    )
     plt.ylabel("Price")
-    plt.savefig("charts/" + file_name.lower() + "_sma.png")
-    plt.close()                         # close it, so the next chart starts fresh
-    print("Saved charts/" + file_name.lower() + "_sma.png")
+    plt.grid(alpha=0.3)
+
+    filename = "charts/" + name.replace(" ", "_") + "_sma.png"
+    plt.savefig(filename, dpi=120, bbox_inches="tight")
+    plt.close()  # close it so the next chart starts fresh
+    print("Saved", filename)
+
+
+if len(sys.argv) > 1:
+    # A file was given on the command line, e.g. python charts.py sample.csv
+    draw_chart(sys.argv[1], "practice data")
+else:
+    for name in ["VALE", "BHP", "RIO", "FMG_AX"]:
+        path = "data/" + name + ".csv"
+        if os.path.exists(path):
+            draw_chart(path, name)
+        else:
+            print("No file", path, "- run python download_data.py first")
+
+    # Ten years squashes the lines together, so also zoom into the last two years
+    if os.path.exists("data/VALE.csv"):
+        draw_chart("data/VALE.csv", "VALE last 2 years", start="2024-01-01")
